@@ -20,7 +20,7 @@ let salesData = {
     daily: {},
     weekly: {},
     monthly: {},
-    allTime: {}, // For all-time statistics
+    allTime: {},
     lastReset: {
         daily: new Date().toDateString(),
         weekly: getWeekNumber(new Date()),
@@ -92,37 +92,94 @@ function checkResets() {
     }
 }
 
-// Parse sale and policy from message - CLEANED VERSION
+// Parse sale and policy from message - ENHANCED VERSION FOR COMPLEX MESSAGES
 function parseSaleAndPolicy(message) {
-    // Pattern for: $624 Americo IUL, $1,328.40 MOO IULE, etc.
-    const pattern = /\$\s*([\d,]+(?:\.\d{2})?)\s*(.*)/;
-    const match = message.match(pattern);
+    // Handle multi-line messages - join all lines
+    const fullMessage = message.replace(/\n/g, ' ');
+    
+    // Look for dollar amount pattern
+    const pattern = /\$\s*([\d,]+(?:\.\d{2})?)/;
+    const match = fullMessage.match(pattern);
     
     if (match) {
-        // Remove commas from amount and convert to number
+        // Extract amount
         const amount = parseFloat(match[1].replace(/,/g, ''));
         
-        // Get policy type and clean it
-        let policyType = match[2].trim();
+        // Get everything after the dollar amount
+        const afterAmount = fullMessage.substring(fullMessage.indexOf(match[0]) + match[0].length).trim();
+        
+        // Clean up the policy type
+        let policyType = afterAmount;
         
         // Remove Discord custom emojis (:emoji_name:)
         policyType = policyType.replace(/:[a-zA-Z0-9_]+:/g, '').trim();
         
-        // Remove hashtags and everything after them
+        // Remove all Unicode emojis (comprehensive regex for all emoji ranges)
+        policyType = policyType.replace(/[\u{1F000}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{FE00}-\u{FE0F}]|[\u{1F300}-\u{1F5FF}]|[\u{2000}-\u{3300}]/gu, '').trim();
+        
+        // Remove @mentions
+        policyType = policyType.replace(/@[^\s]+/g, '').trim();
+        
+        // Remove "w/" or "with" and everything after
+        policyType = policyType.replace(/\b(w\/|with)\b.*/gi, '').trim();
+        
+        // Remove hashtags and everything after
         const hashtagIndex = policyType.indexOf('#');
         if (hashtagIndex > -1) {
             policyType = policyType.substring(0, hashtagIndex).trim();
         }
         
-        // Remove any extra spaces
+        // Clean up extra spaces and special characters
+        policyType = policyType.replace(/[^\w\s-]/g, ' '); // Keep only words, spaces, and hyphens
         policyType = policyType.replace(/\s+/g, ' ').trim();
         
-        // If no policy type after cleaning, set default
-        if (!policyType) {
-            policyType = 'General';
+        // Common policy type patterns to look for
+        const policyPatterns = [
+            'TLE', 'IUL', 'IULE', 'UL', 'WL', 'TERM',
+            'Americo', 'MOO', 'Ladder', 'Term Life',
+            'Universal Life', 'Whole Life', 'Final Expense',
+            'Index Universal Life', 'Variable Universal Life'
+        ];
+        
+        // Find if any known policy type exists
+        let foundPolicy = '';
+        for (const pattern of policyPatterns) {
+            const regex = new RegExp(`\\b${pattern}\\b`, 'i');
+            if (regex.test(policyType)) {
+                // Extract the pattern and maybe one word before/after
+                const extractRegex = new RegExp(`(\\w+\\s+)?\\b${pattern}\\b(\\s+\\w+)?`, 'i');
+                const policyMatch = policyType.match(extractRegex);
+                if (policyMatch) {
+                    foundPolicy = policyMatch[0].trim();
+                    break;
+                }
+            }
         }
         
-        console.log(`💬 Parsed: Amount=$${amount}, Policy="${policyType}"`);
+        // Use found policy or cleaned version
+        if (foundPolicy) {
+            policyType = foundPolicy;
+        }
+        
+        // Final cleanup - if still too long, take first 3 words max
+        const words = policyType.split(' ').filter(word => word.length > 0);
+        if (words.length > 3) {
+            policyType = words.slice(0, 3).join(' ');
+        }
+        
+        // If no policy type after all cleaning, set default
+        if (!policyType || policyType.length < 2) {
+            policyType = 'General Policy';
+        }
+        
+        // Capitalize first letter of each word for consistency
+        policyType = policyType.split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(' ');
+        
+        console.log(`💬 Parsed sale:`);
+        console.log(`   Amount: $${amount}`);
+        console.log(`   Policy: "${policyType}"`);
         
         return {
             amount: amount,
@@ -133,11 +190,10 @@ function parseSaleAndPolicy(message) {
     return null;
 }
 
-// Add sale with specific policy type
+// Add sale
 function addSale(userId, username, amount, policyType) {
     checkResets();
     
-    // Initialize user in all periods if doesn't exist
     ['daily', 'weekly', 'monthly'].forEach(period => {
         if (!salesData[period][userId]) {
             salesData[period][userId] = { 
@@ -149,17 +205,14 @@ function addSale(userId, username, amount, policyType) {
             };
         }
         
-        // Add to total
         salesData[period][userId].total += amount;
         salesData[period][userId].count += 1;
         
-        // Count by policy type
         if (!salesData[period][userId].policies[policyType]) {
             salesData[period][userId].policies[policyType] = 0;
         }
         salesData[period][userId].policies[policyType]++;
         
-        // Add details
         salesData[period][userId].policyDetails.push({
             amount,
             type: policyType,
@@ -167,7 +220,6 @@ function addSale(userId, username, amount, policyType) {
         });
     });
 
-    // Add to all-time stats
     if (!salesData.allTime) {
         salesData.allTime = {};
     }
@@ -186,8 +238,8 @@ function addSale(userId, username, amount, policyType) {
     saveData();
 }
 
-// Generate enhanced leaderboard
-function generateLeaderboard(period = 'daily', title = '') {
+// Generate AP Leaderboard (sorted by total amount)
+function generateAPLeaderboard(period = 'daily', title = '') {
     checkResets();
     
     const data = salesData[period];
@@ -195,9 +247,9 @@ function generateLeaderboard(period = 'daily', title = '') {
         .sort(([,a], [,b]) => b.total - a.total);
 
     const periodTitle = {
-        'daily': '📅 DAILY REPORT',
-        'weekly': '📊 WEEKLY REPORT',
-        'monthly': '🏆 MONTHLY REPORT'
+        'daily': '💵 DAILY AP LEADERBOARD',
+        'weekly': '💵 WEEKLY AP LEADERBOARD',
+        'monthly': '💵 MONTHLY AP LEADERBOARD'
     };
 
     const currentDate = new Date().toLocaleString('en-US', {
@@ -210,11 +262,11 @@ function generateLeaderboard(period = 'daily', title = '') {
     });
 
     const embed = new EmbedBuilder()
-        .setColor(period === 'monthly' ? 0xFFD700 : period === 'weekly' ? 0x0099FF : 0x00FF00)
+        .setColor(0x00FF00) // Green for AP
         .setTitle(title || periodTitle[period])
-        .setDescription(`📍 **Date:** ${currentDate}\n━━━━━━━━━━━━━━━━━━━━━`)
+        .setDescription(`💰 **Ranked by Annual Premium (AP)**\n📍 Date: ${currentDate}\n━━━━━━━━━━━━━━━━━━━━━`)
         .setTimestamp()
-        .setFooter({ text: '💼 Boundless Insurance Group' });
+        .setFooter({ text: '💼 BIG - Annual Premium Rankings' });
 
     if (sorted.length === 0) {
         embed.addFields({
@@ -222,46 +274,30 @@ function generateLeaderboard(period = 'daily', title = '') {
             value: 'No sales recorded for this period'
         });
     } else {
-        // Top 3 sellers with more detail
+        // Top 3 AP leaders
         let topDescription = '';
         const top3 = sorted.slice(0, 3);
         
         top3.forEach(([userId, data], index) => {
-            const medal = index === 0 ? '🥇 **LEADER**' : index === 1 ? '🥈 **2nd Place**' : '🥉 **3rd Place**';
+            const medal = index === 0 ? '🥇 **AP LEADER**' : index === 1 ? '🥈 **2nd Place**' : '🥉 **3rd Place**';
             topDescription += `${medal}\n`;
             topDescription += `👤 **${data.username}**\n`;
-            topDescription += `💵 **$${data.total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}** | 📋 ${data.count} policies\n`;
-            
-            // Show most sold policy types (max 3)
-            if (data.policies) {
-                const typesOrdered = Object.entries(data.policies)
-                    .sort(([,a], [,b]) => b - a)
-                    .slice(0, 3);
-                    
-                if (typesOrdered.length > 0) {
-                    const typesText = typesOrdered
-                        .map(([type, count]) => `${type} (${count})`)
-                        .join(', ');
-                    topDescription += `🏷️ *${typesText}*\n`;
-                }
-            }
-            topDescription += '\n';
+            topDescription += `💵 **$${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})} AP**\n`;
+            topDescription += `📊 *${data.count} policies*\n\n`;
         });
         
-        if (topDescription) {
-            embed.addFields({
-                name: '🌟 **TOP PERFORMERS**',
-                value: topDescription || 'No data'
-            });
-        }
+        embed.addFields({
+            name: '🌟 **TOP AP PRODUCERS**',
+            value: topDescription || 'No data'
+        });
 
-        // Rest of ranking (4-10)
+        // Rest of ranking
         if (sorted.length > 3) {
             let restDescription = '';
             const rest = sorted.slice(3, 10);
             
             rest.forEach(([userId, data], index) => {
-                restDescription += `**${index + 4}.** ${data.username} - $${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})} (${data.count})\n`;
+                restDescription += `**${index + 4}.** ${data.username} - **$${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})}** (${data.count})\n`;
             });
             
             if (restDescription) {
@@ -272,40 +308,98 @@ function generateLeaderboard(period = 'daily', title = '') {
             }
         }
 
-        // General statistics
-        const totalSales = Object.values(data).reduce((sum, user) => sum + user.total, 0);
+        // Statistics
+        const totalAP = Object.values(data).reduce((sum, user) => sum + user.total, 0);
         const totalPolicies = Object.values(data).reduce((sum, user) => sum + user.count, 0);
-        const averagePolicy = totalPolicies > 0 ? totalSales / totalPolicies : 0;
-        const activeAgents = sorted.length;
+        const averageAP = totalPolicies > 0 ? totalAP / totalPolicies : 0;
 
-        // Featured leader
-        const leader = sorted[0];
-        let leaderText = `👑 **${leader[1].username}**\n`;
-        leaderText += `💰 $${leader[1].total.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+        embed.addFields({
+            name: '💼 **AP SUMMARY**',
+            value: `**Total AP:** $${totalAP.toLocaleString('en-US', {minimumFractionDigits: 2})}\n**Average AP:** $${averageAP.toLocaleString('en-US', {minimumFractionDigits: 2})}\n**Total Policies:** ${totalPolicies}`
+        });
+    }
 
-        embed.addFields(
-            {
-                name: '🏆 **PERIOD LEADER**',
-                value: leaderText,
-                inline: true
-            },
-            {
-                name: '💼 **SUMMARY**',
-                value: `**Total Sales:** $${totalSales.toLocaleString('en-US', {minimumFractionDigits: 2})}\n**Total Policies:** ${totalPolicies}\n**Average:** $${averagePolicy.toLocaleString('en-US', {minimumFractionDigits: 2})}\n**Active Agents:** ${activeAgents}`,
-                inline: true
-            }
-        );
+    return embed;
+}
 
-        // Add motivational message based on period
-        const motivationalMessages = {
-            'daily': '💪 Keep pushing! Every sale counts.',
-            'weekly': '🎯 Great week! Let\'s keep the momentum going.',
-            'monthly': '🌟 Outstanding month! Let\'s celebrate our achievements.'
-        };
+// Generate Policy Count Leaderboard (sorted by number of policies)
+function generatePolicyLeaderboard(period = 'daily', title = '') {
+    checkResets();
+    
+    const data = salesData[period];
+    const sorted = Object.entries(data)
+        .sort(([,a], [,b]) => b.count - a.count); // Sort by COUNT not total
+
+    const periodTitle = {
+        'daily': '📋 DAILY POLICY LEADERBOARD',
+        'weekly': '📋 WEEKLY POLICY LEADERBOARD',
+        'monthly': '📋 MONTHLY POLICY LEADERBOARD'
+    };
+
+    const currentDate = new Date().toLocaleString('en-US', {
+        timeZone: 'America/New_York',
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    const embed = new EmbedBuilder()
+        .setColor(0x0099FF) // Blue for Policies
+        .setTitle(title || periodTitle[period])
+        .setDescription(`📋 **Ranked by Number of Policies**\n📍 Date: ${currentDate}\n━━━━━━━━━━━━━━━━━━━━━`)
+        .setTimestamp()
+        .setFooter({ text: '💼 BIG - Policy Count Rankings' });
+
+    if (sorted.length === 0) {
+        embed.addFields({
+            name: '📝 No Records',
+            value: 'No policies recorded for this period'
+        });
+    } else {
+        // Top 3 policy leaders
+        let topDescription = '';
+        const top3 = sorted.slice(0, 3);
+        
+        top3.forEach(([userId, data], index) => {
+            const medal = index === 0 ? '🥇 **POLICY LEADER**' : index === 1 ? '🥈 **2nd Place**' : '🥉 **3rd Place**';
+            topDescription += `${medal}\n`;
+            topDescription += `👤 **${data.username}**\n`;
+            topDescription += `📋 **${data.count} Policies**\n`;
+            topDescription += `💰 *$${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})} total AP*\n\n`;
+        });
         
         embed.addFields({
-            name: '\u200B',
-            value: `\n*${motivationalMessages[period]}*`
+            name: '🌟 **TOP POLICY WRITERS**',
+            value: topDescription || 'No data'
+        });
+
+        // Rest of ranking
+        if (sorted.length > 3) {
+            let restDescription = '';
+            const rest = sorted.slice(3, 10);
+            
+            rest.forEach(([userId, data], index) => {
+                restDescription += `**${index + 4}.** ${data.username} - **${data.count} policies** ($${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})})\n`;
+            });
+            
+            if (restDescription) {
+                embed.addFields({
+                    name: '📈 **Other Agents**',
+                    value: restDescription
+                });
+            }
+        }
+
+        // Statistics
+        const totalPolicies = Object.values(data).reduce((sum, user) => sum + user.count, 0);
+        const activeAgents = sorted.length;
+        const avgPoliciesPerAgent = activeAgents > 0 ? totalPolicies / activeAgents : 0;
+
+        embed.addFields({
+            name: '📊 **POLICY SUMMARY**',
+            value: `**Total Policies:** ${totalPolicies}\n**Active Agents:** ${activeAgents}\n**Avg per Agent:** ${avgPoliciesPerAgent.toFixed(1)}`
         });
     }
 
@@ -315,37 +409,54 @@ function generateLeaderboard(period = 'daily', title = '') {
 // Bot ready
 client.once('ready', () => {
     console.log(`✅ ${client.user.tag} is online!`);
-    console.log('🏢 Boundless Insurance Group - Sales System Active');
+    console.log('🏢 Boundless Insurance Group - Dual Tracking System');
     console.log(`📊 Sales channel: ${process.env.SALES_CHANNEL_ID}`);
     console.log(`📈 Reports channel: ${process.env.LEADERBOARD_CHANNEL_ID}`);
-    console.log('🧹 Cleaning: Hashtags and emojis will be removed from policy names');
-    console.log('⏰ Scheduled times:');
-    console.log('   - Every 3 hours: Current day report');
-    console.log('   - Daily 6 PM: Day summary');
-    console.log('   - Sundays 6 PM: Weekly summary');
-    console.log('   - Last day of month 6 PM: Monthly summary');
+    console.log('💰 Tracking: AP (Annual Premium) & Policy Count');
+    console.log('🧹 Enhanced parser: Handles complex messages with emojis & mentions');
+    console.log('⏰ Scheduled times for BOTH leaderboards:');
+    console.log('   - Every 3 hours: AP & Policy rankings');
+    console.log('   - Daily 6 PM: Complete dual summary');
+    console.log('   - Sundays 6 PM: Weekly dual rankings');
+    console.log('   - Last day of month 6 PM: Monthly dual rankings');
     
-    // AUTOMATED SCHEDULES
+    // AUTOMATED SCHEDULES - Now posting BOTH leaderboards
     
-    // 1. Current day table every 3 hours (6am, 9am, 12pm, 3pm, 6pm, 9pm)
+    // 1. Every 3 hours - Post BOTH leaderboards
     cron.schedule('0 6,9,12,15,18,21 * * *', async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
             const hour = new Date().getHours();
-            await channel.send({ embeds: [generateLeaderboard('daily', `📊 ${hour}:00 UPDATE`)] });
-            console.log(`📊 Daily table updated - ${hour}:00`);
+            
+            await channel.send('📊 **HOURLY UPDATE**');
+            
+            // Send AP Leaderboard
+            await channel.send({ embeds: [generateAPLeaderboard('daily', `💵 ${hour}:00 AP UPDATE`)] });
+            
+            // Send Policy Leaderboard
+            await channel.send({ embeds: [generatePolicyLeaderboard('daily', `📋 ${hour}:00 POLICY UPDATE`)] });
+            
+            await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            console.log(`📊 Both leaderboards updated - ${hour}:00`);
         }
     });
 
-    // 2. Complete daily summary at 6 PM
+    // 2. Daily summary at 6 PM - BOTH leaderboards
     cron.schedule('0 18 * * *', async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
-            const embed = generateLeaderboard('daily', '📅 END OF DAY - FINAL SUMMARY');
-            embed.setColor(0xFFD700); // Gold color for closing
-            await channel.send({ embeds: [embed] });
+            await channel.send('📢 **END OF DAY FINAL RANKINGS**');
+            
+            const apEmbed = generateAPLeaderboard('daily', '💵 DAILY AP FINAL STANDINGS');
+            apEmbed.setColor(0xFFD700);
+            await channel.send({ embeds: [apEmbed] });
+            
+            const policyEmbed = generatePolicyLeaderboard('daily', '📋 DAILY POLICY FINAL STANDINGS');
+            policyEmbed.setColor(0xFFD700);
+            await channel.send({ embeds: [policyEmbed] });
+            
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Final daily summary posted - 18:00');
+            console.log('📊 Final daily rankings posted - 18:00');
         }
     });
 
@@ -353,15 +464,18 @@ client.once('ready', () => {
     cron.schedule('0 18 * * 0', async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
-            const embed = generateLeaderboard('weekly', '🏆 WEEKLY CLOSING - RESULTS');
-            embed.setColor(0xFF6B6B); // Special color for weekly
+            await channel.send('🏆 **WEEKLY FINAL RANKINGS**');
             
-            await channel.send({ 
-                content: '📢 **WEEKLY SUMMARY**', 
-                embeds: [embed] 
-            });
+            const apEmbed = generateAPLeaderboard('weekly', '💵🏆 WEEKLY AP CHAMPIONS');
+            apEmbed.setColor(0xFF6B6B);
+            await channel.send({ embeds: [apEmbed] });
+            
+            const policyEmbed = generatePolicyLeaderboard('weekly', '📋🏆 WEEKLY POLICY CHAMPIONS');
+            policyEmbed.setColor(0xFF6B6B);
+            await channel.send({ embeds: [policyEmbed] });
+            
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Weekly summary posted - Sunday 18:00');
+            console.log('📊 Weekly rankings posted - Sunday 18:00');
         }
     });
 
@@ -373,15 +487,18 @@ client.once('ready', () => {
         if (date.getDate() === lastDay) {
             const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
             if (channel) {
-                const embed = generateLeaderboard('monthly', '🏆🏆🏆 MONTHLY CLOSING - FINAL RESULTS 🏆🏆🏆');
-                embed.setColor(0xFFD700); // Gold for monthly
+                await channel.send('🎊 **MONTHLY FINAL RANKINGS - CONGRATULATIONS!** 🎊');
                 
-                await channel.send({ 
-                    content: '🎊 **CONGRATULATIONS TO ALL FOR A GREAT MONTH!** 🎊', 
-                    embeds: [embed] 
-                });
+                const apEmbed = generateAPLeaderboard('monthly', '💵🏆🏆 MONTHLY AP CHAMPIONS 🏆🏆');
+                apEmbed.setColor(0xFFD700);
+                await channel.send({ embeds: [apEmbed] });
+                
+                const policyEmbed = generatePolicyLeaderboard('monthly', '📋🏆🏆 MONTHLY POLICY CHAMPIONS 🏆🏆');
+                policyEmbed.setColor(0xFFD700);
+                await channel.send({ embeds: [policyEmbed] });
+                
                 await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-                console.log('📊 Monthly summary posted - End of month 18:00');
+                console.log('📊 Monthly rankings posted - End of month 18:00');
             }
         }
     });
@@ -403,39 +520,81 @@ client.on('messageCreate', async message => {
                 saleData.policyType
             );
             
-            // React with multiple emojis to celebrate
+            // React with emojis
             await message.react('✅');
             await message.react('💰');
             if (saleData.amount >= 1000) {
-                await message.react('🔥'); // Extra emoji for big sales
+                await message.react('🔥');
             }
             
-            // Personalized response based on amount
+            // Response
             let response = '';
             if (saleData.amount >= 2000) {
-                response = `🔥 **AMAZING SALE!** 🔥\n💰 **$${saleData.amount.toLocaleString('en-US', {minimumFractionDigits: 2})}** - ${saleData.policyType}\nYou're crushing it, ${message.author.username}! 🚀`;
+                response = `🔥 **AMAZING SALE!** 🔥\n💰 **$${saleData.amount.toLocaleString('en-US', {minimumFractionDigits: 2})} AP Submitted**\nPolicy: ${saleData.policyType}\nYou're crushing it, ${message.author.username}! 🚀`;
             } else if (saleData.amount >= 1000) {
-                response = `🎯 **Excellent sale!**\n💰 **$${saleData.amount.toLocaleString('en-US', {minimumFractionDigits: 2})}** - ${saleData.policyType}\nKeep it up, ${message.author.username}! 💪`;
+                response = `🎯 **Excellent sale!**\n💰 **$${saleData.amount.toLocaleString('en-US', {minimumFractionDigits: 2})} AP Submitted**\nPolicy: ${saleData.policyType}\nKeep it up, ${message.author.username}! 💪`;
             } else {
-                response = `✅ **Sale recorded**\n💰 **$${saleData.amount.toLocaleString('en-US', {minimumFractionDigits: 2})}** - ${saleData.policyType}\nEvery sale counts! 📈`;
+                response = `✅ **Sale recorded**\n💰 **$${saleData.amount.toLocaleString('en-US', {minimumFractionDigits: 2})} AP Submitted**\nPolicy: ${saleData.policyType}\nEvery sale counts! 📈`;
             }
             
             await message.reply(response);
             
-            console.log(`💰 Sale recorded: ${message.author.username} - $${saleData.amount} - ${saleData.policyType}`);
+            console.log(`💰 Sale recorded: ${message.author.username} - $${saleData.amount} AP - ${saleData.policyType}`);
         }
     }
 
-    // Commands available in any channel
+    // Commands
     if (message.content.startsWith('!')) {
         const args = message.content.slice(1).trim().split(/ +/);
         const command = args.shift().toLowerCase();
 
         switch(command) {
+            case 'ap':
+            case 'apleaderboard':
+            case 'aprank':
+                const apPeriod = args[0] || 'daily';
+                const apValidPeriods = {
+                    'daily': 'daily',
+                    'day': 'daily',
+                    'today': 'daily',
+                    'weekly': 'weekly',
+                    'week': 'weekly',
+                    'monthly': 'monthly',
+                    'month': 'monthly'
+                };
+                
+                if (apValidPeriods[apPeriod]) {
+                    await message.channel.send({ embeds: [generateAPLeaderboard(apValidPeriods[apPeriod])] });
+                } else {
+                    await message.reply('Usage: `!ap [daily|weekly|monthly]`');
+                }
+                break;
+
+            case 'policies':
+            case 'policy':
+            case 'policyrank':
+                const policyPeriod = args[0] || 'daily';
+                const policyValidPeriods = {
+                    'daily': 'daily',
+                    'day': 'daily',
+                    'today': 'daily',
+                    'weekly': 'weekly',
+                    'week': 'weekly',
+                    'monthly': 'monthly',
+                    'month': 'monthly'
+                };
+                
+                if (policyValidPeriods[policyPeriod]) {
+                    await message.channel.send({ embeds: [generatePolicyLeaderboard(policyValidPeriods[policyPeriod])] });
+                } else {
+                    await message.reply('Usage: `!policies [daily|weekly|monthly]`');
+                }
+                break;
+
             case 'leaderboard':
             case 'lb':
-            case 'top':
-            case 'ranking':
+            case 'both':
+            case 'rankings':
                 const period = args[0] || 'daily';
                 const validPeriods = {
                     'daily': 'daily',
@@ -448,89 +607,73 @@ client.on('messageCreate', async message => {
                 };
                 
                 if (validPeriods[period]) {
-                    await message.channel.send({ embeds: [generateLeaderboard(validPeriods[period])] });
+                    // Send BOTH leaderboards
+                    await message.channel.send('📊 **CURRENT RANKINGS**');
+                    await message.channel.send({ embeds: [generateAPLeaderboard(validPeriods[period])] });
+                    await message.channel.send({ embeds: [generatePolicyLeaderboard(validPeriods[period])] });
                 } else {
-                    const errorEmbed = new EmbedBuilder()
-                        .setColor(0xFF0000)
-                        .setTitle('❌ Invalid Period')
-                        .setDescription('**Use one of these periods:**\n• `daily` (or `day`, `today`)\n• `weekly` (or `week`)\n• `monthly` (or `month`)')
-                        .addFields({
-                            name: 'Example',
-                            value: '`!leaderboard weekly`'
-                        });
-                    await message.reply({ embeds: [errorEmbed] });
+                    await message.reply('Usage: `!leaderboard [daily|weekly|monthly]`');
                 }
                 break;
 
             case 'mysales':
             case 'mystats':
             case 'stats':
-            case 'sales':
                 checkResets();
                 const userId = message.author.id;
-                const daily = salesData.daily[userId] || { total: 0, count: 0, policies: {} };
-                const weekly = salesData.weekly[userId] || { total: 0, count: 0, policies: {} };
-                const monthly = salesData.monthly[userId] || { total: 0, count: 0, policies: {} };
+                const daily = salesData.daily[userId] || { total: 0, count: 0 };
+                const weekly = salesData.weekly[userId] || { total: 0, count: 0 };
+                const monthly = salesData.monthly[userId] || { total: 0, count: 0 };
                 const allTime = salesData.allTime && salesData.allTime[userId] ? salesData.allTime[userId] : { total: 0, count: 0 };
+
+                // Find rankings
+                const dailyAPRank = Object.entries(salesData.daily)
+                    .sort(([,a], [,b]) => b.total - a.total)
+                    .findIndex(([id,]) => id === userId) + 1;
+                const dailyPolicyRank = Object.entries(salesData.daily)
+                    .sort(([,a], [,b]) => b.count - a.count)
+                    .findIndex(([id,]) => id === userId) + 1;
 
                 const statsEmbed = new EmbedBuilder()
                     .setColor(0x00FF00)
-                    .setTitle(`📊 ${message.author.username}'s Statistics`)
+                    .setTitle(`📊 ${message.author.username}'s Complete Statistics`)
                     .setThumbnail(message.author.displayAvatarURL())
                     .addFields(
                         { 
                             name: '📅 **TODAY**', 
-                            value: `💵 **$${daily.total.toLocaleString('en-US', {minimumFractionDigits: 2})}**\n📋 ${daily.count} policies`, 
+                            value: `💵 **$${daily.total.toLocaleString('en-US', {minimumFractionDigits: 2})} AP**\n📋 **${daily.count} Policies**\n🏆 AP Rank: #${dailyAPRank || 'N/A'}\n🏆 Policy Rank: #${dailyPolicyRank || 'N/A'}`, 
                             inline: true 
                         },
                         { 
                             name: '📊 **THIS WEEK**', 
-                            value: `💵 **$${weekly.total.toLocaleString('en-US', {minimumFractionDigits: 2})}**\n📋 ${weekly.count} policies`, 
+                            value: `💵 **$${weekly.total.toLocaleString('en-US', {minimumFractionDigits: 2})} AP**\n📋 **${weekly.count} Policies**`, 
                             inline: true 
                         },
                         { 
                             name: '🏆 **THIS MONTH**', 
-                            value: `💵 **$${monthly.total.toLocaleString('en-US', {minimumFractionDigits: 2})}**\n📋 ${monthly.count} policies`, 
+                            value: `💵 **$${monthly.total.toLocaleString('en-US', {minimumFractionDigits: 2})} AP**\n📋 **${monthly.count} Policies**`, 
                             inline: true 
                         }
                     );
 
-                // Add most sold policy types for the month
-                if (monthly.policies && Object.keys(monthly.policies).length > 0) {
-                    const typesOrdered = Object.entries(monthly.policies)
-                        .sort(([,a], [,b]) => b - a)
-                        .slice(0, 5);
-                    
-                    const typesText = typesOrdered
-                        .map(([type, count]) => `• ${type}: ${count}`)
-                        .join('\n');
-                    
-                    statsEmbed.addFields({
-                        name: '🏷️ **Policies Sold (This Month)**',
-                        value: typesText || 'No data'
-                    });
-                }
-
-                // Add all-time record
                 if (allTime.total > 0) {
                     statsEmbed.addFields({
                         name: '🌟 **ALL-TIME RECORD**',
-                        value: `💎 **$${allTime.total.toLocaleString('en-US', {minimumFractionDigits: 2})}** in ${allTime.count} total sales`
+                        value: `💎 **$${allTime.total.toLocaleString('en-US', {minimumFractionDigits: 2})} Total AP**\n📝 **${allTime.count} Total Policies**`
                     });
                 }
 
-                // Calculate average
                 const monthAverage = monthly.count > 0 ? monthly.total / monthly.count : 0;
                 if (monthAverage > 0) {
                     statsEmbed.addFields({
-                        name: '📈 **Average per Sale (Month)**',
-                        value: `$${monthAverage.toLocaleString('en-US', {minimumFractionDigits: 2})}`
+                        name: '📈 **Performance Metrics**',
+                        value: `**Avg AP per Policy:** $${monthAverage.toLocaleString('en-US', {minimumFractionDigits: 2})}\n**Daily Target:** ${((daily.total / 2000) * 100).toFixed(1)}% of $2,000`
                     });
                 }
 
                 statsEmbed
                     .setTimestamp()
-                    .setFooter({ text: 'BIG - Boundless Insurance Group | Keep selling!' });
+                    .setFooter({ text: 'BIG - Keep pushing for both AP and Policy count!' });
 
                 await message.channel.send({ embeds: [statsEmbed] });
                 break;
@@ -539,31 +682,31 @@ client.on('messageCreate', async message => {
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse - User Manual**')
-                    .setDescription('Automated Sales Tracking System\n━━━━━━━━━━━━━━━━━━━━━')
+                    .setTitle('📚 **BIG Policy Pulse - Dual Tracking System**')
+                    .setDescription('Track both AP (Annual Premium) and Policy Count\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
                             name: '💰 **RECORDING SALES**', 
-                            value: 'In the sales channel, post your sale with this format:\n\n`$624 Americo IUL`\n`$1,328.40 MOO IULE :MOO:`\n`$466.56 Ladder 25yr Term #wizardmethod #OTS`\n\n**Note:** Hashtags and emojis are automatically removed.'
+                            value: 'Post in the sales channel with any format:\n\n**Simple:**\n`$624 Americo IUL`\n\n**Complex:**\n`🎉 FIRST SALE!\n$1,227.84 TLE\nw/ @teammate`\n\nBot extracts amount and policy type automatically.'
                         },
                         { 
-                            name: '📊 **AVAILABLE COMMANDS**', 
-                            value: '`!leaderboard` - View today\'s ranking\n`!leaderboard weekly` - View weekly ranking\n`!leaderboard monthly` - View monthly ranking\n`!mystats` - View your personal statistics\n`!help` - Show this menu'
+                            name: '📊 **LEADERBOARD COMMANDS**', 
+                            value: '**View Both Rankings:**\n`!leaderboard` - Both current rankings\n`!leaderboard weekly` - Both weekly rankings\n`!leaderboard monthly` - Both monthly rankings\n\n**AP Rankings Only:**\n`!ap` - Current AP leaderboard\n`!ap weekly` - Weekly AP leaderboard\n\n**Policy Rankings Only:**\n`!policies` - Current policy leaderboard\n`!policies weekly` - Weekly policy leaderboard'
+                        },
+                        {
+                            name: '📈 **PERSONAL STATS**',
+                            value: '`!mystats` - View all your statistics and rankings'
                         },
                         {
                             name: '⏰ **AUTOMATIC REPORTS**',
-                            value: '**Day Update:** Every 3 hours (6, 9, 12, 15, 18, 21 hrs)\n**Daily Close:** 6:00 PM\n**Weekly Close:** Sundays 6:00 PM\n**Monthly Close:** Last day 6:00 PM'
+                            value: 'Both leaderboards post automatically:\n• Every 3 hours (6, 9, 12, 15, 18, 21)\n• Daily close at 6 PM\n• Weekly summary Sundays 6 PM\n• Monthly summary last day 6 PM'
                         },
                         {
-                            name: '🏆 **RANKING SYSTEM**',
-                            value: '🥇 **1st Place:** Period leader\n🥈 **2nd Place:** Runner-up\n🥉 **3rd Place:** Third position\n\nRankings reset automatically.'
-                        },
-                        {
-                            name: '💡 **TIPS**',
-                            value: '• Record every sale immediately\n• Always include the policy type\n• Hashtags & emojis are optional\n• Check your position regularly\n• Compete positively with your team!'
+                            name: '🏆 **DUAL RANKING SYSTEM**',
+                            value: '**AP Leaderboard:** Ranked by total dollar amount\n**Policy Leaderboard:** Ranked by number of policies\n\nYou can be #1 in AP but not in policies, or vice versa!'
                         }
                     )
-                    .setFooter({ text: '💼 Boundless Insurance Group - Success in your sales!' })
+                    .setFooter({ text: '💼 Boundless Insurance Group - Excel in both metrics!' })
                     .setTimestamp();
                 
                 await message.channel.send({ embeds: [helpEmbed] });
@@ -574,24 +717,24 @@ client.on('messageCreate', async message => {
                 break;
 
             case 'test':
-                // Test command to verify parsing
+                // Test command to verify parsing (admin only)
                 if (message.author.id === message.guild.ownerId || message.member.permissions.has('ADMINISTRATOR')) {
                     const testMessages = [
+                        ':siren: FIRST SALE! :siren: \n$1,227.84 🐮  TLE\nw/ @Roan Hickey ⛹️‍♂️ \n#SD #FirstDayFirstSale',
                         '$466.56 Ladder 25yr Term #wizardmethod #OTS',
                         '$1,328.40 MOO IULE :MOO:',
-                        '$1000 Americo IUL :fire: :boom: #newagent #training',
-                        '$500 :rocket: Term Life #OTS :celebration:'
+                        '🔥🔥 HUGE SALE 🔥🔥\n$5000 Americo IUL :fire: :boom: #newagent w/ @supervisor'
                     ];
                     
                     let testResult = '**Parse Test Results:**\n';
-                    testMessages.forEach(msg => {
+                    for (const msg of testMessages) {
                         const parsed = parseSaleAndPolicy(msg);
                         if (parsed) {
-                            testResult += `\nInput: \`${msg}\`\n`;
-                            testResult += `→ Amount: $${parsed.amount}\n`;
-                            testResult += `→ Policy: "${parsed.policyType}"\n`;
+                            testResult += `\n**Input:** \`${msg.substring(0, 50)}...\`\n`;
+                            testResult += `→ Amount: **$${parsed.amount}**\n`;
+                            testResult += `→ Policy: **"${parsed.policyType}"**\n`;
                         }
-                    });
+                    }
                     
                     await message.channel.send(testResult);
                 }
@@ -600,7 +743,7 @@ client.on('messageCreate', async message => {
     }
 });
 
-// Enhanced error handling
+// Error handling
 client.on('error', error => {
     console.error('❌ Bot error:', error);
 });
@@ -609,7 +752,6 @@ process.on('unhandledRejection', error => {
     console.error('❌ Unhandled error:', error);
 });
 
-// Auto-reconnect functions
 client.on('disconnect', () => {
     console.log('⚠️ Bot disconnected, attempting to reconnect...');
 });
@@ -621,12 +763,13 @@ client.on('reconnecting', () => {
 // Start bot
 async function start() {
     console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v2.1 🚀       ║');
-    console.log('║   Boundless Insurance Group Tracker    ║');
-    console.log('║         Clean Edition                  ║');
+    console.log('║     🚀 BIG POLICY PULSE v3.1 🚀       ║');
+    console.log('║   DUAL LEADERBOARD SYSTEM              ║');
+    console.log('║   AP + Policy Rankings                 ║');
+    console.log('║   Enhanced Message Parser              ║');
     console.log('╚════════════════════════════════════════╝');
     console.log('');
-    console.log('⏳ Starting system...');
+    console.log('⏳ Starting dual tracking system...');
     
     await loadData();
     
