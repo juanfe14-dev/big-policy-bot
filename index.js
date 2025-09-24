@@ -92,7 +92,7 @@ function checkResets() {
     }
 }
 
-// Parse sale and policy from message
+// Parse sale and policy from message - CLEANED VERSION
 function parseSaleAndPolicy(message) {
     // Pattern for: $624 Americo IUL, $1,328.40 MOO IULE, etc.
     const pattern = /\$\s*([\d,]+(?:\.\d{2})?)\s*(.*)/;
@@ -101,7 +101,28 @@ function parseSaleAndPolicy(message) {
     if (match) {
         // Remove commas from amount and convert to number
         const amount = parseFloat(match[1].replace(/,/g, ''));
-        const policyType = match[2].trim() || 'General';
+        
+        // Get policy type and clean it
+        let policyType = match[2].trim();
+        
+        // Remove Discord custom emojis (:emoji_name:)
+        policyType = policyType.replace(/:[a-zA-Z0-9_]+:/g, '').trim();
+        
+        // Remove hashtags and everything after them
+        const hashtagIndex = policyType.indexOf('#');
+        if (hashtagIndex > -1) {
+            policyType = policyType.substring(0, hashtagIndex).trim();
+        }
+        
+        // Remove any extra spaces
+        policyType = policyType.replace(/\s+/g, ' ').trim();
+        
+        // If no policy type after cleaning, set default
+        if (!policyType) {
+            policyType = 'General';
+        }
+        
+        console.log(`💬 Parsed: Amount=$${amount}, Policy="${policyType}"`);
         
         return {
             amount: amount,
@@ -297,6 +318,7 @@ client.once('ready', () => {
     console.log('🏢 Boundless Insurance Group - Sales System Active');
     console.log(`📊 Sales channel: ${process.env.SALES_CHANNEL_ID}`);
     console.log(`📈 Reports channel: ${process.env.LEADERBOARD_CHANNEL_ID}`);
+    console.log('🧹 Cleaning: Hashtags and emojis will be removed from policy names');
     console.log('⏰ Scheduled times:');
     console.log('   - Every 3 hours: Current day report');
     console.log('   - Daily 6 PM: Day summary');
@@ -522,7 +544,7 @@ client.on('messageCreate', async message => {
                     .addFields(
                         { 
                             name: '💰 **RECORDING SALES**', 
-                            value: 'In the sales channel, post your sale with this format:\n\n`$624 Americo IUL`\n`$1,328.40 MOO IULE`\n`$1,227.84 TLE`\n\nThe bot will automatically detect the amount and policy type.'
+                            value: 'In the sales channel, post your sale with this format:\n\n`$624 Americo IUL`\n`$1,328.40 MOO IULE :MOO:`\n`$466.56 Ladder 25yr Term #wizardmethod #OTS`\n\n**Note:** Hashtags and emojis are automatically removed.'
                         },
                         { 
                             name: '📊 **AVAILABLE COMMANDS**', 
@@ -538,7 +560,7 @@ client.on('messageCreate', async message => {
                         },
                         {
                             name: '💡 **TIPS**',
-                            value: '• Record every sale immediately\n• Always include the policy type\n• Check your position regularly\n• Compete positively with your team!'
+                            value: '• Record every sale immediately\n• Always include the policy type\n• Hashtags & emojis are optional\n• Check your position regularly\n• Compete positively with your team!'
                         }
                     )
                     .setFooter({ text: '💼 Boundless Insurance Group - Success in your sales!' })
@@ -549,6 +571,30 @@ client.on('messageCreate', async message => {
 
             case 'ping':
                 await message.reply('🏓 Pong! Bot is working correctly.');
+                break;
+
+            case 'test':
+                // Test command to verify parsing
+                if (message.author.id === message.guild.ownerId || message.member.permissions.has('ADMINISTRATOR')) {
+                    const testMessages = [
+                        '$466.56 Ladder 25yr Term #wizardmethod #OTS',
+                        '$1,328.40 MOO IULE :MOO:',
+                        '$1000 Americo IUL :fire: :boom: #newagent #training',
+                        '$500 :rocket: Term Life #OTS :celebration:'
+                    ];
+                    
+                    let testResult = '**Parse Test Results:**\n';
+                    testMessages.forEach(msg => {
+                        const parsed = parseSaleAndPolicy(msg);
+                        if (parsed) {
+                            testResult += `\nInput: \`${msg}\`\n`;
+                            testResult += `→ Amount: $${parsed.amount}\n`;
+                            testResult += `→ Policy: "${parsed.policyType}"\n`;
+                        }
+                    });
+                    
+                    await message.channel.send(testResult);
+                }
                 break;
         }
     }
@@ -575,8 +621,9 @@ client.on('reconnecting', () => {
 // Start bot
 async function start() {
     console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v2.0 🚀       ║');
+    console.log('║     🚀 BIG POLICY PULSE v2.1 🚀       ║');
     console.log('║   Boundless Insurance Group Tracker    ║');
+    console.log('║         Clean Edition                  ║');
     console.log('╚════════════════════════════════════════╝');
     console.log('');
     console.log('⏳ Starting system...');
