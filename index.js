@@ -92,63 +92,71 @@ function checkResets() {
     }
 }
 
-// Parse sale and policy from message - ENHANCED VERSION FOR COMPLEX MESSAGES
-function parseSaleAndPolicy(message) {
+// Parse MULTIPLE sales from a single message
+function parseMultipleSales(message) {
     // Handle multi-line messages - join all lines
     const fullMessage = message.replace(/\n/g, ' ');
     
-    // Look for dollar amount pattern
-    const pattern = /\$\s*([\d,]+(?:\.\d{2})?)/;
-    const match = fullMessage.match(pattern);
+    // Find ALL dollar amounts in the message
+    const pattern = /\$\s*([\d,]+(?:\.\d{2})?)/g;
+    const matches = [...fullMessage.matchAll(pattern)];
     
-    if (match) {
+    if (!matches || matches.length === 0) {
+        return [];
+    }
+    
+    const sales = [];
+    
+    // Process each dollar amount found
+    matches.forEach((match, index) => {
         // Extract amount
         const amount = parseFloat(match[1].replace(/,/g, ''));
         
-        // Get everything after the dollar amount
-        const afterAmount = fullMessage.substring(fullMessage.indexOf(match[0]) + match[0].length).trim();
+        // Get text between this dollar amount and the next (or end of message)
+        const startPos = match.index + match[0].length;
+        const endPos = matches[index + 1] ? matches[index + 1].index : fullMessage.length;
+        let policyText = fullMessage.substring(startPos, endPos).trim();
         
         // Clean up the policy type
-        let policyType = afterAmount;
+        // Remove labels like "His:", "Hers:", "Child:", etc.
+        policyText = policyText.replace(/^(His|Hers|Child|Spouse|Wife|Husband|Son|Daughter|Kid|Parent|Mother|Father):/gi, '').trim();
         
         // Remove Discord custom emojis (:emoji_name:)
-        policyType = policyType.replace(/:[a-zA-Z0-9_]+:/g, '').trim();
+        policyText = policyText.replace(/:[a-zA-Z0-9_]+:/g, '').trim();
         
-        // Remove all Unicode emojis (comprehensive regex for all emoji ranges)
-        policyType = policyType.replace(/[\u{1F000}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{FE00}-\u{FE0F}]|[\u{1F300}-\u{1F5FF}]|[\u{2000}-\u{3300}]/gu, '').trim();
+        // Remove all Unicode emojis
+        policyText = policyText.replace(/[\u{1F000}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{FE00}-\u{FE0F}]|[\u{1F300}-\u{1F5FF}]|[\u{2000}-\u{3300}]/gu, '').trim();
         
         // Remove @mentions
-        policyType = policyType.replace(/@[^\s]+/g, '').trim();
+        policyText = policyText.replace(/@[^\s]+/g, '').trim();
         
         // Remove "w/" or "with" and everything after
-        policyType = policyType.replace(/\b(w\/|with)\b.*/gi, '').trim();
+        policyText = policyText.replace(/\b(w\/|with)\b.*/gi, '').trim();
         
         // Remove hashtags and everything after
-        const hashtagIndex = policyType.indexOf('#');
+        const hashtagIndex = policyText.indexOf('#');
         if (hashtagIndex > -1) {
-            policyType = policyType.substring(0, hashtagIndex).trim();
+            policyText = policyText.substring(0, hashtagIndex).trim();
         }
         
         // Clean up extra spaces and special characters
-        policyType = policyType.replace(/[^\w\s-]/g, ' '); // Keep only words, spaces, and hyphens
-        policyType = policyType.replace(/\s+/g, ' ').trim();
+        policyText = policyText.replace(/[^\w\s-]/g, ' ');
+        policyText = policyText.replace(/\s+/g, ' ').trim();
         
-        // Common policy type patterns to look for
+        // Look for common policy patterns
         const policyPatterns = [
-            'TLE', 'IUL', 'IULE', 'UL', 'WL', 'TERM',
+            'NLG', 'TLE', 'IUL', 'IULE', 'UL', 'WL', 'TERM',
             'Americo', 'MOO', 'Ladder', 'Term Life',
             'Universal Life', 'Whole Life', 'Final Expense',
             'Index Universal Life', 'Variable Universal Life'
         ];
         
-        // Find if any known policy type exists
         let foundPolicy = '';
         for (const pattern of policyPatterns) {
             const regex = new RegExp(`\\b${pattern}\\b`, 'i');
-            if (regex.test(policyType)) {
-                // Extract the pattern and maybe one word before/after
+            if (regex.test(policyText)) {
                 const extractRegex = new RegExp(`(\\w+\\s+)?\\b${pattern}\\b(\\s+\\w+)?`, 'i');
-                const policyMatch = policyType.match(extractRegex);
+                const policyMatch = policyText.match(extractRegex);
                 if (policyMatch) {
                     foundPolicy = policyMatch[0].trim();
                     break;
@@ -156,38 +164,35 @@ function parseSaleAndPolicy(message) {
             }
         }
         
-        // Use found policy or cleaned version
-        if (foundPolicy) {
-            policyType = foundPolicy;
-        }
+        let policyType = foundPolicy || policyText;
         
-        // Final cleanup - if still too long, take first 3 words max
+        // Final cleanup
         const words = policyType.split(' ').filter(word => word.length > 0);
         if (words.length > 3) {
             policyType = words.slice(0, 3).join(' ');
         }
         
-        // If no policy type after all cleaning, set default
         if (!policyType || policyType.length < 2) {
             policyType = 'General Policy';
         }
         
-        // Capitalize first letter of each word for consistency
+        // Capitalize properly
         policyType = policyType.split(' ')
             .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
             .join(' ');
         
-        console.log(`💬 Parsed sale:`);
-        console.log(`   Amount: $${amount}`);
-        console.log(`   Policy: "${policyType}"`);
-        
-        return {
+        sales.push({
             amount: amount,
             policyType: policyType
-        };
-    }
+        });
+    });
     
-    return null;
+    console.log(`💬 Parsed ${sales.length} sale(s) from message:`);
+    sales.forEach((sale, i) => {
+        console.log(`   Sale ${i + 1}: $${sale.amount} - "${sale.policyType}"`);
+    });
+    
+    return sales;
 }
 
 // Add sale
@@ -413,7 +418,8 @@ client.once('ready', () => {
     console.log(`📊 Sales channel: ${process.env.SALES_CHANNEL_ID}`);
     console.log(`📈 Reports channel: ${process.env.LEADERBOARD_CHANNEL_ID}`);
     console.log('💰 Tracking: AP (Annual Premium) & Policy Count');
-    console.log('🧹 Enhanced parser: Handles complex messages with emojis & mentions');
+    console.log('🔇 Silent mode: Only emoji reactions, no reply messages');
+    console.log('📦 Multi-sale detection: Can process multiple sales per message');
     console.log('⏰ Scheduled times for BOTH leaderboards:');
     console.log('   - Every 3 hours: AP & Policy rankings');
     console.log('   - Daily 6 PM: Complete dual summary');
@@ -510,36 +516,50 @@ client.on('messageCreate', async message => {
 
     // Check if it's the sales channel
     if (message.channel.id === process.env.SALES_CHANNEL_ID) {
-        const saleData = parseSaleAndPolicy(message.content);
+        const sales = parseMultipleSales(message.content);
         
-        if (saleData && saleData.amount > 0) {
-            addSale(
-                message.author.id, 
-                message.author.username, 
-                saleData.amount, 
-                saleData.policyType
-            );
+        if (sales && sales.length > 0) {
+            // Process EACH sale separately
+            let totalAmount = 0;
             
-            // React with emojis
-            await message.react('✅');
-            await message.react('💰');
-            if (saleData.amount >= 1000) {
-                await message.react('🔥');
+            for (const sale of sales) {
+                if (sale.amount > 0) {
+                    // Add each sale individually
+                    addSale(
+                        message.author.id, 
+                        message.author.username, 
+                        sale.amount, 
+                        sale.policyType
+                    );
+                    totalAmount += sale.amount;
+                    
+                    console.log(`💰 Sale recorded: ${message.author.username} - $${sale.amount} AP - ${sale.policyType}`);
+                }
             }
             
-            // Response
-            let response = '';
-            if (saleData.amount >= 2000) {
-                response = `🔥 **AMAZING SALE!** 🔥\n💰 **$${saleData.amount.toLocaleString('en-US', {minimumFractionDigits: 2})} AP Submitted**\nPolicy: ${saleData.policyType}\nYou're crushing it, ${message.author.username}! 🚀`;
-            } else if (saleData.amount >= 1000) {
-                response = `🎯 **Excellent sale!**\n💰 **$${saleData.amount.toLocaleString('en-US', {minimumFractionDigits: 2})} AP Submitted**\nPolicy: ${saleData.policyType}\nKeep it up, ${message.author.username}! 💪`;
-            } else {
-                response = `✅ **Sale recorded**\n💰 **$${saleData.amount.toLocaleString('en-US', {minimumFractionDigits: 2})} AP Submitted**\nPolicy: ${saleData.policyType}\nEvery sale counts! 📈`;
+            // React with emojis based on TOTAL amount
+            if (totalAmount > 0) {
+                await message.react('✅');
+                await message.react('💰');
+                
+                // Add fire emoji for big total sales
+                if (totalAmount >= 1000) {
+                    await message.react('🔥');
+                }
+                
+                // Add rocket for huge sales
+                if (totalAmount >= 5000) {
+                    await message.react('🚀');
+                }
+                
+                // Add star for multiple policies in one message
+                if (sales.length >= 3) {
+                    await message.react('⭐');
+                }
+                
+                // NO REPLY MESSAGE - Only reactions
+                console.log(`📊 Total recorded: ${sales.length} policies, $${totalAmount} total AP`);
             }
-            
-            await message.reply(response);
-            
-            console.log(`💰 Sale recorded: ${message.author.username} - $${saleData.amount} AP - ${saleData.policyType}`);
         }
     }
 
@@ -682,12 +702,12 @@ client.on('messageCreate', async message => {
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse - Dual Tracking System**')
-                    .setDescription('Track both AP (Annual Premium) and Policy Count\n━━━━━━━━━━━━━━━━━━━━━')
+                    .setTitle('📚 **BIG Policy Pulse v3.2 - User Manual**')
+                    .setDescription('Dual Tracking System with Multi-Sale Detection\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
                             name: '💰 **RECORDING SALES**', 
-                            value: 'Post in the sales channel with any format:\n\n**Simple:**\n`$624 Americo IUL`\n\n**Complex:**\n`🎉 FIRST SALE!\n$1,227.84 TLE\nw/ @teammate`\n\nBot extracts amount and policy type automatically.'
+                            value: 'Post in the sales channel:\n\n**Single Sale:**\n`$624 Americo IUL`\n\n**Multiple Sales (Family/Couple):**\n`His: $4,000 NLG IUL Hers: $2,400 NLG IUL`\n`Child: $500 Parents: $3,000 each`\n\n✅ Bot detects EACH sale separately\n🔇 Bot only reacts with emojis (no messages)'
                         },
                         { 
                             name: '📊 **LEADERBOARD COMMANDS**', 
@@ -698,15 +718,19 @@ client.on('messageCreate', async message => {
                             value: '`!mystats` - View all your statistics and rankings'
                         },
                         {
+                            name: '⭐ **EMOJI REACTIONS**',
+                            value: '✅ Sale recorded\n💰 Money earned\n🔥 Total >$1,000\n🚀 Total >$5,000\n⭐ 3+ policies in one message'
+                        },
+                        {
                             name: '⏰ **AUTOMATIC REPORTS**',
                             value: 'Both leaderboards post automatically:\n• Every 3 hours (6, 9, 12, 15, 18, 21)\n• Daily close at 6 PM\n• Weekly summary Sundays 6 PM\n• Monthly summary last day 6 PM'
                         },
                         {
                             name: '🏆 **DUAL RANKING SYSTEM**',
-                            value: '**AP Leaderboard:** Ranked by total dollar amount\n**Policy Leaderboard:** Ranked by number of policies\n\nYou can be #1 in AP but not in policies, or vice versa!'
+                            value: '**AP Leaderboard:** Ranked by total dollar amount\n**Policy Leaderboard:** Ranked by number of policies\n\nMultiple sales per message count separately!'
                         }
                     )
-                    .setFooter({ text: '💼 Boundless Insurance Group - Excel in both metrics!' })
+                    .setFooter({ text: '💼 BIG - Excel in both AP and Policy count!' })
                     .setTimestamp();
                 
                 await message.channel.send({ embeds: [helpEmbed] });
@@ -720,19 +744,26 @@ client.on('messageCreate', async message => {
                 // Test command to verify parsing (admin only)
                 if (message.author.id === message.guild.ownerId || message.member.permissions.has('ADMINISTRATOR')) {
                     const testMessages = [
+                        'His: $4,000 NLG IUL Hers: $2,400 NLG IUL',
+                        'His: $1,000 NLG IUL Hers: $4,400 NLG IUL Child: $500',
+                        '$500 + $600 + $700 multiple sales',
                         ':siren: FIRST SALE! :siren: \n$1,227.84 🐮  TLE\nw/ @Roan Hickey ⛹️‍♂️ \n#SD #FirstDayFirstSale',
-                        '$466.56 Ladder 25yr Term #wizardmethod #OTS',
-                        '$1,328.40 MOO IULE :MOO:',
-                        '🔥🔥 HUGE SALE 🔥🔥\n$5000 Americo IUL :fire: :boom: #newagent w/ @supervisor'
+                        'Family package: Husband $3,000 Wife $2,500 Kids $500 each x2'
                     ];
                     
                     let testResult = '**Parse Test Results:**\n';
                     for (const msg of testMessages) {
-                        const parsed = parseSaleAndPolicy(msg);
-                        if (parsed) {
-                            testResult += `\n**Input:** \`${msg.substring(0, 50)}...\`\n`;
-                            testResult += `→ Amount: **$${parsed.amount}**\n`;
-                            testResult += `→ Policy: **"${parsed.policyType}"**\n`;
+                        const parsed = parseMultipleSales(msg);
+                        testResult += `\n**Input:** \`${msg}\`\n`;
+                        if (parsed && parsed.length > 0) {
+                            testResult += `→ Found **${parsed.length} sale(s)**:\n`;
+                            parsed.forEach((sale, i) => {
+                                testResult += `   ${i + 1}. **$${sale.amount}** - "${sale.policyType}"\n`;
+                            });
+                            const total = parsed.reduce((sum, sale) => sum + sale.amount, 0);
+                            testResult += `   **Total: $${total.toLocaleString('en-US', {minimumFractionDigits: 2})}**\n`;
+                        } else {
+                            testResult += `→ No sales found\n`;
                         }
                     }
                     
@@ -763,10 +794,10 @@ client.on('reconnecting', () => {
 // Start bot
 async function start() {
     console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v3.1 🚀       ║');
+    console.log('║     🚀 BIG POLICY PULSE v3.2 🚀       ║');
     console.log('║   DUAL LEADERBOARD SYSTEM              ║');
-    console.log('║   AP + Policy Rankings                 ║');
-    console.log('║   Enhanced Message Parser              ║');
+    console.log('║   Multi-Sale Detection                 ║');
+    console.log('║   Silent Mode (Emojis Only)            ║');
     console.log('╚════════════════════════════════════════╝');
     console.log('');
     console.log('⏳ Starting dual tracking system...');
