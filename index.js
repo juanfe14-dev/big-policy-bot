@@ -252,13 +252,13 @@ function generateAPLeaderboard(period = 'daily', title = '') {
         .sort(([,a], [,b]) => b.total - a.total);
 
     const periodTitle = {
-        'daily': '💵 DAILY AP LEADERBOARD',
-        'weekly': '💵 WEEKLY AP LEADERBOARD',
-        'monthly': '💵 MONTHLY AP LEADERBOARD'
+        'daily': '💵 DAILY LEADERBOARD',
+        'weekly': '💵 WEEKLY LEADERBOARD',
+        'monthly': '💵 MONTHLY LEADERBOARD'
     };
 
     const currentDate = new Date().toLocaleString('en-US', {
-        timeZone: 'America/New_York',
+        timeZone: 'America/Los_Angeles',
         month: '2-digit',
         day: '2-digit',
         year: 'numeric',
@@ -336,13 +336,13 @@ function generatePolicyLeaderboard(period = 'daily', title = '') {
         .sort(([,a], [,b]) => b.count - a.count); // Sort by COUNT not total
 
     const periodTitle = {
-        'daily': '📋 DAILY POLICY LEADERBOARD',
-        'weekly': '📋 WEEKLY POLICY LEADERBOARD',
-        'monthly': '📋 MONTHLY POLICY LEADERBOARD'
+        'daily': '📋 DAILY LEADERBOARD',
+        'weekly': '📋 WEEKLY LEADERBOARD',
+        'monthly': '📋 MONTHLY LEADERBOARD'
     };
 
     const currentDate = new Date().toLocaleString('en-US', {
-        timeZone: 'America/New_York',
+        timeZone: 'America/Los_Angeles',
         month: '2-digit',
         day: '2-digit',
         year: 'numeric',
@@ -420,11 +420,12 @@ client.once('ready', () => {
     console.log('💰 Tracking: AP (Annual Premium) & Policy Count');
     console.log('🔇 Silent mode: Only emoji reactions, no reply messages');
     console.log('📦 Multi-sale detection: Can process multiple sales per message');
+    console.log('🕐 Timezone: Pacific Standard Time (PST/PDT)');
     console.log('⏰ Scheduled times for BOTH leaderboards:');
-    console.log('   - Every 3 hours: AP & Policy rankings');
-    console.log('   - Daily 6 PM: Complete dual summary');
-    console.log('   - Sundays 6 PM: Weekly dual rankings');
-    console.log('   - Last day of month 6 PM: Monthly dual rankings');
+    console.log('   - Every 3 hours: 6am, 9am, 12pm, 3pm, 6pm, 9pm PST');
+    console.log('   - Daily 6 PM PST: Complete dual summary');
+    console.log('   - Sundays 6 PM PST: Weekly dual rankings');
+    console.log('   - Last day of month 6 PM PST: Monthly dual rankings');
     
     // AUTOMATED SCHEDULES - Now posting BOTH leaderboards
     
@@ -434,13 +435,11 @@ client.once('ready', () => {
         if (channel) {
             const hour = new Date().getHours();
             
-            await channel.send('📊 **HOURLY UPDATE**');
+            // Send AP Leaderboard (no title)
+            await channel.send({ embeds: [generateAPLeaderboard('daily')] });
             
-            // Send AP Leaderboard
-            await channel.send({ embeds: [generateAPLeaderboard('daily', `💵 ${hour}:00 AP UPDATE`)] });
-            
-            // Send Policy Leaderboard
-            await channel.send({ embeds: [generatePolicyLeaderboard('daily', `📋 ${hour}:00 POLICY UPDATE`)] });
+            // Send Policy Leaderboard (no title)
+            await channel.send({ embeds: [generatePolicyLeaderboard('daily')] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
             console.log(`📊 Both leaderboards updated - ${hour}:00`);
@@ -453,11 +452,11 @@ client.once('ready', () => {
         if (channel) {
             await channel.send('📢 **END OF DAY FINAL RANKINGS**');
             
-            const apEmbed = generateAPLeaderboard('daily', '💵 DAILY AP FINAL STANDINGS');
+            const apEmbed = generateAPLeaderboard('daily', '💵 DAILY FINAL STANDINGS');
             apEmbed.setColor(0xFFD700);
             await channel.send({ embeds: [apEmbed] });
             
-            const policyEmbed = generatePolicyLeaderboard('daily', '📋 DAILY POLICY FINAL STANDINGS');
+            const policyEmbed = generatePolicyLeaderboard('daily', '📋 DAILY FINAL STANDINGS');
             policyEmbed.setColor(0xFFD700);
             await channel.send({ embeds: [policyEmbed] });
             
@@ -472,11 +471,11 @@ client.once('ready', () => {
         if (channel) {
             await channel.send('🏆 **WEEKLY FINAL RANKINGS**');
             
-            const apEmbed = generateAPLeaderboard('weekly', '💵🏆 WEEKLY AP CHAMPIONS');
+            const apEmbed = generateAPLeaderboard('weekly', '💵 WEEKLY CHAMPIONS');
             apEmbed.setColor(0xFF6B6B);
             await channel.send({ embeds: [apEmbed] });
             
-            const policyEmbed = generatePolicyLeaderboard('weekly', '📋🏆 WEEKLY POLICY CHAMPIONS');
+            const policyEmbed = generatePolicyLeaderboard('weekly', '📋 WEEKLY CHAMPIONS');
             policyEmbed.setColor(0xFF6B6B);
             await channel.send({ embeds: [policyEmbed] });
             
@@ -495,11 +494,11 @@ client.once('ready', () => {
             if (channel) {
                 await channel.send('🎊 **MONTHLY FINAL RANKINGS - CONGRATULATIONS!** 🎊');
                 
-                const apEmbed = generateAPLeaderboard('monthly', '💵🏆🏆 MONTHLY AP CHAMPIONS 🏆🏆');
+                const apEmbed = generateAPLeaderboard('monthly', '💵 MONTHLY CHAMPIONS');
                 apEmbed.setColor(0xFFD700);
                 await channel.send({ embeds: [apEmbed] });
                 
-                const policyEmbed = generatePolicyLeaderboard('monthly', '📋🏆🏆 MONTHLY POLICY CHAMPIONS 🏆🏆');
+                const policyEmbed = generatePolicyLeaderboard('monthly', '📋 MONTHLY CHAMPIONS');
                 policyEmbed.setColor(0xFFD700);
                 await channel.send({ embeds: [policyEmbed] });
                 
@@ -627,8 +626,7 @@ client.on('messageCreate', async message => {
                 };
                 
                 if (validPeriods[period]) {
-                    // Send BOTH leaderboards
-                    await message.channel.send('📊 **CURRENT RANKINGS**');
+                    // Send BOTH leaderboards without extra title
                     await message.channel.send({ embeds: [generateAPLeaderboard(validPeriods[period])] });
                     await message.channel.send({ embeds: [generatePolicyLeaderboard(validPeriods[period])] });
                 } else {
@@ -702,8 +700,8 @@ client.on('messageCreate', async message => {
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse v3.2 - User Manual**')
-                    .setDescription('Dual Tracking System with Multi-Sale Detection\n━━━━━━━━━━━━━━━━━━━━━')
+                    .setTitle('📚 **BIG Policy Pulse v3.4 - User Manual**')
+                    .setDescription('Dual Tracking System - Pacific Time Zone\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
                             name: '💰 **RECORDING SALES**', 
@@ -722,15 +720,15 @@ client.on('messageCreate', async message => {
                             value: '✅ Sale recorded\n💰 Money earned\n🔥 Total >$1,000\n🚀 Total >$5,000\n⭐ 3+ policies in one message'
                         },
                         {
-                            name: '⏰ **AUTOMATIC REPORTS**',
-                            value: 'Both leaderboards post automatically:\n• Every 3 hours (6, 9, 12, 15, 18, 21)\n• Daily close at 6 PM\n• Weekly summary Sundays 6 PM\n• Monthly summary last day 6 PM'
+                            name: '⏰ **AUTOMATIC REPORTS (PST)**',
+                            value: 'Both leaderboards post automatically:\n• Every 3 hours (6am, 9am, 12pm, 3pm, 6pm, 9pm PST)\n• Daily close at 6 PM PST\n• Weekly summary Sundays 6 PM PST\n• Monthly summary last day 6 PM PST'
                         },
                         {
                             name: '🏆 **DUAL RANKING SYSTEM**',
                             value: '**AP Leaderboard:** Ranked by total dollar amount\n**Policy Leaderboard:** Ranked by number of policies\n\nMultiple sales per message count separately!'
                         }
                     )
-                    .setFooter({ text: '💼 BIG - Excel in both AP and Policy count!' })
+                    .setFooter({ text: '💼 BIG - All times in Pacific Time' })
                     .setTimestamp();
                 
                 await message.channel.send({ embeds: [helpEmbed] });
@@ -794,10 +792,9 @@ client.on('reconnecting', () => {
 // Start bot
 async function start() {
     console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v3.2 🚀       ║');
+    console.log('║     🚀 BIG POLICY PULSE v3.4 🚀       ║');
     console.log('║   DUAL LEADERBOARD SYSTEM              ║');
-    console.log('║   Multi-Sale Detection                 ║');
-    console.log('║   Silent Mode (Emojis Only)            ║');
+    console.log('║   Clean Interface - Pacific Time       ║');
     console.log('╚════════════════════════════════════════╝');
     console.log('');
     console.log('⏳ Starting dual tracking system...');
