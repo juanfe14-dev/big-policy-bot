@@ -12,8 +12,12 @@ const client = new Client({
     ] 
 });
 
-// Data file
-const DATA_FILE = path.join(__dirname, 'data', 'sales.json');
+// Data file - Using Railway persistent volume
+// If volume is mounted at /app/data, use it. Otherwise fallback to local
+const DATA_DIR = process.env.RAILWAY_VOLUME_MOUNT_PATH || path.join(__dirname, 'data');
+const DATA_FILE = path.join(DATA_DIR, 'sales.json');
+
+console.log(`📁 Data directory: ${DATA_DIR}`);
 
 // Data structure
 let salesData = {
@@ -31,12 +35,29 @@ let salesData = {
 // Load data
 async function loadData() {
     try {
-        await fs.mkdir(path.join(__dirname, 'data'), { recursive: true });
-        const data = await fs.readFile(DATA_FILE, 'utf8');
-        salesData = JSON.parse(data);
-        console.log('📂 Data loaded successfully');
+        // Ensure the data directory exists
+        await fs.mkdir(DATA_DIR, { recursive: true });
+        
+        // Check if file exists
+        try {
+            await fs.access(DATA_FILE);
+            const data = await fs.readFile(DATA_FILE, 'utf8');
+            salesData = JSON.parse(data);
+            console.log('📂 Data loaded successfully from:', DATA_FILE);
+            
+            // Log current data stats
+            const dailyCount = Object.keys(salesData.daily || {}).length;
+            const weeklyCount = Object.keys(salesData.weekly || {}).length;
+            const monthlyCount = Object.keys(salesData.monthly || {}).length;
+            console.log(`   📊 Current data: ${dailyCount} daily, ${weeklyCount} weekly, ${monthlyCount} monthly agents`);
+        } catch (error) {
+            console.log('📝 No data file found at:', DATA_FILE);
+            console.log('   Creating new data file...');
+            await saveData();
+        }
     } catch (error) {
-        console.log('📝 No data file found, starting fresh');
+        console.error('❌ Error in loadData:', error);
+        console.log('   Starting with fresh data...');
         await saveData();
     }
 }
@@ -44,9 +65,14 @@ async function loadData() {
 // Save data
 async function saveData() {
     try {
+        // Ensure directory exists before saving
+        await fs.mkdir(DATA_DIR, { recursive: true });
         await fs.writeFile(DATA_FILE, JSON.stringify(salesData, null, 2));
+        console.log(`💾 Data saved to: ${DATA_FILE}`);
     } catch (error) {
         console.error('❌ Error saving data:', error);
+        console.error('   File path:', DATA_FILE);
+        console.error('   Directory:', DATA_DIR);
     }
 }
 
@@ -761,7 +787,7 @@ client.on('messageCreate', async message => {
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse v3.7 - User Manual**')
+                    .setTitle('📚 **BIG Policy Pulse v3.8 - User Manual**')
                     .setDescription('Dual Tracking System - Pacific Time Zone\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
