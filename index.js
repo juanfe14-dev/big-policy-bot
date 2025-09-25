@@ -425,11 +425,12 @@ client.once('ready', () => {
     console.log('📦 Multi-sale detection: Can process multiple sales per message');
     console.log('🕐 Timezone: Pacific Standard Time (PST/PDT)');
     console.log('🌙 Quiet Hours: 12 AM - 8 AM Pacific (no automatic messages)');
+    console.log('📊 Daily Final Rankings: 11:59 PM Pacific (captures entire day)');
     console.log('⏰ Scheduled times for BOTH leaderboards:');
     console.log('   - Every 3 hours: 9am, 12pm, 3pm, 6pm, 9pm PST');
-    console.log('   - Daily 6 PM PST: Complete dual summary');
-    console.log('   - Sundays 6 PM PST: Weekly dual rankings');
-    console.log('   - Last day of month 6 PM PST: Monthly dual rankings');
+    console.log('   - Daily 11:59 PM PST: Complete dual summary');
+    console.log('   - Sundays 11:59 PM PST: Weekly dual rankings');
+    console.log('   - Last day of month 11:59 PM PST: Monthly dual rankings');
     console.log('   🌙 NO automatic messages between 12 AM - 8 AM Pacific');
     
     // ==========================================
@@ -484,9 +485,9 @@ client.once('ready', () => {
         timezone: "UTC"
     });
 
-    // 2. Daily summary at 6 PM Pacific
-    const dailyUTC = getPacificToUTC(18); // 6 PM Pacific
-    cron.schedule(`0 ${dailyUTC} * * *`, async () => {
+    // 2. Daily summary at 11:59 PM Pacific (captures entire day)
+    const dailyUTCHour = getPacificToUTC(23); // 11 PM Pacific (using 59 minutes later)
+    cron.schedule(`59 ${dailyUTCHour} * * *`, async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
             await channel.send('📢 **END OF DAY FINAL RANKINGS**');
@@ -500,16 +501,16 @@ client.once('ready', () => {
             await channel.send({ embeds: [policyEmbed] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Final daily rankings posted - 6:00 PM Pacific');
+            console.log('📊 Final daily rankings posted - 11:59 PM Pacific');
         }
     }, {
         scheduled: true,
         timezone: "UTC"
     });
 
-    // 3. Weekly summary - Sundays at 6 PM Pacific
-    const weeklyUTC = getPacificToUTC(18);
-    cron.schedule(`0 ${weeklyUTC} * * 0`, async () => {
+    // 3. Weekly summary - Sundays at 11:59 PM Pacific
+    const weeklyUTCHour = getPacificToUTC(23);
+    cron.schedule(`59 ${weeklyUTCHour} * * 0`, async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
             await channel.send('🏆 **WEEKLY FINAL RANKINGS**');
@@ -523,16 +524,16 @@ client.once('ready', () => {
             await channel.send({ embeds: [policyEmbed] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Weekly rankings posted - Sunday 6:00 PM Pacific');
+            console.log('📊 Weekly rankings posted - Sunday 11:59 PM Pacific');
         }
     }, {
         scheduled: true,
         timezone: "UTC"
     });
 
-    // 4. Monthly summary - Last day of month at 6 PM Pacific
-    const monthlyUTC = getPacificToUTC(18);
-    cron.schedule(`0 ${monthlyUTC} 28-31 * *`, async () => {
+    // 4. Monthly summary - Last day of month at 11:59 PM Pacific
+    const monthlyUTCHour = getPacificToUTC(23);
+    cron.schedule(`59 ${monthlyUTCHour} 28-31 * *`, async () => {
         const date = new Date();
         const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
         
@@ -550,7 +551,7 @@ client.once('ready', () => {
                 await channel.send({ embeds: [policyEmbed] });
                 
                 await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-                console.log('📊 Monthly rankings posted - End of month 6:00 PM Pacific');
+                console.log('📊 Monthly rankings posted - End of month 11:59 PM Pacific');
             }
         }
     }, {
@@ -760,7 +761,7 @@ client.on('messageCreate', async message => {
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse v3.6 - User Manual**')
+                    .setTitle('📚 **BIG Policy Pulse v3.7 - User Manual**')
                     .setDescription('Dual Tracking System - Pacific Time Zone\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
@@ -781,7 +782,7 @@ client.on('messageCreate', async message => {
                         },
                         {
                             name: '⏰ **AUTOMATIC REPORTS (PST/PDT)**',
-                            value: 'Both leaderboards post automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 6 PM Pacific\n• Weekly summary Sundays 6 PM Pacific\n• Monthly summary last day 6 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
+                            value: 'Both leaderboards post automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 11:59 PM Pacific\n• Weekly summary Sundays 11:59 PM Pacific\n• Monthly summary last day 11:59 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
                         },
                         {
                             name: '🏆 **DUAL RANKING SYSTEM**',
