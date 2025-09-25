@@ -57,12 +57,15 @@ function getWeekNumber(date) {
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
 }
 
-// Check period resets
+// Check period resets - Now timezone aware
 function checkResets() {
+    // Get current Pacific Time
     const now = new Date();
-    const currentDay = now.toDateString();
-    const currentWeek = getWeekNumber(now);
-    const currentMonth = now.getMonth();
+    const pacificTime = new Date(now.toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
+    
+    const currentDay = pacificTime.toDateString();
+    const currentWeek = getWeekNumber(pacificTime);
+    const currentMonth = pacificTime.getMonth();
 
     let wasReset = false;
 
@@ -421,33 +424,69 @@ client.once('ready', () => {
     console.log('🔇 Silent mode: Only emoji reactions, no reply messages');
     console.log('📦 Multi-sale detection: Can process multiple sales per message');
     console.log('🕐 Timezone: Pacific Standard Time (PST/PDT)');
+    console.log('🌙 Quiet Hours: 12 AM - 8 AM Pacific (no automatic messages)');
     console.log('⏰ Scheduled times for BOTH leaderboards:');
-    console.log('   - Every 3 hours: 6am, 9am, 12pm, 3pm, 6pm, 9pm PST');
+    console.log('   - Every 3 hours: 9am, 12pm, 3pm, 6pm, 9pm PST');
     console.log('   - Daily 6 PM PST: Complete dual summary');
     console.log('   - Sundays 6 PM PST: Weekly dual rankings');
     console.log('   - Last day of month 6 PM PST: Monthly dual rankings');
+    console.log('   🌙 NO automatic messages between 12 AM - 8 AM Pacific');
     
-    // AUTOMATED SCHEDULES - Now posting BOTH leaderboards
+    // ==========================================
+    // AUTOMATED SCHEDULES - TIMEZONE CORRECTED
+    // ==========================================
+    
+    // IMPORTANT: Cron runs in UTC. We need to adjust for Pacific Time
+    // PST = UTC-8 (Nov-Mar), PDT = UTC-7 (Mar-Nov)
+    // We'll use a function to determine if we're in DST
+    
+    function isDST(date = new Date()) {
+        const jan = new Date(date.getFullYear(), 0, 1).getTimezoneOffset();
+        const jul = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
+        return Math.max(jan, jul) !== date.getTimezoneOffset();
+    }
+    
+    // Calculate UTC hours for Pacific Time
+    function getPacificToUTC(pacificHour) {
+        // If we're in DST (PDT), add 7 hours, otherwise add 8 hours (PST)
+        const offset = isDST() ? 7 : 8;
+        const utcHour = (pacificHour + offset) % 24;
+        return utcHour;
+    }
     
     // 1. Every 3 hours - Post BOTH leaderboards
-    cron.schedule('0 6,9,12,15,18,21 * * *', async () => {
+    // Pacific times: 9am, 12pm, 3pm, 6pm, 9pm (NO 6am - respecting quiet hours)
+    // Convert to UTC based on current DST status
+    const threeHourlyPacific = [9, 12, 15, 18, 21];  // Removed 6am
+    const threeHourlyUTC = threeHourlyPacific.map(hour => getPacificToUTC(hour));
+    const cronSchedule3Hours = `0 ${threeHourlyUTC.join(',')} * * *`;
+    
+    cron.schedule(cronSchedule3Hours, async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
-            const hour = new Date().getHours();
+            const pacificTime = new Date().toLocaleString("en-US", {
+                timeZone: "America/Los_Angeles",
+                hour: '2-digit',
+                hour12: true
+            });
             
-            // Send AP Leaderboard (no title)
+            // Send AP Leaderboard
             await channel.send({ embeds: [generateAPLeaderboard('daily')] });
             
-            // Send Policy Leaderboard (no title)
+            // Send Policy Leaderboard
             await channel.send({ embeds: [generatePolicyLeaderboard('daily')] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log(`📊 Both leaderboards updated - ${hour}:00`);
+            console.log(`📊 Both leaderboards updated - ${pacificTime} PST/PDT`);
         }
+    }, {
+        scheduled: true,
+        timezone: "UTC"
     });
 
-    // 2. Daily summary at 6 PM - BOTH leaderboards
-    cron.schedule('0 18 * * *', async () => {
+    // 2. Daily summary at 6 PM Pacific
+    const dailyUTC = getPacificToUTC(18); // 6 PM Pacific
+    cron.schedule(`0 ${dailyUTC} * * *`, async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
             await channel.send('📢 **END OF DAY FINAL RANKINGS**');
@@ -461,12 +500,16 @@ client.once('ready', () => {
             await channel.send({ embeds: [policyEmbed] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Final daily rankings posted - 18:00');
+            console.log('📊 Final daily rankings posted - 6:00 PM Pacific');
         }
+    }, {
+        scheduled: true,
+        timezone: "UTC"
     });
 
-    // 3. Weekly summary - Sundays at 6 PM
-    cron.schedule('0 18 * * 0', async () => {
+    // 3. Weekly summary - Sundays at 6 PM Pacific
+    const weeklyUTC = getPacificToUTC(18);
+    cron.schedule(`0 ${weeklyUTC} * * 0`, async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
             await channel.send('🏆 **WEEKLY FINAL RANKINGS**');
@@ -480,12 +523,16 @@ client.once('ready', () => {
             await channel.send({ embeds: [policyEmbed] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Weekly rankings posted - Sunday 18:00');
+            console.log('📊 Weekly rankings posted - Sunday 6:00 PM Pacific');
         }
+    }, {
+        scheduled: true,
+        timezone: "UTC"
     });
 
-    // 4. Monthly summary - Last day of month at 6 PM
-    cron.schedule('0 18 28-31 * *', async () => {
+    // 4. Monthly summary - Last day of month at 6 PM Pacific
+    const monthlyUTC = getPacificToUTC(18);
+    cron.schedule(`0 ${monthlyUTC} 28-31 * *`, async () => {
         const date = new Date();
         const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
         
@@ -503,10 +550,23 @@ client.once('ready', () => {
                 await channel.send({ embeds: [policyEmbed] });
                 
                 await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-                console.log('📊 Monthly rankings posted - End of month 18:00');
+                console.log('📊 Monthly rankings posted - End of month 6:00 PM Pacific');
             }
         }
+    }, {
+        scheduled: true,
+        timezone: "UTC"
     });
+    
+    // Display current timezone info
+    console.log('\n🌍 TIMEZONE INFORMATION:');
+    const now = new Date();
+    const utcTime = now.toLocaleString('en-US', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', hour12: true });
+    const pacificTime = now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles', hour: '2-digit', minute: '2-digit', hour12: true });
+    console.log(`   Current UTC time: ${utcTime}`);
+    console.log(`   Current Pacific time: ${pacificTime}`);
+    console.log(`   DST Status: ${isDST() ? 'PDT (UTC-7)' : 'PST (UTC-8)'}`);
+    console.log(`   Cron schedules adjusted for Pacific Time ✅`);
 });
 
 // Handle messages
@@ -700,7 +760,7 @@ client.on('messageCreate', async message => {
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse v3.4 - User Manual**')
+                    .setTitle('📚 **BIG Policy Pulse v3.6 - User Manual**')
                     .setDescription('Dual Tracking System - Pacific Time Zone\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
@@ -720,8 +780,8 @@ client.on('messageCreate', async message => {
                             value: '✅ Sale recorded\n💰 Money earned\n🔥 Total >$1,000\n🚀 Total >$5,000\n⭐ 3+ policies in one message'
                         },
                         {
-                            name: '⏰ **AUTOMATIC REPORTS (PST)**',
-                            value: 'Both leaderboards post automatically:\n• Every 3 hours (6am, 9am, 12pm, 3pm, 6pm, 9pm PST)\n• Daily close at 6 PM PST\n• Weekly summary Sundays 6 PM PST\n• Monthly summary last day 6 PM PST'
+                            name: '⏰ **AUTOMATIC REPORTS (PST/PDT)**',
+                            value: 'Both leaderboards post automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 6 PM Pacific\n• Weekly summary Sundays 6 PM Pacific\n• Monthly summary last day 6 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
                         },
                         {
                             name: '🏆 **DUAL RANKING SYSTEM**',
@@ -736,6 +796,37 @@ client.on('messageCreate', async message => {
 
             case 'ping':
                 await message.reply('🏓 Pong! Bot is working correctly.');
+                break;
+
+            case 'timezone':
+            case 'tz':
+                // Command to check current timezone status
+                const now = new Date();
+                const utcTime = now.toLocaleString('en-US', { 
+                    timeZone: 'UTC', 
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    hour12: true 
+                });
+                const pacificTime = now.toLocaleString('en-US', { 
+                    timeZone: 'America/Los_Angeles', 
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    hour12: true 
+                });
+                
+                const isDSTNow = isDST();
+                const tzEmbed = new EmbedBuilder()
+                    .setColor(0x00FF00)
+                    .setTitle('🌍 Timezone Information')
+                    .setDescription(`**Pacific Time:** ${pacificTime}\n**UTC Time:** ${utcTime}\n**Current Timezone:** ${isDSTNow ? 'PDT (UTC-7)' : 'PST (UTC-8)'}\n\nAll scheduled posts run in Pacific Time!`)
+                    .setTimestamp();
+                
+                await message.channel.send({ embeds: [tzEmbed] });
                 break;
 
             case 'test':
@@ -772,6 +863,13 @@ client.on('messageCreate', async message => {
     }
 });
 
+// Helper function for DST check (also define it globally for reuse)
+function isDST(date = new Date()) {
+    const jan = new Date(date.getFullYear(), 0, 1).getTimezoneOffset();
+    const jul = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
+    return Math.max(jan, jul) !== date.getTimezoneOffset();
+}
+
 // Error handling
 client.on('error', error => {
     console.error('❌ Bot error:', error);
@@ -792,9 +890,9 @@ client.on('reconnecting', () => {
 // Start bot
 async function start() {
     console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v3.4 🚀       ║');
-    console.log('║   DUAL LEADERBOARD SYSTEM              ║');
-    console.log('║   Clean Interface - Pacific Time       ║');
+    console.log('║     🚀 BIG POLICY PULSE v3.6 🚀       ║');
+    console.log('║   TIMEZONE-CORRECTED + QUIET HOURS     ║');
+    console.log('║   No messages 12 AM - 8 AM Pacific     ║');
     console.log('╚════════════════════════════════════════╝');
     console.log('');
     console.log('⏳ Starting dual tracking system...');
