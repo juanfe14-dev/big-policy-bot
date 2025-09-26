@@ -25,6 +25,9 @@ let salesData = {
     weekly: {},
     monthly: {},
     allTime: {},
+    dailySnapshot: {}, // Snapshot for final daily report
+    weeklySnapshot: {}, // Snapshot for final weekly report
+    monthlySnapshot: {}, // Snapshot for final monthly report
     lastReset: {
         daily: new Date().toDateString(),
         weekly: getWeekNumber(new Date()),
@@ -83,7 +86,7 @@ function getWeekNumber(date) {
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
 }
 
-// Check period resets - Now timezone aware
+// Check period resets - Now timezone aware and saves snapshots
 function checkResets() {
     // Get current Pacific Time
     const now = new Date();
@@ -95,25 +98,34 @@ function checkResets() {
 
     let wasReset = false;
 
+    // Daily reset - Save snapshot before reset
     if (salesData.lastReset.daily !== currentDay) {
+        // Save snapshot of yesterday's data before reset
+        salesData.dailySnapshot = JSON.parse(JSON.stringify(salesData.daily));
         salesData.daily = {};
         salesData.lastReset.daily = currentDay;
         wasReset = true;
-        console.log('🔄 Daily reset executed');
+        console.log('🔄 Daily reset executed - Snapshot saved');
     }
 
+    // Weekly reset - Save snapshot before reset
     if (salesData.lastReset.weekly !== currentWeek) {
+        // Save snapshot of last week's data before reset
+        salesData.weeklySnapshot = JSON.parse(JSON.stringify(salesData.weekly));
         salesData.weekly = {};
         salesData.lastReset.weekly = currentWeek;
         wasReset = true;
-        console.log('🔄 Weekly reset executed');
+        console.log('🔄 Weekly reset executed - Snapshot saved');
     }
 
+    // Monthly reset - Save snapshot before reset
     if (salesData.lastReset.monthly !== currentMonth) {
+        // Save snapshot of last month's data before reset
+        salesData.monthlySnapshot = JSON.parse(JSON.stringify(salesData.monthly));
         salesData.monthly = {};
         salesData.lastReset.monthly = currentMonth;
         wasReset = true;
-        console.log('🔄 Monthly reset executed');
+        console.log('🔄 Monthly reset executed - Snapshot saved');
     }
 
     if (wasReset) {
@@ -273,8 +285,11 @@ function addSale(userId, username, amount, policyType) {
 }
 
 // Generate AP Leaderboard (sorted by total amount)
-function generateAPLeaderboard(period = 'daily', title = '') {
-    checkResets();
+function generateAPLeaderboard(period = 'daily', title = '', skipResetCheck = false) {
+    // Only check resets if not generating a final report
+    if (!skipResetCheck) {
+        checkResets();
+    }
     
     const data = salesData[period];
     const sorted = Object.entries(data)
@@ -357,8 +372,11 @@ function generateAPLeaderboard(period = 'daily', title = '') {
 }
 
 // Generate Policy Count Leaderboard (sorted by number of policies)
-function generatePolicyLeaderboard(period = 'daily', title = '') {
-    checkResets();
+function generatePolicyLeaderboard(period = 'daily', title = '', skipResetCheck = false) {
+    // Only check resets if not generating a final report
+    if (!skipResetCheck) {
+        checkResets();
+    }
     
     const data = salesData[period];
     const sorted = Object.entries(data)
@@ -518,16 +536,17 @@ client.once('ready', () => {
         if (channel) {
             await channel.send('📢 **END OF DAY FINAL RANKINGS**');
             
-            const apEmbed = generateAPLeaderboard('daily', '💵 DAILY FINAL STANDINGS');
+            // Skip reset check for final reports (true parameter)
+            const apEmbed = generateAPLeaderboard('daily', '💵 DAILY FINAL STANDINGS', true);
             apEmbed.setColor(0xFFD700);
             await channel.send({ embeds: [apEmbed] });
             
-            const policyEmbed = generatePolicyLeaderboard('daily', '📋 DAILY FINAL STANDINGS');
+            const policyEmbed = generatePolicyLeaderboard('daily', '📋 DAILY FINAL STANDINGS', true);
             policyEmbed.setColor(0xFFD700);
             await channel.send({ embeds: [policyEmbed] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Final daily rankings posted - 11:59 PM Pacific');
+            console.log('📊 Final daily rankings posted - 11:59 PM Pacific (no reset)');
         }
     }, {
         scheduled: true,
@@ -541,16 +560,17 @@ client.once('ready', () => {
         if (channel) {
             await channel.send('🏆 **WEEKLY FINAL RANKINGS**');
             
-            const apEmbed = generateAPLeaderboard('weekly', '💵 WEEKLY CHAMPIONS');
+            // Skip reset check for final reports (true parameter)
+            const apEmbed = generateAPLeaderboard('weekly', '💵 WEEKLY CHAMPIONS', true);
             apEmbed.setColor(0xFF6B6B);
             await channel.send({ embeds: [apEmbed] });
             
-            const policyEmbed = generatePolicyLeaderboard('weekly', '📋 WEEKLY CHAMPIONS');
+            const policyEmbed = generatePolicyLeaderboard('weekly', '📋 WEEKLY CHAMPIONS', true);
             policyEmbed.setColor(0xFF6B6B);
             await channel.send({ embeds: [policyEmbed] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Weekly rankings posted - Sunday 11:59 PM Pacific');
+            console.log('📊 Weekly rankings posted - Sunday 11:59 PM Pacific (no reset)');
         }
     }, {
         scheduled: true,
@@ -568,16 +588,17 @@ client.once('ready', () => {
             if (channel) {
                 await channel.send('🎊 **MONTHLY FINAL RANKINGS - CONGRATULATIONS!** 🎊');
                 
-                const apEmbed = generateAPLeaderboard('monthly', '💵 MONTHLY CHAMPIONS');
+                // Skip reset check for final reports (true parameter)
+                const apEmbed = generateAPLeaderboard('monthly', '💵 MONTHLY CHAMPIONS', true);
                 apEmbed.setColor(0xFFD700);
                 await channel.send({ embeds: [apEmbed] });
                 
-                const policyEmbed = generatePolicyLeaderboard('monthly', '📋 MONTHLY CHAMPIONS');
+                const policyEmbed = generatePolicyLeaderboard('monthly', '📋 MONTHLY CHAMPIONS', true);
                 policyEmbed.setColor(0xFFD700);
                 await channel.send({ embeds: [policyEmbed] });
                 
                 await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-                console.log('📊 Monthly rankings posted - End of month 11:59 PM Pacific');
+                console.log('📊 Monthly rankings posted - End of month 11:59 PM Pacific (no reset)');
             }
         }
     }, {
@@ -787,7 +808,7 @@ client.on('messageCreate', async message => {
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse v3.8 - User Manual**')
+                    .setTitle('📚 **BIG Policy Pulse v3.9 - User Manual**')
                     .setDescription('Dual Tracking System - Pacific Time Zone\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
