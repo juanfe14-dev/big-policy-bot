@@ -331,6 +331,154 @@ function generateAPLeaderboard(period = 'daily', title = '', skipResetCheck = fa
             const medal = index === 0 ? '🥇 **AP LEADER**' : index === 1 ? '🥈 **2nd Place**' : '🥉 **3rd Place**';
             topDescription += `${medal}\n`;
             topDescription += `👤 **${data.username}**\n`;
+            topDescription += `💵 **${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})} AP**\n`;
+            topDescription += `📊 *${data.count} policies*\n\n`;
+        });
+        
+        embed.addFields({
+            name: '🌟 **TOP AP PRODUCERS**',
+            value: topDescription || 'No data'
+        });
+
+        // Rest of ranking
+        if (sorted.length > 3) {
+            let restDescription = '';
+            const rest = sorted.slice(3, 10);
+            
+            rest.forEach(([userId, data], index) => {
+                restDescription += `**${index + 4}.** ${data.username} - **${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})}** (${data.count})\n`;
+            });
+            
+            if (restDescription) {
+                embed.addFields({
+                    name: '📈 **Other Agents**',
+                    value: restDescription
+                });
+            }
+        }
+
+        // Statistics
+        const totalAP = Object.values(data).reduce((sum, user) => sum + user.total, 0);
+        const totalPolicies = Object.values(data).reduce((sum, user) => sum + user.count, 0);
+        const averageAP = totalPolicies > 0 ? totalAP / totalPolicies : 0;
+
+        embed.addFields({
+            name: '💼 **AP SUMMARY**',
+            value: `**Total AP:** ${totalAP.toLocaleString('en-US', {minimumFractionDigits: 2})}\n**Average AP:** ${averageAP.toLocaleString('en-US', {minimumFractionDigits: 2})}\n**Total Policies:** ${totalPolicies}`
+        });
+    }
+
+    return embed;
+}
+
+// Generate AP Leaderboard from specific data (for final reports)
+function generateAPLeaderboardFromData(data, title) {
+    const sorted = Object.entries(data)
+        .sort(([,a], [,b]) => b.total - a.total);
+
+    const currentDate = new Date().toLocaleString('en-US', {
+        timeZone: 'America/Los_Angeles',
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    const embed = new EmbedBuilder()
+        .setColor(0x00FF00)
+        .setTitle(title)
+        .setDescription(`💰 **Ranked by Annual Premium (AP)**\n📍 Date: ${currentDate}\n━━━━━━━━━━━━━━━━━━━━━`)
+        .setTimestamp()
+        .setFooter({ text: '💼 BIG - Annual Premium Rankings' });
+
+    if (sorted.length === 0) {
+        embed.addFields({
+            name: '📝 No Records',
+            value: 'No sales recorded for this period'
+        });
+    } else {
+        let topDescription = '';
+        const top3 = sorted.slice(0, 3);
+        
+        top3.forEach(([userId, data], index) => {
+            const medal = index === 0 ? '🥇 **AP LEADER**' : index === 1 ? '🥈 **2nd Place**' : '🥉 **3rd Place**';
+            topDescription += `${medal}\n`;
+            topDescription += `👤 **${data.username}**\n`;
+            topDescription += `💵 **${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})} AP**\n`;
+            topDescription += `📊 *${data.count} policies*\n\n`;
+        });
+        
+        embed.addFields({
+            name: '🌟 **TOP AP PRODUCERS**',
+            value: topDescription || 'No data'
+        });
+
+        if (sorted.length > 3) {
+            let restDescription = '';
+            const rest = sorted.slice(3, 10);
+            
+            rest.forEach(([userId, data], index) => {
+                restDescription += `**${index + 4}.** ${data.username} - **${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})}** (${data.count})\n`;
+            });
+            
+            if (restDescription) {
+                embed.addFields({
+                    name: '📈 **Other Agents**',
+                    value: restDescription
+                });
+            }
+        }
+
+        const totalAP = Object.values(data).reduce((sum, user) => sum + user.total, 0);
+        const totalPolicies = Object.values(data).reduce((sum, user) => sum + user.count, 0);
+        const averageAP = totalPolicies > 0 ? totalAP / totalPolicies : 0;
+
+        embed.addFields({
+            name: '💼 **AP SUMMARY**',
+            value: `**Total AP:** ${totalAP.toLocaleString('en-US', {minimumFractionDigits: 2})}\n**Average AP:** ${averageAP.toLocaleString('en-US', {minimumFractionDigits: 2})}\n**Total Policies:** ${totalPolicies}`
+        });
+    }
+
+    return embed;
+}
+
+    const periodTitle = {
+        'daily': '💵 DAILY LEADERBOARD',
+        'weekly': '💵 WEEKLY LEADERBOARD',
+        'monthly': '💵 MONTHLY LEADERBOARD'
+    };
+
+    const currentDate = new Date().toLocaleString('en-US', {
+        timeZone: 'America/Los_Angeles',
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    const embed = new EmbedBuilder()
+        .setColor(0x00FF00) // Green for AP
+        .setTitle(title || periodTitle[period])
+        .setDescription(`💰 **Ranked by Annual Premium (AP)**\n📍 Date: ${currentDate}\n━━━━━━━━━━━━━━━━━━━━━`)
+        .setTimestamp()
+        .setFooter({ text: '💼 BIG - Annual Premium Rankings' });
+
+    if (sorted.length === 0) {
+        embed.addFields({
+            name: '📝 No Records',
+            value: 'No sales recorded for this period'
+        });
+    } else {
+        // Top 3 AP leaders
+        let topDescription = '';
+        const top3 = sorted.slice(0, 3);
+        
+        top3.forEach(([userId, data], index) => {
+            const medal = index === 0 ? '🥇 **AP LEADER**' : index === 1 ? '🥈 **2nd Place**' : '🥉 **3rd Place**';
+            topDescription += `${medal}\n`;
+            topDescription += `👤 **${data.username}**\n`;
             topDescription += `💵 **$${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})} AP**\n`;
             topDescription += `📊 *${data.count} policies*\n\n`;
         });
@@ -419,6 +567,154 @@ function generatePolicyLeaderboard(period = 'daily', title = '', skipResetCheck 
             topDescription += `${medal}\n`;
             topDescription += `👤 **${data.username}**\n`;
             topDescription += `📋 **${data.count} Policies**\n`;
+            topDescription += `💰 *${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})} total AP*\n\n`;
+        });
+        
+        embed.addFields({
+            name: '🌟 **TOP POLICY WRITERS**',
+            value: topDescription || 'No data'
+        });
+
+        // Rest of ranking
+        if (sorted.length > 3) {
+            let restDescription = '';
+            const rest = sorted.slice(3, 10);
+            
+            rest.forEach(([userId, data], index) => {
+                restDescription += `**${index + 4}.** ${data.username} - **${data.count} policies** (${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})})\n`;
+            });
+            
+            if (restDescription) {
+                embed.addFields({
+                    name: '📈 **Other Agents**',
+                    value: restDescription
+                });
+            }
+        }
+
+        // Statistics
+        const totalPolicies = Object.values(data).reduce((sum, user) => sum + user.count, 0);
+        const activeAgents = sorted.length;
+        const avgPoliciesPerAgent = activeAgents > 0 ? totalPolicies / activeAgents : 0;
+
+        embed.addFields({
+            name: '📊 **POLICY SUMMARY**',
+            value: `**Total Policies:** ${totalPolicies}\n**Active Agents:** ${activeAgents}\n**Avg per Agent:** ${avgPoliciesPerAgent.toFixed(1)}`
+        });
+    }
+
+    return embed;
+}
+
+// Generate Policy Leaderboard from specific data (for final reports)
+function generatePolicyLeaderboardFromData(data, title) {
+    const sorted = Object.entries(data)
+        .sort(([,a], [,b]) => b.count - a.count);
+
+    const currentDate = new Date().toLocaleString('en-US', {
+        timeZone: 'America/Los_Angeles',
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    const embed = new EmbedBuilder()
+        .setColor(0x0099FF)
+        .setTitle(title)
+        .setDescription(`📋 **Ranked by Number of Policies**\n📍 Date: ${currentDate}\n━━━━━━━━━━━━━━━━━━━━━`)
+        .setTimestamp()
+        .setFooter({ text: '💼 BIG - Policy Count Rankings' });
+
+    if (sorted.length === 0) {
+        embed.addFields({
+            name: '📝 No Records',
+            value: 'No policies recorded for this period'
+        });
+    } else {
+        let topDescription = '';
+        const top3 = sorted.slice(0, 3);
+        
+        top3.forEach(([userId, data], index) => {
+            const medal = index === 0 ? '🥇 **POLICY LEADER**' : index === 1 ? '🥈 **2nd Place**' : '🥉 **3rd Place**';
+            topDescription += `${medal}\n`;
+            topDescription += `👤 **${data.username}**\n`;
+            topDescription += `📋 **${data.count} Policies**\n`;
+            topDescription += `💰 *${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})} total AP*\n\n`;
+        });
+        
+        embed.addFields({
+            name: '🌟 **TOP POLICY WRITERS**',
+            value: topDescription || 'No data'
+        });
+
+        if (sorted.length > 3) {
+            let restDescription = '';
+            const rest = sorted.slice(3, 10);
+            
+            rest.forEach(([userId, data], index) => {
+                restDescription += `**${index + 4}.** ${data.username} - **${data.count} policies** (${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})})\n`;
+            });
+            
+            if (restDescription) {
+                embed.addFields({
+                    name: '📈 **Other Agents**',
+                    value: restDescription
+                });
+            }
+        }
+
+        const totalPolicies = Object.values(data).reduce((sum, user) => sum + user.count, 0);
+        const activeAgents = sorted.length;
+        const avgPoliciesPerAgent = activeAgents > 0 ? totalPolicies / activeAgents : 0;
+
+        embed.addFields({
+            name: '📊 **POLICY SUMMARY**',
+            value: `**Total Policies:** ${totalPolicies}\n**Active Agents:** ${activeAgents}\n**Avg per Agent:** ${avgPoliciesPerAgent.toFixed(1)}`
+        });
+    }
+
+    return embed;
+}
+
+    const periodTitle = {
+        'daily': '📋 DAILY LEADERBOARD',
+        'weekly': '📋 WEEKLY LEADERBOARD',
+        'monthly': '📋 MONTHLY LEADERBOARD'
+    };
+
+    const currentDate = new Date().toLocaleString('en-US', {
+        timeZone: 'America/Los_Angeles',
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    const embed = new EmbedBuilder()
+        .setColor(0x0099FF) // Blue for Policies
+        .setTitle(title || periodTitle[period])
+        .setDescription(`📋 **Ranked by Number of Policies**\n📍 Date: ${currentDate}\n━━━━━━━━━━━━━━━━━━━━━`)
+        .setTimestamp()
+        .setFooter({ text: '💼 BIG - Policy Count Rankings' });
+
+    if (sorted.length === 0) {
+        embed.addFields({
+            name: '📝 No Records',
+            value: 'No policies recorded for this period'
+        });
+    } else {
+        // Top 3 policy leaders
+        let topDescription = '';
+        const top3 = sorted.slice(0, 3);
+        
+        top3.forEach(([userId, data], index) => {
+            const medal = index === 0 ? '🥇 **POLICY LEADER**' : index === 1 ? '🥈 **2nd Place**' : '🥉 **3rd Place**';
+            topDescription += `${medal}\n`;
+            topDescription += `👤 **${data.username}**\n`;
+            topDescription += `📋 **${data.count} Policies**\n`;
             topDescription += `💰 *$${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})} total AP*\n\n`;
         });
         
@@ -469,12 +765,12 @@ client.once('ready', () => {
     console.log('📦 Multi-sale detection: Can process multiple sales per message');
     console.log('🕐 Timezone: Pacific Standard Time (PST/PDT)');
     console.log('🌙 Quiet Hours: 12 AM - 8 AM Pacific (no automatic messages)');
-    console.log('📊 Daily Final Rankings: 11:59 PM Pacific (captures entire day)');
+    console.log('📊 Daily Final Rankings: 11:58 PM Pacific (preserves full day data)');
     console.log('⏰ Scheduled times for BOTH leaderboards:');
     console.log('   - Every 3 hours: 9am, 12pm, 3pm, 6pm, 9pm PST');
-    console.log('   - Daily 11:59 PM PST: Complete dual summary');
-    console.log('   - Sundays 11:59 PM PST: Weekly dual rankings');
-    console.log('   - Last day of month 11:59 PM PST: Monthly dual rankings');
+    console.log('   - Daily 11:58 PM PST: Complete dual summary');
+    console.log('   - Sundays 11:58 PM PST: Weekly dual rankings');
+    console.log('   - Last day of month 11:58 PM PST: Monthly dual rankings');
     console.log('   🌙 NO automatic messages between 12 AM - 8 AM Pacific');
     
     // ==========================================
@@ -529,76 +825,85 @@ client.once('ready', () => {
         timezone: "UTC"
     });
 
-    // 2. Daily summary at 11:59 PM Pacific (captures entire day)
-    const dailyUTCHour = getPacificToUTC(23); // 11 PM Pacific (using 59 minutes later)
-    cron.schedule(`59 ${dailyUTCHour} * * *`, async () => {
+    // 2. Daily summary at 11:58 PM Pacific (2 minutes before midnight to avoid date issues)
+    const dailyUTCHour = getPacificToUTC(23); // 11 PM Pacific
+    cron.schedule(`58 ${dailyUTCHour} * * *`, async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
+            // Create a copy of current data BEFORE any reset
+            const dailyDataCopy = JSON.parse(JSON.stringify(salesData.daily));
+            
             await channel.send('📢 **END OF DAY FINAL RANKINGS**');
             
-            // Skip reset check for final reports (true parameter)
-            const apEmbed = generateAPLeaderboard('daily', '💵 DAILY FINAL STANDINGS', true);
+            // Generate leaderboards using the copied data directly
+            const apEmbed = generateAPLeaderboardFromData(dailyDataCopy, '💵 DAILY FINAL STANDINGS - COMPLETE');
             apEmbed.setColor(0xFFD700);
             await channel.send({ embeds: [apEmbed] });
             
-            const policyEmbed = generatePolicyLeaderboard('daily', '📋 DAILY FINAL STANDINGS', true);
+            const policyEmbed = generatePolicyLeaderboardFromData(dailyDataCopy, '📋 DAILY FINAL STANDINGS - COMPLETE');
             policyEmbed.setColor(0xFFD700);
             await channel.send({ embeds: [policyEmbed] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Final daily rankings posted - 11:59 PM Pacific (no reset)');
+            console.log('📊 Final daily rankings posted - 11:58 PM Pacific with preserved data');
         }
     }, {
         scheduled: true,
         timezone: "UTC"
     });
 
-    // 3. Weekly summary - Sundays at 11:59 PM Pacific
+    // 3. Weekly summary - Sundays at 11:58 PM Pacific
     const weeklyUTCHour = getPacificToUTC(23);
-    cron.schedule(`59 ${weeklyUTCHour} * * 0`, async () => {
+    cron.schedule(`58 ${weeklyUTCHour} * * 0`, async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
+            // Create a copy of current data BEFORE any reset
+            const weeklyDataCopy = JSON.parse(JSON.stringify(salesData.weekly));
+            
             await channel.send('🏆 **WEEKLY FINAL RANKINGS**');
             
-            // Skip reset check for final reports (true parameter)
-            const apEmbed = generateAPLeaderboard('weekly', '💵 WEEKLY CHAMPIONS', true);
+            // Generate leaderboards using the copied data directly
+            const apEmbed = generateAPLeaderboardFromData(weeklyDataCopy, '💵 WEEKLY CHAMPIONS - COMPLETE WEEK');
             apEmbed.setColor(0xFF6B6B);
             await channel.send({ embeds: [apEmbed] });
             
-            const policyEmbed = generatePolicyLeaderboard('weekly', '📋 WEEKLY CHAMPIONS', true);
+            const policyEmbed = generatePolicyLeaderboardFromData(weeklyDataCopy, '📋 WEEKLY CHAMPIONS - COMPLETE WEEK');
             policyEmbed.setColor(0xFF6B6B);
             await channel.send({ embeds: [policyEmbed] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Weekly rankings posted - Sunday 11:59 PM Pacific (no reset)');
+            console.log('📊 Weekly rankings posted - Sunday 11:58 PM Pacific with preserved data');
         }
     }, {
         scheduled: true,
         timezone: "UTC"
     });
 
-    // 4. Monthly summary - Last day of month at 11:59 PM Pacific
+    // 4. Monthly summary - Last day of month at 11:58 PM Pacific
     const monthlyUTCHour = getPacificToUTC(23);
-    cron.schedule(`59 ${monthlyUTCHour} 28-31 * *`, async () => {
+    cron.schedule(`58 ${monthlyUTCHour} 28-31 * *`, async () => {
         const date = new Date();
         const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
         
         if (date.getDate() === lastDay) {
             const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
             if (channel) {
+                // Create a copy of current data BEFORE any reset
+                const monthlyDataCopy = JSON.parse(JSON.stringify(salesData.monthly));
+                
                 await channel.send('🎊 **MONTHLY FINAL RANKINGS - CONGRATULATIONS!** 🎊');
                 
-                // Skip reset check for final reports (true parameter)
-                const apEmbed = generateAPLeaderboard('monthly', '💵 MONTHLY CHAMPIONS', true);
+                // Generate leaderboards using the copied data directly
+                const apEmbed = generateAPLeaderboardFromData(monthlyDataCopy, '💵 MONTHLY CHAMPIONS - COMPLETE MONTH');
                 apEmbed.setColor(0xFFD700);
                 await channel.send({ embeds: [apEmbed] });
                 
-                const policyEmbed = generatePolicyLeaderboard('monthly', '📋 MONTHLY CHAMPIONS', true);
+                const policyEmbed = generatePolicyLeaderboardFromData(monthlyDataCopy, '📋 MONTHLY CHAMPIONS - COMPLETE MONTH');
                 policyEmbed.setColor(0xFFD700);
                 await channel.send({ embeds: [policyEmbed] });
                 
                 await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-                console.log('📊 Monthly rankings posted - End of month 11:59 PM Pacific (no reset)');
+                console.log('📊 Monthly rankings posted - End of month 11:58 PM Pacific with preserved data');
             }
         }
     }, {
@@ -808,7 +1113,7 @@ client.on('messageCreate', async message => {
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse v3.9 - User Manual**')
+                    .setTitle('📚 **BIG Policy Pulse v4.0 - User Manual**')
                     .setDescription('Dual Tracking System - Pacific Time Zone\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
@@ -829,7 +1134,7 @@ client.on('messageCreate', async message => {
                         },
                         {
                             name: '⏰ **AUTOMATIC REPORTS (PST/PDT)**',
-                            value: 'Both leaderboards post automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 11:59 PM Pacific\n• Weekly summary Sundays 11:59 PM Pacific\n• Monthly summary last day 11:59 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
+                            value: 'Both leaderboards post automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 11:58 PM Pacific\n• Weekly summary Sundays 11:58 PM Pacific\n• Monthly summary last day 11:58 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
                         },
                         {
                             name: '🏆 **DUAL RANKING SYSTEM**',
