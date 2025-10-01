@@ -138,8 +138,8 @@ function parseMultipleSales(message) {
     // Handle multi-line messages - join all lines
     const fullMessage = message.replace(/\n/g, ' ');
     
-    // Find ALL dollar amounts in the message
-    const pattern = /\$\s*([\d,]+(?:\.\d{2})?)/g;
+    // Find ALL dollar amounts in the message (now supports both $123 and 123$ formats)
+    const pattern = /(?:\$\s*([\d,]+(?:\.\d{2})?))|([\d,]+(?:\.\d{2})?)\s*\$/g;
     const matches = [...fullMessage.matchAll(pattern)];
     
     if (!matches || matches.length === 0) {
@@ -150,8 +150,9 @@ function parseMultipleSales(message) {
     
     // Process each dollar amount found
     matches.forEach((match, index) => {
-        // Extract amount
-        const amount = parseFloat(match[1].replace(/,/g, ''));
+        // Extract amount (could be in match[1] for $123 or match[2] for 123$)
+        const amountStr = match[1] || match[2];
+        const amount = parseFloat(amountStr.replace(/,/g, ''));
         
         // Get text between this dollar amount and the next (or end of message)
         const startPos = match.index + match[0].length;
@@ -611,14 +612,15 @@ client.once('ready', () => {
     console.log('💰 Tracking: AP (Annual Premium) & Policy Count');
     console.log('🔇 Silent mode: Only emoji reactions, no reply messages');
     console.log('📦 Multi-sale detection: Can process multiple sales per message');
+    console.log('💵 NEW: Now detects both $123 and 123$ formats');
     console.log('🕐 Timezone: Pacific Standard Time (PST/PDT)');
     console.log('🌙 Quiet Hours: 12 AM - 8 AM Pacific (no automatic messages)');
-    console.log('📊 Daily Final Rankings: 11:55 PM Pacific (preserves full day data)');
+    console.log('📊 Daily Final Rankings: 10:55 PM Pacific (preserves full day data)');
     console.log('⏰ Scheduled times for BOTH leaderboards:');
     console.log('   - Every 3 hours: 9am, 12pm, 3pm, 6pm, 9pm PST');
-    console.log('   - Daily 11:55 PM PST: Complete dual summary');
-    console.log('   - Sundays 11:55 PM PST: Weekly dual rankings');
-    console.log('   - Last day of month 11:55 PM PST: Monthly dual rankings');
+    console.log('   - Daily 10:55 PM PST: Complete dual summary');
+    console.log('   - Sundays 10:55 PM PST: Weekly dual rankings');
+    console.log('   - Last day of month 10:55 PM PST: Monthly dual rankings');
     console.log('   🌙 NO automatic messages between 12 AM - 8 AM Pacific');
     
     // ==========================================
@@ -673,8 +675,8 @@ client.once('ready', () => {
         timezone: "UTC"
     });
 
-    // 2. Daily summary at 11:55 PM Pacific (5 minutes before midnight to ensure correct date)
-    const dailyUTCHour = getPacificToUTC(23); // 11 PM Pacific
+    // 2. Daily summary at 10:55 PM Pacific (1 hour earlier to ensure correct display)
+    const dailyUTCHour = getPacificToUTC(22); // 10 PM Pacific
     cron.schedule(`55 ${dailyUTCHour} * * *`, async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
@@ -693,15 +695,15 @@ client.once('ready', () => {
             await channel.send({ embeds: [policyEmbed] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Final daily rankings posted - 11:55 PM Pacific with preserved data');
+            console.log('📊 Final daily rankings posted - 10:55 PM Pacific with preserved data');
         }
     }, {
         scheduled: true,
         timezone: "UTC"
     });
 
-    // 3. Weekly summary - Sundays at 11:55 PM Pacific
-    const weeklyUTCHour = getPacificToUTC(23);
+    // 3. Weekly summary - Sundays at 10:55 PM Pacific  
+    const weeklyUTCHour = getPacificToUTC(22); // 10 PM Pacific
     cron.schedule(`55 ${weeklyUTCHour} * * 0`, async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
@@ -720,15 +722,16 @@ client.once('ready', () => {
             await channel.send({ embeds: [policyEmbed] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Weekly rankings posted - Sunday 11:55 PM Pacific with preserved data');
+            console.log('📊 Weekly rankings posted - Sunday 10:55 PM Pacific with preserved data');
         }
     }, {
         scheduled: true,
         timezone: "UTC"
     });
 
-    // 4. Monthly summary - Last day of month at 11:55 PM Pacific
-    const monthlyUTCHour = getPacificToUTC(23);
+    // 4. Monthly summary - Last day of month at 10:55 PM Pacific
+    const monthlyUTCHour = getPacificToUTC(22); // 10 PM Pacific
+    // Run every day, but check inside if it's the last day
     cron.schedule(`55 ${monthlyUTCHour} * * *`, async () => {
         // Check if today is the last day of the month in Pacific Time
         const pacificNow = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
@@ -754,7 +757,7 @@ client.once('ready', () => {
                 await channel.send({ embeds: [policyEmbed] });
                 
                 await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-                console.log('📊 Monthly rankings posted - End of month 11:55 PM Pacific with preserved data');
+                console.log('📊 Monthly rankings posted - End of month 10:55 PM Pacific with preserved data');
             }
         }
     }, {
@@ -964,7 +967,7 @@ client.on('messageCreate', async message => {
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse v4.2 - User Manual**')
+                    .setTitle('📚 **BIG Policy Pulse v4.3 - User Manual**')
                     .setDescription('Dual Tracking System - Pacific Time Zone\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
@@ -985,7 +988,7 @@ client.on('messageCreate', async message => {
                         },
                         {
                             name: '⏰ **AUTOMATIC REPORTS (PST/PDT)**',
-                            value: 'Both leaderboards post automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 11:55 PM Pacific\n• Weekly summary Sundays 11:55 PM Pacific\n• Monthly summary last day 11:55 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
+                            value: 'Both leaderboards post automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 10:55 PM Pacific\n• Weekly summary Sundays 10:55 PM Pacific\n• Monthly summary last day 10:55 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
                         },
                         {
                             name: '🏆 **DUAL RANKING SYSTEM**',
@@ -1094,9 +1097,9 @@ client.on('reconnecting', () => {
 // Start bot
 async function start() {
     console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v4.2 🚀       ║');
-    console.log('║   TIME FIX: 11:55 PM + MONTHLY FIX     ║');
-    console.log('║   Correct last day of month detection  ║');
+    console.log('║     🚀 BIG POLICY PULSE v4.3 🚀       ║');
+    console.log('║   TRIPLE FIX: 10:55PM + 378$ + Monthly ║');
+    console.log('║   Now parses both $123 and 123$ format ║');
     console.log('╚════════════════════════════════════════╝');
     console.log('');
     console.log('⏳ Starting dual tracking system...');
