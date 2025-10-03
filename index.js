@@ -616,11 +616,12 @@ client.once('ready', () => {
     console.log('🕐 Timezone: Pacific Standard Time (PST/PDT)');
     console.log('🌙 Quiet Hours: 12 AM - 8 AM Pacific (no automatic messages)');
     console.log('📊 Daily Final Rankings: 10:55 PM Pacific (preserves full day data)');
+    console.log('🆕 Week-to-date progress: Shows with daily report');
     console.log('⏰ Scheduled times for BOTH leaderboards:');
     console.log('   - Every 3 hours: 9am, 12pm, 3pm, 6pm, 9pm PST');
-    console.log('   - Daily 10:55 PM PST: Complete dual summary');
-    console.log('   - Sundays 10:55 PM PST: Weekly dual rankings');
-    console.log('   - Last day of month 10:55 PM PST: Monthly dual rankings');
+    console.log('   - Daily 10:55 PM PST: Daily summary + Weekly progress');
+    console.log('   - Sundays 10:55 PM PST: Weekly FINAL rankings');
+    console.log('   - Last day of month 10:55 PM PST: Monthly FINAL rankings');
     console.log('   🌙 NO automatic messages between 12 AM - 8 AM Pacific');
     
     // ==========================================
@@ -682,10 +683,11 @@ client.once('ready', () => {
         if (channel) {
             // Create a copy of current data BEFORE any reset
             const dailyDataCopy = JSON.parse(JSON.stringify(salesData.daily));
+            const weeklyDataCopy = JSON.parse(JSON.stringify(salesData.weekly));
             
             await channel.send('📢 **END OF DAY FINAL RANKINGS**');
             
-            // Generate leaderboards using the copied data directly
+            // Generate DAILY leaderboards using the copied data directly
             const apEmbed = generateAPLeaderboardFromData(dailyDataCopy, '💵 DAILY FINAL STANDINGS - COMPLETE');
             apEmbed.setColor(0xFFD700);
             await channel.send({ embeds: [apEmbed] });
@@ -694,8 +696,20 @@ client.once('ready', () => {
             policyEmbed.setColor(0xFFD700);
             await channel.send({ embeds: [policyEmbed] });
             
+            // NEW: Add WEEKLY PROGRESS summary
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Final daily rankings posted - 10:55 PM Pacific with preserved data');
+            await channel.send('📊 **WEEK-TO-DATE PROGRESS**');
+            
+            const weeklyApEmbed = generateAPLeaderboardFromData(weeklyDataCopy, '💵 WEEKLY PROGRESS (So Far)');
+            weeklyApEmbed.setColor(0x00BFFF); // Light blue for weekly progress
+            await channel.send({ embeds: [weeklyApEmbed] });
+            
+            const weeklyPolicyEmbed = generatePolicyLeaderboardFromData(weeklyDataCopy, '📋 WEEKLY PROGRESS (So Far)');
+            weeklyPolicyEmbed.setColor(0x00BFFF);
+            await channel.send({ embeds: [weeklyPolicyEmbed] });
+            
+            await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            console.log('📊 Final daily rankings + weekly progress posted - 10:55 PM Pacific');
         }
     }, {
         scheduled: true,
@@ -967,7 +981,7 @@ client.on('messageCreate', async message => {
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse v4.3 - User Manual**')
+                    .setTitle('📚 **BIG Policy Pulse v4.4 - User Manual**')
                     .setDescription('Dual Tracking System - Pacific Time Zone\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
@@ -988,7 +1002,7 @@ client.on('messageCreate', async message => {
                         },
                         {
                             name: '⏰ **AUTOMATIC REPORTS (PST/PDT)**',
-                            value: 'Both leaderboards post automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 10:55 PM Pacific\n• Weekly summary Sundays 10:55 PM Pacific\n• Monthly summary last day 10:55 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
+                            value: 'Both leaderboards post automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 10:55 PM Pacific + **Weekly Progress**\n• Weekly FINAL summary Sundays 10:55 PM Pacific\n• Monthly FINAL summary last day 10:55 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
                         },
                         {
                             name: '🏆 **DUAL RANKING SYSTEM**',
@@ -1097,9 +1111,9 @@ client.on('reconnecting', () => {
 // Start bot
 async function start() {
     console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v4.3 🚀       ║');
-    console.log('║   TRIPLE FIX: 10:55PM + 378$ + Monthly ║');
-    console.log('║   Now parses both $123 and 123$ format ║');
+    console.log('║     🚀 BIG POLICY PULSE v4.4 🚀       ║');
+    console.log('║   NEW: Daily + Weekly Progress Report  ║');
+    console.log('║   Every night see day + week summary   ║');
     console.log('╚════════════════════════════════════════╝');
     console.log('');
     console.log('⏳ Starting dual tracking system...');
