@@ -606,10 +606,10 @@ function generatePolicyLeaderboardFromData(data, title) {
 // Bot ready
 client.once('ready', () => {
     console.log(`✅ ${client.user.tag} is online!`);
-    console.log('🏢 Boundless Insurance Group - Dual Tracking System');
+    console.log('🏢 Boundless Insurance Group - AP Tracking System');
     console.log(`📊 Sales channel: ${process.env.SALES_CHANNEL_ID}`);
     console.log(`📈 Reports channel: ${process.env.LEADERBOARD_CHANNEL_ID}`);
-    console.log('💰 Tracking: AP (Annual Premium) & Policy Count');
+    console.log('💰 Tracking: Annual Premium (AP) Only');
     console.log('🔇 Silent mode: Only emoji reactions, no reply messages');
     console.log('📦 Multi-sale detection: Can process multiple sales per message');
     console.log('💵 NEW: Now detects both $123 and 123$ formats');
@@ -617,7 +617,7 @@ client.once('ready', () => {
     console.log('🌙 Quiet Hours: 12 AM - 8 AM Pacific (no automatic messages)');
     console.log('📊 Daily Final Rankings: 10:55 PM Pacific (preserves full day data)');
     console.log('🆕 Week-to-date progress: Shows with daily report');
-    console.log('⏰ Scheduled times for BOTH leaderboards:');
+    console.log('⏰ Scheduled times for AP leaderboard:');
     console.log('   - Every 3 hours: 9am, 12pm, 3pm, 6pm, 9pm PST');
     console.log('   - Daily 10:55 PM PST: Daily summary + Weekly progress');
     console.log('   - Sundays 10:55 PM PST: Weekly FINAL rankings');
@@ -646,7 +646,7 @@ client.once('ready', () => {
         return utcHour;
     }
     
-    // 1. Every 3 hours - Post BOTH leaderboards
+    // 1. Every 3 hours - Post AP leaderboard only
     // Pacific times: 9am, 12pm, 3pm, 6pm, 9pm (NO 6am - respecting quiet hours)
     // Convert to UTC based on current DST status
     const threeHourlyPacific = [9, 12, 15, 18, 21];  // Removed 6am
@@ -662,14 +662,11 @@ client.once('ready', () => {
                 hour12: true
             });
             
-            // Send AP Leaderboard
+            // Send AP Leaderboard ONLY
             await channel.send({ embeds: [generateAPLeaderboard('daily')] });
             
-            // Send Policy Leaderboard
-            await channel.send({ embeds: [generatePolicyLeaderboard('daily')] });
-            
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log(`📊 Both leaderboards updated - ${pacificTime} PST/PDT`);
+            console.log(`📊 AP leaderboard updated - ${pacificTime} PST/PDT`);
         }
     }, {
         scheduled: true,
@@ -687,16 +684,12 @@ client.once('ready', () => {
             
             await channel.send('📢 **END OF DAY FINAL RANKINGS**');
             
-            // Generate DAILY leaderboards using the copied data directly
+            // Generate DAILY AP leaderboard only
             const apEmbed = generateAPLeaderboardFromData(dailyDataCopy, '💵 DAILY FINAL STANDINGS - COMPLETE');
             apEmbed.setColor(0xFFD700);
             await channel.send({ embeds: [apEmbed] });
             
-            const policyEmbed = generatePolicyLeaderboardFromData(dailyDataCopy, '📋 DAILY FINAL STANDINGS - COMPLETE');
-            policyEmbed.setColor(0xFFD700);
-            await channel.send({ embeds: [policyEmbed] });
-            
-            // NEW: Add WEEKLY PROGRESS summary
+            // NEW: Add WEEKLY PROGRESS summary (AP only)
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
             await channel.send('📊 **WEEK-TO-DATE PROGRESS**');
             
@@ -704,12 +697,8 @@ client.once('ready', () => {
             weeklyApEmbed.setColor(0x00BFFF); // Light blue for weekly progress
             await channel.send({ embeds: [weeklyApEmbed] });
             
-            const weeklyPolicyEmbed = generatePolicyLeaderboardFromData(weeklyDataCopy, '📋 WEEKLY PROGRESS (So Far)');
-            weeklyPolicyEmbed.setColor(0x00BFFF);
-            await channel.send({ embeds: [weeklyPolicyEmbed] });
-            
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Final daily rankings + weekly progress posted - 10:55 PM Pacific');
+            console.log('📊 Final daily AP rankings + weekly AP progress posted - 10:55 PM Pacific');
         }
     }, {
         scheduled: true,
@@ -726,17 +715,13 @@ client.once('ready', () => {
             
             await channel.send('🏆 **WEEKLY FINAL RANKINGS**');
             
-            // Generate leaderboards using the copied data directly
+            // Generate AP leaderboard only
             const apEmbed = generateAPLeaderboardFromData(weeklyDataCopy, '💵 WEEKLY CHAMPIONS - COMPLETE WEEK');
             apEmbed.setColor(0xFF6B6B);
             await channel.send({ embeds: [apEmbed] });
             
-            const policyEmbed = generatePolicyLeaderboardFromData(weeklyDataCopy, '📋 WEEKLY CHAMPIONS - COMPLETE WEEK');
-            policyEmbed.setColor(0xFF6B6B);
-            await channel.send({ embeds: [policyEmbed] });
-            
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Weekly rankings posted - Sunday 10:55 PM Pacific with preserved data');
+            console.log('📊 Weekly AP rankings posted - Sunday 10:55 PM Pacific with preserved data');
         }
     }, {
         scheduled: true,
@@ -761,17 +746,13 @@ client.once('ready', () => {
                 
                 await channel.send('🎊 **MONTHLY FINAL RANKINGS - CONGRATULATIONS!** 🎊');
                 
-                // Generate leaderboards using the copied data directly
+                // Generate AP leaderboard only
                 const apEmbed = generateAPLeaderboardFromData(monthlyDataCopy, '💵 MONTHLY CHAMPIONS - COMPLETE MONTH');
                 apEmbed.setColor(0xFFD700);
                 await channel.send({ embeds: [apEmbed] });
                 
-                const policyEmbed = generatePolicyLeaderboardFromData(monthlyDataCopy, '📋 MONTHLY CHAMPIONS - COMPLETE MONTH');
-                policyEmbed.setColor(0xFFD700);
-                await channel.send({ embeds: [policyEmbed] });
-                
                 await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-                console.log('📊 Monthly rankings posted - End of month 10:55 PM Pacific with preserved data');
+                console.log('📊 Monthly AP rankings posted - End of month 10:55 PM Pacific with preserved data');
             }
         }
     }, {
@@ -849,51 +830,9 @@ client.on('messageCreate', async message => {
         const command = args.shift().toLowerCase();
 
         switch(command) {
-            case 'ap':
-            case 'apleaderboard':
-            case 'aprank':
-                const apPeriod = args[0] || 'daily';
-                const apValidPeriods = {
-                    'daily': 'daily',
-                    'day': 'daily',
-                    'today': 'daily',
-                    'weekly': 'weekly',
-                    'week': 'weekly',
-                    'monthly': 'monthly',
-                    'month': 'monthly'
-                };
-                
-                if (apValidPeriods[apPeriod]) {
-                    await message.channel.send({ embeds: [generateAPLeaderboard(apValidPeriods[apPeriod])] });
-                } else {
-                    await message.reply('Usage: `!ap [daily|weekly|monthly]`');
-                }
-                break;
-
-            case 'policies':
-            case 'policy':
-            case 'policyrank':
-                const policyPeriod = args[0] || 'daily';
-                const policyValidPeriods = {
-                    'daily': 'daily',
-                    'day': 'daily',
-                    'today': 'daily',
-                    'weekly': 'weekly',
-                    'week': 'weekly',
-                    'monthly': 'monthly',
-                    'month': 'monthly'
-                };
-                
-                if (policyValidPeriods[policyPeriod]) {
-                    await message.channel.send({ embeds: [generatePolicyLeaderboard(policyValidPeriods[policyPeriod])] });
-                } else {
-                    await message.reply('Usage: `!policies [daily|weekly|monthly]`');
-                }
-                break;
-
             case 'leaderboard':
             case 'lb':
-            case 'both':
+            case 'ap':
             case 'rankings':
                 const period = args[0] || 'daily';
                 const validPeriods = {
@@ -907,9 +846,8 @@ client.on('messageCreate', async message => {
                 };
                 
                 if (validPeriods[period]) {
-                    // Send BOTH leaderboards without extra title
+                    // Send AP leaderboard only
                     await message.channel.send({ embeds: [generateAPLeaderboard(validPeriods[period])] });
-                    await message.channel.send({ embeds: [generatePolicyLeaderboard(validPeriods[period])] });
                 } else {
                     await message.reply('Usage: `!leaderboard [daily|weekly|monthly]`');
                 }
@@ -925,12 +863,9 @@ client.on('messageCreate', async message => {
                 const monthly = salesData.monthly[userId] || { total: 0, count: 0 };
                 const allTime = salesData.allTime && salesData.allTime[userId] ? salesData.allTime[userId] : { total: 0, count: 0 };
 
-                // Find rankings
+                // Find AP rankings
                 const dailyAPRank = Object.entries(salesData.daily)
                     .sort(([,a], [,b]) => b.total - a.total)
-                    .findIndex(([id,]) => id === userId) + 1;
-                const dailyPolicyRank = Object.entries(salesData.daily)
-                    .sort(([,a], [,b]) => b.count - a.count)
                     .findIndex(([id,]) => id === userId) + 1;
 
                 const statsEmbed = new EmbedBuilder()
@@ -940,17 +875,17 @@ client.on('messageCreate', async message => {
                     .addFields(
                         { 
                             name: '📅 **TODAY**', 
-                            value: `💵 **$${daily.total.toLocaleString('en-US', {minimumFractionDigits: 2})} AP**\n📋 **${daily.count} Policies**\n🏆 AP Rank: #${dailyAPRank || 'N/A'}\n🏆 Policy Rank: #${dailyPolicyRank || 'N/A'}`, 
+                            value: `💵 **${daily.total.toLocaleString('en-US', {minimumFractionDigits: 2})} AP**\n📋 **${daily.count} Policies**\n🏆 AP Rank: #${dailyAPRank || 'N/A'}`, 
                             inline: true 
                         },
                         { 
                             name: '📊 **THIS WEEK**', 
-                            value: `💵 **$${weekly.total.toLocaleString('en-US', {minimumFractionDigits: 2})} AP**\n📋 **${weekly.count} Policies**`, 
+                            value: `💵 **${weekly.total.toLocaleString('en-US', {minimumFractionDigits: 2})} AP**\n📋 **${weekly.count} Policies**`, 
                             inline: true 
                         },
                         { 
                             name: '🏆 **THIS MONTH**', 
-                            value: `💵 **$${monthly.total.toLocaleString('en-US', {minimumFractionDigits: 2})} AP**\n📋 **${monthly.count} Policies**`, 
+                            value: `💵 **${monthly.total.toLocaleString('en-US', {minimumFractionDigits: 2})} AP**\n📋 **${monthly.count} Policies**`, 
                             inline: true 
                         }
                     );
@@ -958,7 +893,7 @@ client.on('messageCreate', async message => {
                 if (allTime.total > 0) {
                     statsEmbed.addFields({
                         name: '🌟 **ALL-TIME RECORD**',
-                        value: `💎 **$${allTime.total.toLocaleString('en-US', {minimumFractionDigits: 2})} Total AP**\n📝 **${allTime.count} Total Policies**`
+                        value: `💎 **${allTime.total.toLocaleString('en-US', {minimumFractionDigits: 2})} Total AP**\n📝 **${allTime.count} Total Policies**`
                     });
                 }
 
@@ -966,13 +901,13 @@ client.on('messageCreate', async message => {
                 if (monthAverage > 0) {
                     statsEmbed.addFields({
                         name: '📈 **Performance Metrics**',
-                        value: `**Avg AP per Policy:** $${monthAverage.toLocaleString('en-US', {minimumFractionDigits: 2})}\n**Daily Target:** ${((daily.total / 2000) * 100).toFixed(1)}% of $2,000`
+                        value: `**Avg AP per Policy:** ${monthAverage.toLocaleString('en-US', {minimumFractionDigits: 2})}\n**Daily Target:** ${((daily.total / 2000) * 100).toFixed(1)}% of $2,000`
                     });
                 }
 
                 statsEmbed
                     .setTimestamp()
-                    .setFooter({ text: 'BIG - Keep pushing for both AP and Policy count!' });
+                    .setFooter({ text: 'BIG - Keep pushing for higher AP!' });
 
                 await message.channel.send({ embeds: [statsEmbed] });
                 break;
@@ -981,16 +916,16 @@ client.on('messageCreate', async message => {
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse v4.4 - User Manual**')
-                    .setDescription('Dual Tracking System - Pacific Time Zone\n━━━━━━━━━━━━━━━━━━━━━')
+                    .setTitle('📚 **BIG Policy Pulse v4.5 - User Manual**')
+                    .setDescription('Annual Premium Tracking System - Pacific Time Zone\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
                             name: '💰 **RECORDING SALES**', 
-                            value: 'Post in the sales channel:\n\n**Single Sale:**\n`$624 Americo IUL`\n\n**Multiple Sales (Family/Couple):**\n`His: $4,000 NLG IUL Hers: $2,400 NLG IUL`\n`Child: $500 Parents: $3,000 each`\n\n✅ Bot detects EACH sale separately\n🔇 Bot only reacts with emojis (no messages)'
+                            value: 'Post in the sales channel:\n\n**Single Sale:**\n`$624 Americo IUL`\n`624$ Americo IUL` (both formats work)\n\n**Multiple Sales (Family/Couple):**\n`His: $4,000 NLG IUL Hers: $2,400 NLG IUL`\n`378$ HIS FORESTERS 378$ HERS FORESTERS`\n\n✅ Bot detects EACH sale separately\n🔇 Bot only reacts with emojis (no messages)'
                         },
                         { 
                             name: '📊 **LEADERBOARD COMMANDS**', 
-                            value: '**View Both Rankings:**\n`!leaderboard` - Both current rankings\n`!leaderboard weekly` - Both weekly rankings\n`!leaderboard monthly` - Both monthly rankings\n\n**AP Rankings Only:**\n`!ap` - Current AP leaderboard\n`!ap weekly` - Weekly AP leaderboard\n\n**Policy Rankings Only:**\n`!policies` - Current policy leaderboard\n`!policies weekly` - Weekly policy leaderboard'
+                            value: '**View AP Rankings:**\n`!leaderboard` - Current AP rankings\n`!leaderboard weekly` - Weekly AP rankings\n`!leaderboard monthly` - Monthly AP rankings\n\n**Aliases:**\n`!lb` - Shortcut for leaderboard\n`!ap` - Same as leaderboard\n`!rankings` - Same as leaderboard'
                         },
                         {
                             name: '📈 **PERSONAL STATS**',
@@ -1002,14 +937,14 @@ client.on('messageCreate', async message => {
                         },
                         {
                             name: '⏰ **AUTOMATIC REPORTS (PST/PDT)**',
-                            value: 'Both leaderboards post automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 10:55 PM Pacific + **Weekly Progress**\n• Weekly FINAL summary Sundays 10:55 PM Pacific\n• Monthly FINAL summary last day 10:55 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
+                            value: 'AP leaderboard posts automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 10:55 PM Pacific + **Weekly Progress**\n• Weekly FINAL summary Sundays 10:55 PM Pacific\n• Monthly FINAL summary last day 10:55 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
                         },
                         {
-                            name: '🏆 **DUAL RANKING SYSTEM**',
-                            value: '**AP Leaderboard:** Ranked by total dollar amount\n**Policy Leaderboard:** Ranked by number of policies\n\nMultiple sales per message count separately!'
+                            name: '🏆 **ANNUAL PREMIUM FOCUS**',
+                            value: '**All rankings based on total Annual Premium (AP)**\nFocus on total sales amount, not policy count\nWeekly progress shown every night at 10:55 PM'
                         }
                     )
-                    .setFooter({ text: '💼 BIG - All times in Pacific Time' })
+                    .setFooter({ text: '💼 BIG - Annual Premium Rankings' })
                     .setTimestamp();
                 
                 await message.channel.send({ embeds: [helpEmbed] });
@@ -1111,12 +1046,12 @@ client.on('reconnecting', () => {
 // Start bot
 async function start() {
     console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v4.4 🚀       ║');
-    console.log('║   NEW: Daily + Weekly Progress Report  ║');
-    console.log('║   Every night see day + week summary   ║');
+    console.log('║     🚀 BIG POLICY PULSE v4.5 🚀       ║');
+    console.log('║   SIMPLIFIED: AP Rankings Only         ║');
+    console.log('║   Focus on Annual Premium amount       ║');
     console.log('╚════════════════════════════════════════╝');
     console.log('');
-    console.log('⏳ Starting dual tracking system...');
+    console.log('⏳ Starting AP tracking system...');
     console.log(`📁 Using data directory: ${DATA_DIR}`);
     
     await loadData();
