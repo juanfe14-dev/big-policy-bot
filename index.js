@@ -617,9 +617,10 @@ client.once('ready', () => {
     console.log('🌙 Quiet Hours: 12 AM - 8 AM Pacific (no automatic messages)');
     console.log('📊 Daily Final Rankings: 10:55 PM Pacific (preserves full day data)');
     console.log('🆕 Week-to-date progress: Shows with daily report');
+    console.log('📈 Month-to-date progress: Shows with daily report');
     console.log('⏰ Scheduled times for AP leaderboard:');
     console.log('   - Every 3 hours: 9am, 12pm, 3pm, 6pm, 9pm PST');
-    console.log('   - Daily 10:55 PM PST: Daily summary + Weekly progress');
+    console.log('   - Daily 10:55 PM PST: Daily + Weekly + Monthly progress');
     console.log('   - Sundays 10:55 PM PST: Weekly FINAL rankings');
     console.log('   - Last day of month 10:55 PM PST: Monthly FINAL rankings');
     console.log('   🌙 NO automatic messages between 12 AM - 8 AM Pacific');
@@ -681,6 +682,7 @@ client.once('ready', () => {
             // Create a copy of current data BEFORE any reset
             const dailyDataCopy = JSON.parse(JSON.stringify(salesData.daily));
             const weeklyDataCopy = JSON.parse(JSON.stringify(salesData.weekly));
+            const monthlyDataCopy = JSON.parse(JSON.stringify(salesData.monthly));
             
             await channel.send('📢 **END OF DAY FINAL RANKINGS**');
             
@@ -689,7 +691,7 @@ client.once('ready', () => {
             apEmbed.setColor(0xFFD700);
             await channel.send({ embeds: [apEmbed] });
             
-            // NEW: Add WEEKLY PROGRESS summary (AP only)
+            // Add WEEKLY PROGRESS summary (AP only)
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
             await channel.send('📊 **WEEK-TO-DATE PROGRESS**');
             
@@ -697,8 +699,16 @@ client.once('ready', () => {
             weeklyApEmbed.setColor(0x00BFFF); // Light blue for weekly progress
             await channel.send({ embeds: [weeklyApEmbed] });
             
+            // NEW: Add MONTHLY PROGRESS summary
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Final daily AP rankings + weekly AP progress posted - 10:55 PM Pacific');
+            await channel.send('📈 **MONTH-TO-DATE PROGRESS**');
+            
+            const monthlyApEmbed = generateAPLeaderboardFromData(monthlyDataCopy, '💵 MONTHLY PROGRESS (So Far)');
+            monthlyApEmbed.setColor(0x9370DB); // Purple for monthly progress
+            await channel.send({ embeds: [monthlyApEmbed] });
+            
+            await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            console.log('📊 Final daily AP + weekly progress + monthly progress posted - 10:55 PM Pacific');
         }
     }, {
         scheduled: true,
@@ -916,7 +926,7 @@ client.on('messageCreate', async message => {
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse v4.5 - User Manual**')
+                    .setTitle('📚 **BIG Policy Pulse v4.6 - User Manual**')
                     .setDescription('Annual Premium Tracking System - Pacific Time Zone\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
@@ -937,7 +947,7 @@ client.on('messageCreate', async message => {
                         },
                         {
                             name: '⏰ **AUTOMATIC REPORTS (PST/PDT)**',
-                            value: 'AP leaderboard posts automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 10:55 PM Pacific + **Weekly Progress**\n• Weekly FINAL summary Sundays 10:55 PM Pacific\n• Monthly FINAL summary last day 10:55 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
+                            value: 'AP leaderboard posts automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 10:55 PM Pacific:\n  - Daily Final Standings\n  - **Weekly Progress (week-to-date)**\n  - **Monthly Progress (month-to-date)**\n• Weekly FINAL summary Sundays 10:55 PM Pacific\n• Monthly FINAL summary last day 10:55 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
                         },
                         {
                             name: '🏆 **ANNUAL PREMIUM FOCUS**',
@@ -1046,9 +1056,9 @@ client.on('reconnecting', () => {
 // Start bot
 async function start() {
     console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v4.5 🚀       ║');
-    console.log('║   SIMPLIFIED: AP Rankings Only         ║');
-    console.log('║   Focus on Annual Premium amount       ║');
+    console.log('║     🚀 BIG POLICY PULSE v4.6 🚀       ║');
+    console.log('║   NEW: Daily + Weekly + Monthly        ║');
+    console.log('║   Complete progress tracking each night║');
     console.log('╚════════════════════════════════════════╝');
     console.log('');
     console.log('⏳ Starting AP tracking system...');
