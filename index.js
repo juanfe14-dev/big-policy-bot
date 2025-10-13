@@ -31,7 +31,9 @@ let salesData = {
     lastReset: {
         daily: new Date().toDateString(),
         weekly: getWeekNumber(new Date()),
-        monthly: new Date().getMonth()
+        weeklyTag: '', // To track if we already reset this week
+        monthly: new Date().getMonth(),
+        monthlyTag: '' // To track if we already reset this month
     }
 };
 
@@ -46,6 +48,15 @@ async function loadData() {
             await fs.access(DATA_FILE);
             const data = await fs.readFile(DATA_FILE, 'utf8');
             salesData = JSON.parse(data);
+            
+            // Ensure new fields exist for backward compatibility
+            if (!salesData.lastReset.weeklyTag) {
+                salesData.lastReset.weeklyTag = '';
+            }
+            if (!salesData.lastReset.monthlyTag) {
+                salesData.lastReset.monthlyTag = '';
+            }
+            
             console.log('📂 Data loaded successfully from:', DATA_FILE);
             
             // Log current data stats
@@ -86,7 +97,7 @@ function getWeekNumber(date) {
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
 }
 
-// Check period resets - Now timezone aware and saves snapshots
+// Check period resets - Now timezone aware and PROPERLY SEPARATED
 function checkResets() {
     // Get current Pacific Time
     const now = new Date();
@@ -95,37 +106,49 @@ function checkResets() {
     const currentDay = pacificTime.toDateString();
     const currentWeek = getWeekNumber(pacificTime);
     const currentMonth = pacificTime.getMonth();
+    const currentYear = pacificTime.getFullYear();
 
     let wasReset = false;
 
-    // Daily reset - Save snapshot before reset
+    // Daily reset - ONLY reset daily data
     if (salesData.lastReset.daily !== currentDay) {
         // Save snapshot of yesterday's data before reset
         salesData.dailySnapshot = JSON.parse(JSON.stringify(salesData.daily));
-        salesData.daily = {};
+        salesData.daily = {}; // ONLY reset daily
         salesData.lastReset.daily = currentDay;
         wasReset = true;
-        console.log('🔄 Daily reset executed - Snapshot saved');
+        console.log(`🔄 Daily reset executed for ${currentDay}`);
     }
 
-    // Weekly reset - Save snapshot before reset
-    if (salesData.lastReset.weekly !== currentWeek) {
-        // Save snapshot of last week's data before reset
-        salesData.weeklySnapshot = JSON.parse(JSON.stringify(salesData.weekly));
-        salesData.weekly = {};
-        salesData.lastReset.weekly = currentWeek;
-        wasReset = true;
-        console.log('🔄 Weekly reset executed - Snapshot saved');
+    // Weekly reset - ONLY reset weekly data (Mondays)
+    // Check if it's a different week AND we haven't reset this week yet
+    const lastWeekReset = `${currentYear}-W${currentWeek}`;
+    if (!salesData.lastReset.weeklyTag || salesData.lastReset.weeklyTag !== lastWeekReset) {
+        // Only reset on Monday (day 1) to capture full Sunday data
+        if (pacificTime.getDay() === 1) { // Monday = 1
+            // Save snapshot of last week's data before reset
+            salesData.weeklySnapshot = JSON.parse(JSON.stringify(salesData.weekly));
+            salesData.weekly = {}; // ONLY reset weekly
+            salesData.lastReset.weekly = currentWeek;
+            salesData.lastReset.weeklyTag = lastWeekReset;
+            wasReset = true;
+            console.log(`🔄 Weekly reset executed for week ${currentWeek}`);
+        }
     }
 
-    // Monthly reset - Save snapshot before reset
-    if (salesData.lastReset.monthly !== currentMonth) {
-        // Save snapshot of last month's data before reset
-        salesData.monthlySnapshot = JSON.parse(JSON.stringify(salesData.monthly));
-        salesData.monthly = {};
-        salesData.lastReset.monthly = currentMonth;
-        wasReset = true;
-        console.log('🔄 Monthly reset executed - Snapshot saved');
+    // Monthly reset - ONLY reset monthly data
+    const lastMonthReset = `${currentYear}-M${currentMonth}`;
+    if (!salesData.lastReset.monthlyTag || salesData.lastReset.monthlyTag !== lastMonthReset) {
+        // Only reset on the 1st of the month
+        if (pacificTime.getDate() === 1) {
+            // Save snapshot of last month's data before reset
+            salesData.monthlySnapshot = JSON.parse(JSON.stringify(salesData.monthly));
+            salesData.monthly = {}; // ONLY reset monthly
+            salesData.lastReset.monthly = currentMonth;
+            salesData.lastReset.monthlyTag = lastMonthReset;
+            wasReset = true;
+            console.log(`🔄 Monthly reset executed for month ${currentMonth + 1}`);
+        }
     }
 
     if (wasReset) {
@@ -621,8 +644,10 @@ client.once('ready', () => {
     console.log('⏰ Scheduled times for AP leaderboard:');
     console.log('   - Every 3 hours: 9am, 12pm, 3pm, 6pm, 9pm PST');
     console.log('   - Daily 10:55 PM PST: Daily + Weekly + Monthly progress');
-    console.log('   - Sundays 10:55 PM PST: Weekly FINAL rankings');
-    console.log('   - Last day of month 10:55 PM PST: Monthly FINAL rankings');
+    console.log('   - Sundays 10:55 PM PST: Weekly FINAL (complete week)');
+    console.log('   - Last day of month 10:55 PM PST: Monthly FINAL');
+    console.log('   📅 Weekly resets: Monday mornings (captures full Sunday)');
+    console.log('   📅 Monthly resets: 1st of each month');
     console.log('   🌙 NO automatic messages between 12 AM - 8 AM Pacific');
     
     // ==========================================
@@ -926,7 +951,7 @@ client.on('messageCreate', async message => {
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse v4.6 - User Manual**')
+                    .setTitle('📚 **BIG Policy Pulse v4.7 - User Manual**')
                     .setDescription('Annual Premium Tracking System - Pacific Time Zone\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
@@ -1056,9 +1081,9 @@ client.on('reconnecting', () => {
 // Start bot
 async function start() {
     console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v4.6 🚀       ║');
-    console.log('║   NEW: Daily + Weekly + Monthly        ║');
-    console.log('║   Complete progress tracking each night║');
+    console.log('║     🚀 BIG POLICY PULSE v4.7 🚀       ║');
+    console.log('║   CRITICAL FIX: Separated data resets  ║');
+    console.log('║   Weekly resets Monday, not Sunday     ║');
     console.log('╚════════════════════════════════════════╝');
     console.log('');
     console.log('⏳ Starting AP tracking system...');
