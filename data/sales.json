@@ -1,0 +1,571 @@
+{
+  "daily": {
+    "1410683197888659527": {
+      "username": "j_vill1",
+      "total": 1500,
+      "count": 1,
+      "policies": {
+        "Moo Iul Closed": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1500,
+          "type": "Moo Iul Closed",
+          "date": "2025-10-29T15:28:40.103Z"
+        }
+      ]
+    },
+    "user_therealvblacklive": {
+      "username": "therealvblacklive",
+      "total": 3600.0,
+      "count": 1,
+      "policies": {
+        "Foresters Iul": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 3600.0,
+          "type": "Foresters Iul",
+          "date": "2025-10-29T20:00:00.000Z"
+        }
+      ]
+    },
+    "user_loganobrienhere": {
+      "username": "loganobrienhere",
+      "total": 1480.08,
+      "count": 1,
+      "policies": {
+        "Amam Iul": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1480.08,
+          "type": "Amam Iul",
+          "date": "2025-10-29T20:00:00.000Z"
+        }
+      ]
+    },
+    "user_squizard33": {
+      "username": "squizard33",
+      "total": 1639.44,
+      "count": 1,
+      "policies": {
+        "Amam 20 Year Term": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1639.44,
+          "type": "Amam 20 Year Term",
+          "date": "2025-10-29T20:00:00.000Z"
+        }
+      ]
+    }
+  },
+  "weekly": {
+    "1410683197888659527": {
+      "username": "j_vill1",
+      "total": 1500,
+      "count": 1,
+      "policies": {
+        "Moo Iul Closed": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1500,
+          "type": "Moo Iul Closed",
+          "date": "2025-10-29T15:28:40.103Z"
+        }
+      ]
+    },
+    "user_therealvblacklive": {
+      "username": "therealvblacklive",
+      "total": 3600.0,
+      "count": 1,
+      "policies": {
+        "Foresters Iul": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 3600.0,
+          "type": "Foresters Iul",
+          "date": "2025-10-29T20:00:00.000Z"
+        }
+      ]
+    },
+    "user_loganobrienhere": {
+      "username": "loganobrienhere",
+      "total": 1480.08,
+      "count": 1,
+      "policies": {
+        "Amam Iul": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1480.08,
+          "type": "Amam Iul",
+          "date": "2025-10-29T20:00:00.000Z"
+        }
+      ]
+    },
+    "user_squizard33": {
+      "username": "squizard33",
+      "total": 1639.44,
+      "count": 1,
+      "policies": {
+        "Amam 20 Year Term": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1639.44,
+          "type": "Amam 20 Year Term",
+          "date": "2025-10-29T20:00:00.000Z"
+        }
+      ]
+    }
+  },
+  "monthly": {
+    "1410683197888659527": {
+      "username": "j_vill1",
+      "total": 1500,
+      "count": 1,
+      "policies": {
+        "Moo Iul Closed": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1500,
+          "type": "Moo Iul Closed",
+          "date": "2025-10-29T15:28:40.103Z"
+        }
+      ]
+    },
+    "user_therealvblacklive": {
+      "username": "therealvblacklive",
+      "total": 3600.0,
+      "count": 1,
+      "policies": {
+        "Foresters Iul": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 3600.0,
+          "type": "Foresters Iul",
+          "date": "2025-10-29T20:00:00.000Z"
+        }
+      ]
+    },
+    "user_loganobrienhere": {
+      "username": "loganobrienhere",
+      "total": 1480.08,
+      "count": 1,
+      "policies": {
+        "Amam Iul": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1480.08,
+          "type": "Amam Iul",
+          "date": "2025-10-29T20:00:00.000Z"
+        }
+      ]
+    },
+    "user_squizard33": {
+      "username": "squizard33",
+      "total": 1639.44,
+      "count": 1,
+      "policies": {
+        "Amam 20 Year Term": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1639.44,
+          "type": "Amam 20 Year Term",
+          "date": "2025-10-29T20:00:00.000Z"
+        }
+      ]
+    }
+  },
+  "allTime": {
+    "user_keith_williams_04": {
+      "username": "keith.williams_04",
+      "total": 13493.38,
+      "count": 11,
+      "policies": {
+        "Amam Iul": 4,
+        "Foresters Term": 3,
+        "Transamerica Fex": 1,
+        "Amam Iul His": 1,
+        "Amam Iul Hers": 1,
+        "Transam Iul": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1192.8,
+          "type": "Amam Iul",
+          "date": "2025-10-21T16:22:15.545328918Z"
+        },
+        {
+          "amount": 565.44,
+          "type": "Foresters Term",
+          "date": "2025-10-21T20:37:41.772906741Z"
+        },
+        {
+          "amount": 1328.28,
+          "type": "Foresters Term",
+          "date": "2025-10-21T23:47:10.187655740Z"
+        },
+        {
+          "amount": 3142.8,
+          "type": "Amam Iul",
+          "date": "2025-10-22T00:50:40.338216208Z"
+        },
+        {
+          "amount": 1206,
+          "type": "Amam Iul",
+          "date": "2025-10-22T22:35:49.947934634Z"
+        },
+        {
+          "amount": 1162.8,
+          "type": "Amam Iul",
+          "date": "2025-10-23T19:10:07.036619485Z"
+        },
+        {
+          "amount": 807.24,
+          "type": "Foresters Term",
+          "date": "2025-10-23T22:54:02.552018512Z"
+        },
+        {
+          "amount": 1197.84,
+          "type": "Transamerica Fex",
+          "date": "2025-10-25T12:00:00.000Z"
+        },
+        {
+          "amount": 1089.9,
+          "type": "Amam Iul His",
+          "date": "2025-10-26T15:00:00.000Z"
+        },
+        {
+          "amount": 818.04,
+          "type": "Amam Iul Hers",
+          "date": "2025-10-26T15:01:00.000Z"
+        },
+        {
+          "amount": 982.24,
+          "type": "Transam Iul",
+          "date": "2025-10-27T16:00:00.000Z"
+        }
+      ]
+    },
+    "user_harrisonvandermey": {
+      "username": "harrisonvandermey",
+      "total": 4329.13,
+      "count": 7,
+      "policies": {
+        "Moo Lp": 2,
+        "Term": 3,
+        "Nlg Iul": 1,
+        "Gtl Wl": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 489.01,
+          "type": "Moo Lp",
+          "date": "2025-10-21T21:14:14.853652870Z"
+        },
+        {
+          "amount": 390.48,
+          "type": "Moo Lp",
+          "date": "2025-10-21T21:14:14.853661147Z"
+        },
+        {
+          "amount": 589.68,
+          "type": "Term",
+          "date": "2025-10-23T02:19:17.184090463Z"
+        },
+        {
+          "amount": 907.2,
+          "type": "Term",
+          "date": "2025-10-23T02:19:17.184097207Z"
+        },
+        {
+          "amount": 431.04,
+          "type": "Nlg Iul",
+          "date": "2025-10-23T02:19:17.184102733Z"
+        },
+        {
+          "amount": 1071.72,
+          "type": "Term",
+          "date": "2025-10-24T17:07:43.400731996Z"
+        },
+        {
+          "amount": 450,
+          "type": "Gtl Wl",
+          "date": "2025-10-27T11:00:00.000Z"
+        }
+      ]
+    },
+    "user_harveymckeown": {
+      "username": "harveymckeown",
+      "total": 1392,
+      "count": 1,
+      "policies": {
+        "Corebridge Fex": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1392,
+          "type": "Corebridge Fex",
+          "date": "2025-10-21T22:14:05.849987514Z"
+        }
+      ]
+    },
+    "user_sellwithjoey": {
+      "username": "sellwithjoey",
+      "total": 8616.36,
+      "count": 7,
+      "policies": {
+        "Moo Iule": 3,
+        "Transam Fex": 1,
+        "Moo Ga": 2,
+        "Transam Iul": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1234.68,
+          "type": "Moo Iule",
+          "date": "2025-10-22T02:25:44.844313144Z"
+        },
+        {
+          "amount": 1551.96,
+          "type": "Moo Iule",
+          "date": "2025-10-22T04:13:22.771434932Z"
+        },
+        {
+          "amount": 1011,
+          "type": "Moo Iule",
+          "date": "2025-10-22T04:13:22.771440237Z"
+        },
+        {
+          "amount": 2031.36,
+          "type": "Transam Fex",
+          "date": "2025-10-23T15:39:49.714187620Z"
+        },
+        {
+          "amount": 496.92,
+          "type": "Moo Ga",
+          "date": "2025-10-26T10:00:00.000Z"
+        },
+        {
+          "amount": 669,
+          "type": "Moo Ga",
+          "date": "2025-10-27T13:00:00.000Z"
+        },
+        {
+          "amount": 1621.44,
+          "type": "Transam Iul",
+          "date": "2025-10-27T13:30:00.000Z"
+        }
+      ]
+    },
+    "user_fadednoodler": {
+      "username": "fadednoodler",
+      "total": 5042.639999999999,
+      "count": 2,
+      "policies": {
+        "Amam Sc": 1,
+        "Gtl": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 2968.68,
+          "type": "Amam Sc",
+          "date": "2025-10-22T22:02:23.758022235Z"
+        },
+        {
+          "amount": 2073.96,
+          "type": "Gtl",
+          "date": "2025-10-24T21:32:16.310770972Z"
+        }
+      ]
+    },
+    "user_richvigga": {
+      "username": "richvigga",
+      "total": 3033,
+      "count": 2,
+      "policies": {
+        "6 Aig Giwl": 1,
+        "Nlg Iul": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1833,
+          "type": "6 Aig Giwl",
+          "date": "2025-10-23T00:02:11.430233845Z"
+        },
+        {
+          "amount": 1200,
+          "type": "Nlg Iul",
+          "date": "2025-10-24T23:11:08.507112598Z"
+        }
+      ]
+    },
+    "user_squizard33": {
+      "username": "squizard33",
+      "total": 4544.639999999999,
+      "count": 2,
+      "policies": {
+        "Iule": 1,
+        "Amam 20 Year Term": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 2905.2,
+          "type": "Iule",
+          "date": "2025-10-23T02:14:57.216927573Z"
+        },
+        {
+          "amount": 1639.44,
+          "type": "Amam 20 Year Term",
+          "date": "2025-10-29T20:00:00.000Z"
+        }
+      ]
+    },
+    "user_therealvblacklive": {
+      "username": "therealvblacklive",
+      "total": 5823.96,
+      "count": 3,
+      "policies": {
+        "Gerber Take Over": 1,
+        "Rna": 1,
+        "Foresters Iul": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1316.4,
+          "type": "Gerber Take Over",
+          "date": "2025-10-23T23:26:49.168175632Z"
+        },
+        {
+          "amount": 907.56,
+          "type": "Rna",
+          "date": "2025-10-27T18:00:00.000Z"
+        },
+        {
+          "amount": 3600.0,
+          "type": "Foresters Iul",
+          "date": "2025-10-29T20:00:00.000Z"
+        }
+      ]
+    },
+    "user_loganobrienhere": {
+      "username": "loganobrienhere",
+      "total": 8029.56,
+      "count": 5,
+      "policies": {
+        "6 Amam Ahl": 1,
+        "Rna": 1,
+        "Amam Hp": 1,
+        "Amam Tms": 1,
+        "Amam Iul": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1821,
+          "type": "6 Amam Ahl",
+          "date": "2025-10-24T00:30:54.645026119Z"
+        },
+        {
+          "amount": 1700.64,
+          "type": "Rna",
+          "date": "2025-10-24T01:26:44.681423185Z"
+        },
+        {
+          "amount": 2209.2,
+          "type": "Amam Hp",
+          "date": "2025-10-25T14:00:00.000Z"
+        },
+        {
+          "amount": 818.64,
+          "type": "Amam Tms",
+          "date": "2025-10-25T14:30:00.000Z"
+        },
+        {
+          "amount": 1480.08,
+          "type": "Amam Iul",
+          "date": "2025-10-29T20:00:00.000Z"
+        }
+      ]
+    },
+    "user_kayden_green": {
+      "username": "kayden.green",
+      "total": 2822.76,
+      "count": 2,
+      "policies": {
+        "Corebridge Giwl": 1,
+        "Foresters Adb Combo": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 2370,
+          "type": "Corebridge Giwl",
+          "date": "2025-10-24T02:47:50.778067054Z"
+        },
+        {
+          "amount": 452.76,
+          "type": "Foresters Adb Combo",
+          "date": "2025-10-24T02:47:50.778072501Z"
+        }
+      ]
+    },
+    "user_roanhickey": {
+      "username": "roanhickey",
+      "total": 957.96,
+      "count": 1,
+      "policies": {
+        "Royal Neighbors Ep": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 957.96,
+          "type": "Royal Neighbors Ep",
+          "date": "2025-10-24T18:11:12.079367265Z"
+        }
+      ]
+    },
+    "user_the_top_one_percentile": {
+      "username": "the_top_one_percentile",
+      "total": 1367.28,
+      "count": 1,
+      "policies": {
+        "Moo Wl": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 1367.28,
+          "type": "Moo Wl",
+          "date": "2025-10-24T21:13:50.602579520Z"
+        }
+      ]
+    },
+    "1410683197888659527": {
+      "username": "j_vill1",
+      "total": 1500,
+      "count": 1
+    }
+  },
+  "dailySnapshot": {},
+  "weeklySnapshot": {},
+  "monthlySnapshot": {},
+  "lastReset": {
+    "daily": "Wed Oct 29 2025",
+    "weekly": 44,
+    "weeklyTag": "",
+    "monthly": 9,
+    "monthlyTag": ""
+  },
+  "importedFrom": "attached_assets/logs.1761665891449_1761667057801.json",
+  "importDate": "2025-10-28T15:59:28.743Z",
+  "totalRecordsImported": 30,
+  "lastUpdate": "2025-10-28T16:24:11.642Z",
+  "manualImportDate": "2025-10-28T16:24:11.642Z"
+}
