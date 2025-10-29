@@ -3,7 +3,56 @@ const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const fs = require('fs').promises;
 const path = require('path');
 const cron = require('node-cron');
+const express = require('express');
+const https = require('https');
 
+// ========================================
+// SERVIDOR EXPRESS PARA RENDER (CRÍTICO)
+// ========================================
+const app = express();
+const PORT = process.env.PORT || 10000;
+
+// IMPORTANTE: Iniciar el servidor INMEDIATAMENTE
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🌐 Server running on port ${PORT}`);
+    console.log(`📡 Health check available at http://0.0.0.0:${PORT}/health`);
+});
+
+// Health check endpoints
+app.get('/', (req, res) => {
+    const status = {
+        server: 'online',
+        bot: client.user ? `${client.user.tag} connected` : 'connecting...',
+        uptime: Math.floor(process.uptime()),
+        timestamp: new Date().toISOString()
+    };
+    res.send(`
+        <h1>🤖 BIG Policy Bot Status</h1>
+        <p>Bot: ${status.bot}</p>
+        <p>Uptime: ${status.uptime} seconds</p>
+        <p>Time: ${status.timestamp}</p>
+    `);
+});
+
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'healthy',
+        bot_connected: client.user ? true : false,
+        bot_tag: client.user ? client.user.tag : null,
+        uptime_seconds: Math.floor(process.uptime()),
+        timestamp: new Date().toISOString(),
+        environment: process.env.NODE_ENV || 'production'
+    });
+});
+
+// Ping endpoint para monitoreo
+app.get('/ping', (req, res) => {
+    res.status(200).send('pong');
+});
+
+// ========================================
+// CONFIGURACIÓN DEL BOT
+// ========================================
 const client = new Client({ 
     intents: [
         GatewayIntentBits.Guilds,
@@ -12,9 +61,10 @@ const client = new Client({
     ] 
 });
 
-// Data file - Using Railway persistent volume
-// If volume is mounted at /app/data, use it. Otherwise fallback to local
-const DATA_DIR = process.env.RAILWAY_VOLUME_MOUNT_PATH || path.join(__dirname, 'data');
+// Data file - Compatible con Render
+const DATA_DIR = process.env.RENDER 
+    ? '/opt/render/project/src/data' 
+    : path.join(__dirname, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'sales.json');
 
 console.log(`📁 Data directory: ${DATA_DIR}`);
@@ -25,31 +75,28 @@ let salesData = {
     weekly: {},
     monthly: {},
     allTime: {},
-    dailySnapshot: {}, // Snapshot for final daily report
-    weeklySnapshot: {}, // Snapshot for final weekly report
-    monthlySnapshot: {}, // Snapshot for final monthly report
+    dailySnapshot: {},
+    weeklySnapshot: {},
+    monthlySnapshot: {},
     lastReset: {
         daily: new Date().toDateString(),
         weekly: getWeekNumber(new Date()),
-        weeklyTag: '', // To track if we already reset this week
+        weeklyTag: '',
         monthly: new Date().getMonth(),
-        monthlyTag: '' // To track if we already reset this month
+        monthlyTag: ''
     }
 };
 
 // Load data
 async function loadData() {
     try {
-        // Ensure the data directory exists
         await fs.mkdir(DATA_DIR, { recursive: true });
         
-        // Check if file exists
         try {
             await fs.access(DATA_FILE);
             const data = await fs.readFile(DATA_FILE, 'utf8');
             salesData = JSON.parse(data);
             
-            // Ensure new fields exist for backward compatibility
             if (!salesData.lastReset.weeklyTag) {
                 salesData.lastReset.weeklyTag = '';
             }
@@ -59,7 +106,6 @@ async function loadData() {
             
             console.log('📂 Data loaded successfully from:', DATA_FILE);
             
-            // Log current data stats
             const dailyCount = Object.keys(salesData.daily || {}).length;
             const weeklyCount = Object.keys(salesData.weekly || {}).length;
             const monthlyCount = Object.keys(salesData.monthly || {}).length;
@@ -79,14 +125,30 @@ async function loadData() {
 // Save data
 async function saveData() {
     try {
-        // Ensure directory exists before saving
         await fs.mkdir(DATA_DIR, { recursive: true });
         await fs.writeFile(DATA_FILE, JSON.stringify(salesData, null, 2));
         console.log(`💾 Data saved to: ${DATA_FILE}`);
+        
+        // Backup to Discord if configured
+        if (process.env.BACKUP_CHANNEL_ID && client.isReady()) {
+            try {
+                const backupChannel = client.channels.cache.get(process.env.BACKUP_CHANNEL_ID);
+                if (backupChannel) {
+                    const dataString = JSON.stringify(salesData, null, 2);
+                    await backupChannel.send({
+                        content: `📁 Auto-backup - ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}`,
+                        files: [{
+                            attachment: Buffer.from(dataString),
+                            name: `sales_backup_${Date.now()}.json`
+                        }]
+                    });
+                }
+            } catch (backupError) {
+                console.error('⚠️ Could not backup to Discord:', backupError.message);
+            }
+        }
     } catch (error) {
         console.error('❌ Error saving data:', error);
-        console.error('   File path:', DATA_FILE);
-        console.error('   Directory:', DATA_DIR);
     }
 }
 
@@ -97,9 +159,8 @@ function getWeekNumber(date) {
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
 }
 
-// Check period resets - Now timezone aware and PROPERLY SEPARATED
+// Check period resets
 function checkResets() {
-    // Get current Pacific Time
     const now = new Date();
     const pacificTime = new Date(now.toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
     
@@ -110,25 +171,21 @@ function checkResets() {
 
     let wasReset = false;
 
-    // Daily reset - ONLY reset daily data
+    // Daily reset
     if (salesData.lastReset.daily !== currentDay) {
-        // Save snapshot of yesterday's data before reset
         salesData.dailySnapshot = JSON.parse(JSON.stringify(salesData.daily));
-        salesData.daily = {}; // ONLY reset daily
+        salesData.daily = {};
         salesData.lastReset.daily = currentDay;
         wasReset = true;
         console.log(`🔄 Daily reset executed for ${currentDay}`);
     }
 
-    // Weekly reset - ONLY reset weekly data (Mondays)
-    // Check if it's a different week AND we haven't reset this week yet
+    // Weekly reset (Mondays)
     const lastWeekReset = `${currentYear}-W${currentWeek}`;
     if (!salesData.lastReset.weeklyTag || salesData.lastReset.weeklyTag !== lastWeekReset) {
-        // Only reset on Monday (day 1) to capture full Sunday data
-        if (pacificTime.getDay() === 1) { // Monday = 1
-            // Save snapshot of last week's data before reset
+        if (pacificTime.getDay() === 1) {
             salesData.weeklySnapshot = JSON.parse(JSON.stringify(salesData.weekly));
-            salesData.weekly = {}; // ONLY reset weekly
+            salesData.weekly = {};
             salesData.lastReset.weekly = currentWeek;
             salesData.lastReset.weeklyTag = lastWeekReset;
             wasReset = true;
@@ -136,14 +193,12 @@ function checkResets() {
         }
     }
 
-    // Monthly reset - ONLY reset monthly data
+    // Monthly reset
     const lastMonthReset = `${currentYear}-M${currentMonth}`;
     if (!salesData.lastReset.monthlyTag || salesData.lastReset.monthlyTag !== lastMonthReset) {
-        // Only reset on the 1st of the month
         if (pacificTime.getDate() === 1) {
-            // Save snapshot of last month's data before reset
             salesData.monthlySnapshot = JSON.parse(JSON.stringify(salesData.monthly));
-            salesData.monthly = {}; // ONLY reset monthly
+            salesData.monthly = {};
             salesData.lastReset.monthly = currentMonth;
             salesData.lastReset.monthlyTag = lastMonthReset;
             wasReset = true;
@@ -158,10 +213,7 @@ function checkResets() {
 
 // Parse MULTIPLE sales from a single message
 function parseMultipleSales(message) {
-    // Handle multi-line messages - join all lines
     const fullMessage = message.replace(/\n/g, ' ');
-    
-    // Find ALL dollar amounts in the message (now supports both $123 and 123$ formats)
     const pattern = /(?:\$\s*([\d,]+(?:\.\d{2})?))|([\d,]+(?:\.\d{2})?)\s*\$/g;
     const matches = [...fullMessage.matchAll(pattern)];
     
@@ -171,44 +223,29 @@ function parseMultipleSales(message) {
     
     const sales = [];
     
-    // Process each dollar amount found
     matches.forEach((match, index) => {
-        // Extract amount (could be in match[1] for $123 or match[2] for 123$)
         const amountStr = match[1] || match[2];
         const amount = parseFloat(amountStr.replace(/,/g, ''));
         
-        // Get text between this dollar amount and the next (or end of message)
         const startPos = match.index + match[0].length;
         const endPos = matches[index + 1] ? matches[index + 1].index : fullMessage.length;
         let policyText = fullMessage.substring(startPos, endPos).trim();
         
-        // Clean up the policy type
-        // Remove labels like "His:", "Hers:", "Child:", etc.
+        // Clean up policy text
         policyText = policyText.replace(/^(His|Hers|Child|Spouse|Wife|Husband|Son|Daughter|Kid|Parent|Mother|Father):/gi, '').trim();
-        
-        // Remove Discord custom emojis (:emoji_name:)
         policyText = policyText.replace(/:[a-zA-Z0-9_]+:/g, '').trim();
-        
-        // Remove all Unicode emojis
         policyText = policyText.replace(/[\u{1F000}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{FE00}-\u{FE0F}]|[\u{1F300}-\u{1F5FF}]|[\u{2000}-\u{3300}]/gu, '').trim();
-        
-        // Remove @mentions
         policyText = policyText.replace(/@[^\s]+/g, '').trim();
-        
-        // Remove "w/" or "with" and everything after
         policyText = policyText.replace(/\b(w\/|with)\b.*/gi, '').trim();
         
-        // Remove hashtags and everything after
         const hashtagIndex = policyText.indexOf('#');
         if (hashtagIndex > -1) {
             policyText = policyText.substring(0, hashtagIndex).trim();
         }
         
-        // Clean up extra spaces and special characters
         policyText = policyText.replace(/[^\w\s-]/g, ' ');
         policyText = policyText.replace(/\s+/g, ' ').trim();
         
-        // Look for common policy patterns
         const policyPatterns = [
             'NLG', 'TLE', 'IUL', 'IULE', 'UL', 'WL', 'TERM',
             'Americo', 'MOO', 'Ladder', 'Term Life',
@@ -231,7 +268,6 @@ function parseMultipleSales(message) {
         
         let policyType = foundPolicy || policyText;
         
-        // Final cleanup
         const words = policyType.split(' ').filter(word => word.length > 0);
         if (words.length > 3) {
             policyType = words.slice(0, 3).join(' ');
@@ -241,7 +277,6 @@ function parseMultipleSales(message) {
             policyType = 'General Policy';
         }
         
-        // Capitalize properly
         policyType = policyType.split(' ')
             .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
             .join(' ');
@@ -308,9 +343,8 @@ function addSale(userId, username, amount, policyType) {
     saveData();
 }
 
-// Generate AP Leaderboard (sorted by total amount)
+// Generate AP Leaderboard
 function generateAPLeaderboard(period = 'daily', title = '', skipResetCheck = false) {
-    // Only check resets if not generating a final report
     if (!skipResetCheck) {
         checkResets();
     }
@@ -335,7 +369,7 @@ function generateAPLeaderboard(period = 'daily', title = '', skipResetCheck = fa
     });
 
     const embed = new EmbedBuilder()
-        .setColor(0x00FF00) // Green for AP
+        .setColor(0x00FF00)
         .setTitle(title || periodTitle[period])
         .setDescription(`💰 **Ranked by Annual Premium (AP)**\n📍 Date: ${currentDate}\n━━━━━━━━━━━━━━━━━━━━━`)
         .setTimestamp()
@@ -347,7 +381,6 @@ function generateAPLeaderboard(period = 'daily', title = '', skipResetCheck = fa
             value: 'No sales recorded for this period'
         });
     } else {
-        // Top 3 AP leaders
         let topDescription = '';
         const top3 = sorted.slice(0, 3);
         
@@ -364,7 +397,6 @@ function generateAPLeaderboard(period = 'daily', title = '', skipResetCheck = fa
             value: topDescription || 'No data'
         });
 
-        // Rest of ranking
         if (sorted.length > 3) {
             let restDescription = '';
             const rest = sorted.slice(3, 10);
@@ -381,7 +413,6 @@ function generateAPLeaderboard(period = 'daily', title = '', skipResetCheck = fa
             }
         }
 
-        // Statistics
         const totalAP = Object.values(data).reduce((sum, user) => sum + user.total, 0);
         const totalPolicies = Object.values(data).reduce((sum, user) => sum + user.count, 0);
         const averageAP = totalPolicies > 0 ? totalAP / totalPolicies : 0;
@@ -395,7 +426,7 @@ function generateAPLeaderboard(period = 'daily', title = '', skipResetCheck = fa
     return embed;
 }
 
-// Generate AP Leaderboard from specific data (for final reports)
+// Generate AP Leaderboard from specific data
 function generateAPLeaderboardFromData(data, title) {
     const sorted = Object.entries(data)
         .sort(([,a], [,b]) => b.total - a.total);
@@ -467,16 +498,15 @@ function generateAPLeaderboardFromData(data, title) {
     return embed;
 }
 
-// Generate Policy Count Leaderboard (sorted by number of policies)
+// Generate Policy Count Leaderboard
 function generatePolicyLeaderboard(period = 'daily', title = '', skipResetCheck = false) {
-    // Only check resets if not generating a final report
     if (!skipResetCheck) {
         checkResets();
     }
     
     const data = salesData[period];
     const sorted = Object.entries(data)
-        .sort(([,a], [,b]) => b.count - a.count); // Sort by COUNT not total
+        .sort(([,a], [,b]) => b.count - a.count);
 
     const periodTitle = {
         'daily': '📋 DAILY LEADERBOARD',
@@ -494,7 +524,7 @@ function generatePolicyLeaderboard(period = 'daily', title = '', skipResetCheck 
     });
 
     const embed = new EmbedBuilder()
-        .setColor(0x0099FF) // Blue for Policies
+        .setColor(0x0099FF)
         .setTitle(title || periodTitle[period])
         .setDescription(`📋 **Ranked by Number of Policies**\n📍 Date: ${currentDate}\n━━━━━━━━━━━━━━━━━━━━━`)
         .setTimestamp()
@@ -506,7 +536,6 @@ function generatePolicyLeaderboard(period = 'daily', title = '', skipResetCheck 
             value: 'No policies recorded for this period'
         });
     } else {
-        // Top 3 policy leaders
         let topDescription = '';
         const top3 = sorted.slice(0, 3);
         
@@ -523,7 +552,6 @@ function generatePolicyLeaderboard(period = 'daily', title = '', skipResetCheck 
             value: topDescription || 'No data'
         });
 
-        // Rest of ranking
         if (sorted.length > 3) {
             let restDescription = '';
             const rest = sorted.slice(3, 10);
@@ -540,7 +568,6 @@ function generatePolicyLeaderboard(period = 'daily', title = '', skipResetCheck 
             }
         }
 
-        // Statistics
         const totalPolicies = Object.values(data).reduce((sum, user) => sum + user.count, 0);
         const activeAgents = sorted.length;
         const avgPoliciesPerAgent = activeAgents > 0 ? totalPolicies / activeAgents : 0;
@@ -554,7 +581,7 @@ function generatePolicyLeaderboard(period = 'daily', title = '', skipResetCheck 
     return embed;
 }
 
-// Generate Policy Leaderboard from specific data (for final reports)
+// Generate Policy Leaderboard from specific data
 function generatePolicyLeaderboardFromData(data, title) {
     const sorted = Object.entries(data)
         .sort(([,a], [,b]) => b.count - a.count);
@@ -632,50 +659,31 @@ client.once('ready', () => {
     console.log('🏢 Boundless Insurance Group - AP Tracking System');
     console.log(`📊 Sales channel: ${process.env.SALES_CHANNEL_ID}`);
     console.log(`📈 Reports channel: ${process.env.LEADERBOARD_CHANNEL_ID}`);
+    console.log('🌐 Running on Render.com');
     console.log('💰 Tracking: Annual Premium (AP) Only');
     console.log('🔇 Silent mode: Only emoji reactions, no reply messages');
     console.log('📦 Multi-sale detection: Can process multiple sales per message');
-    console.log('💵 NEW: Now detects both $123 and 123$ formats');
+    console.log('💵 Detects both $123 and 123$ formats');
     console.log('🕐 Timezone: Pacific Standard Time (PST/PDT)');
-    console.log('🌙 Quiet Hours: 12 AM - 8 AM Pacific (no automatic messages)');
-    console.log('📊 Daily Final Rankings: 10:55 PM Pacific (preserves full day data)');
+    console.log('📊 Daily Final Rankings: 10:55 PM Pacific');
     console.log('🆕 Week-to-date progress: Shows with daily report');
     console.log('📈 Month-to-date progress: Shows with daily report');
-    console.log('⏰ Scheduled times for AP leaderboard:');
-    console.log('   - Every 3 hours: 9am, 12pm, 3pm, 6pm, 9pm PST');
-    console.log('   - Daily 10:55 PM PST: Daily + Weekly + Monthly progress');
-    console.log('   - Sundays 10:55 PM PST: Weekly FINAL (complete week)');
-    console.log('   - Last day of month 10:55 PM PST: Monthly FINAL');
-    console.log('   📅 Weekly resets: Monday mornings (captures full Sunday)');
-    console.log('   📅 Monthly resets: 1st of each month');
-    console.log('   🌙 NO automatic messages between 12 AM - 8 AM Pacific');
     
-    // ==========================================
-    // AUTOMATED SCHEDULES - TIMEZONE CORRECTED
-    // ==========================================
-    
-    // IMPORTANT: Cron runs in UTC. We need to adjust for Pacific Time
-    // PST = UTC-8 (Nov-Mar), PDT = UTC-7 (Mar-Nov)
-    // We'll use a function to determine if we're in DST
-    
+    // DST Check
     function isDST(date = new Date()) {
         const jan = new Date(date.getFullYear(), 0, 1).getTimezoneOffset();
         const jul = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
         return Math.max(jan, jul) !== date.getTimezoneOffset();
     }
     
-    // Calculate UTC hours for Pacific Time
     function getPacificToUTC(pacificHour) {
-        // If we're in DST (PDT), add 7 hours, otherwise add 8 hours (PST)
         const offset = isDST() ? 7 : 8;
         const utcHour = (pacificHour + offset) % 24;
         return utcHour;
     }
     
-    // 1. Every 3 hours - Post AP leaderboard only
-    // Pacific times: 9am, 12pm, 3pm, 6pm, 9pm (NO 6am - respecting quiet hours)
-    // Convert to UTC based on current DST status
-    const threeHourlyPacific = [9, 12, 15, 18, 21];  // Removed 6am
+    // Schedule cron jobs
+    const threeHourlyPacific = [9, 12, 15, 18, 21];
     const threeHourlyUTC = threeHourlyPacific.map(hour => getPacificToUTC(hour));
     const cronSchedule3Hours = `0 ${threeHourlyUTC.join(',')} * * *`;
     
@@ -688,9 +696,7 @@ client.once('ready', () => {
                 hour12: true
             });
             
-            // Send AP Leaderboard ONLY
             await channel.send({ embeds: [generateAPLeaderboard('daily')] });
-            
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
             console.log(`📊 AP leaderboard updated - ${pacificTime} PST/PDT`);
         }
@@ -699,37 +705,33 @@ client.once('ready', () => {
         timezone: "UTC"
     });
 
-    // 2. Daily summary at 10:55 PM Pacific (1 hour earlier to ensure correct display)
-    const dailyUTCHour = getPacificToUTC(22); // 10 PM Pacific
+    // Daily summary at 10:55 PM Pacific
+    const dailyUTCHour = getPacificToUTC(22);
     cron.schedule(`55 ${dailyUTCHour} * * *`, async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
-            // Create a copy of current data BEFORE any reset
             const dailyDataCopy = JSON.parse(JSON.stringify(salesData.daily));
             const weeklyDataCopy = JSON.parse(JSON.stringify(salesData.weekly));
             const monthlyDataCopy = JSON.parse(JSON.stringify(salesData.monthly));
             
             await channel.send('📢 **END OF DAY FINAL RANKINGS**');
             
-            // Generate DAILY AP leaderboard only
             const apEmbed = generateAPLeaderboardFromData(dailyDataCopy, '💵 DAILY FINAL STANDINGS - COMPLETE');
             apEmbed.setColor(0xFFD700);
             await channel.send({ embeds: [apEmbed] });
             
-            // Add WEEKLY PROGRESS summary (AP only)
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
             await channel.send('📊 **WEEK-TO-DATE PROGRESS**');
             
             const weeklyApEmbed = generateAPLeaderboardFromData(weeklyDataCopy, '💵 WEEKLY PROGRESS (So Far)');
-            weeklyApEmbed.setColor(0x00BFFF); // Light blue for weekly progress
+            weeklyApEmbed.setColor(0x00BFFF);
             await channel.send({ embeds: [weeklyApEmbed] });
             
-            // NEW: Add MONTHLY PROGRESS summary
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
             await channel.send('📈 **MONTH-TO-DATE PROGRESS**');
             
             const monthlyApEmbed = generateAPLeaderboardFromData(monthlyDataCopy, '💵 MONTHLY PROGRESS (So Far)');
-            monthlyApEmbed.setColor(0x9370DB); // Purple for monthly progress
+            monthlyApEmbed.setColor(0x9370DB);
             await channel.send({ embeds: [monthlyApEmbed] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
@@ -740,54 +742,47 @@ client.once('ready', () => {
         timezone: "UTC"
     });
 
-    // 3. Weekly summary - Sundays at 10:55 PM Pacific  
-    const weeklyUTCHour = getPacificToUTC(22); // 10 PM Pacific
+    // Weekly summary - Sundays at 10:55 PM Pacific
+    const weeklyUTCHour = getPacificToUTC(22);
     cron.schedule(`55 ${weeklyUTCHour} * * 0`, async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) {
-            // Create a copy of current data BEFORE any reset
             const weeklyDataCopy = JSON.parse(JSON.stringify(salesData.weekly));
             
             await channel.send('🏆 **WEEKLY FINAL RANKINGS**');
             
-            // Generate AP leaderboard only
             const apEmbed = generateAPLeaderboardFromData(weeklyDataCopy, '💵 WEEKLY CHAMPIONS - COMPLETE WEEK');
             apEmbed.setColor(0xFF6B6B);
             await channel.send({ embeds: [apEmbed] });
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Weekly AP rankings posted - Sunday 10:55 PM Pacific with preserved data');
+            console.log('📊 Weekly AP rankings posted - Sunday 10:55 PM Pacific');
         }
     }, {
         scheduled: true,
         timezone: "UTC"
     });
 
-    // 4. Monthly summary - Last day of month at 10:55 PM Pacific
-    const monthlyUTCHour = getPacificToUTC(22); // 10 PM Pacific
-    // Run every day, but check inside if it's the last day
+    // Monthly summary - Last day of month at 10:55 PM Pacific
+    const monthlyUTCHour = getPacificToUTC(22);
     cron.schedule(`55 ${monthlyUTCHour} * * *`, async () => {
-        // Check if today is the last day of the month in Pacific Time
         const pacificNow = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
         const tomorrow = new Date(pacificNow);
         tomorrow.setDate(tomorrow.getDate() + 1);
         
-        // If tomorrow is the 1st, today is the last day of the month
         if (tomorrow.getDate() === 1) {
             const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
             if (channel) {
-                // Create a copy of current data BEFORE any reset
                 const monthlyDataCopy = JSON.parse(JSON.stringify(salesData.monthly));
                 
                 await channel.send('🎊 **MONTHLY FINAL RANKINGS - CONGRATULATIONS!** 🎊');
                 
-                // Generate AP leaderboard only
                 const apEmbed = generateAPLeaderboardFromData(monthlyDataCopy, '💵 MONTHLY CHAMPIONS - COMPLETE MONTH');
                 apEmbed.setColor(0xFFD700);
                 await channel.send({ embeds: [apEmbed] });
                 
                 await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-                console.log('📊 Monthly AP rankings posted - End of month 10:55 PM Pacific with preserved data');
+                console.log('📊 Monthly AP rankings posted - End of month 10:55 PM Pacific');
             }
         }
     }, {
@@ -795,7 +790,6 @@ client.once('ready', () => {
         timezone: "UTC"
     });
     
-    // Display current timezone info
     console.log('\n🌍 TIMEZONE INFORMATION:');
     const now = new Date();
     const utcTime = now.toLocaleString('en-US', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', hour12: true });
@@ -815,12 +809,10 @@ client.on('messageCreate', async message => {
         const sales = parseMultipleSales(message.content);
         
         if (sales && sales.length > 0) {
-            // Process EACH sale separately
             let totalAmount = 0;
             
             for (const sale of sales) {
                 if (sale.amount > 0) {
-                    // Add each sale individually
                     addSale(
                         message.author.id, 
                         message.author.username, 
@@ -833,27 +825,22 @@ client.on('messageCreate', async message => {
                 }
             }
             
-            // React with emojis based on TOTAL amount
             if (totalAmount > 0) {
                 await message.react('✅');
                 await message.react('💰');
                 
-                // Add fire emoji for big total sales
                 if (totalAmount >= 1000) {
                     await message.react('🔥');
                 }
                 
-                // Add rocket for huge sales
                 if (totalAmount >= 5000) {
                     await message.react('🚀');
                 }
                 
-                // Add star for multiple policies in one message
                 if (sales.length >= 3) {
                     await message.react('⭐');
                 }
                 
-                // NO REPLY MESSAGE - Only reactions
                 console.log(`📊 Total recorded: ${sales.length} policies, $${totalAmount} total AP`);
             }
         }
@@ -881,7 +868,6 @@ client.on('messageCreate', async message => {
                 };
                 
                 if (validPeriods[period]) {
-                    // Send AP leaderboard only
                     await message.channel.send({ embeds: [generateAPLeaderboard(validPeriods[period])] });
                 } else {
                     await message.reply('Usage: `!leaderboard [daily|weekly|monthly]`');
@@ -898,7 +884,6 @@ client.on('messageCreate', async message => {
                 const monthly = salesData.monthly[userId] || { total: 0, count: 0 };
                 const allTime = salesData.allTime && salesData.allTime[userId] ? salesData.allTime[userId] : { total: 0, count: 0 };
 
-                // Find AP rankings
                 const dailyAPRank = Object.entries(salesData.daily)
                     .sort(([,a], [,b]) => b.total - a.total)
                     .findIndex(([id,]) => id === userId) + 1;
@@ -972,11 +957,7 @@ client.on('messageCreate', async message => {
                         },
                         {
                             name: '⏰ **AUTOMATIC REPORTS (PST/PDT)**',
-                            value: 'AP leaderboard posts automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 10:55 PM Pacific:\n  - Daily Final Standings\n  - **Weekly Progress (week-to-date)**\n  - **Monthly Progress (month-to-date)**\n• Weekly FINAL summary Sundays 10:55 PM Pacific\n• Monthly FINAL summary last day 10:55 PM Pacific\n🌙 **Quiet hours: 12 AM - 8 AM (no automatic messages)**'
-                        },
-                        {
-                            name: '🏆 **ANNUAL PREMIUM FOCUS**',
-                            value: '**All rankings based on total Annual Premium (AP)**\nFocus on total sales amount, not policy count\nWeekly progress shown every night at 10:55 PM'
+                            value: 'AP leaderboard posts automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 10:55 PM Pacific:\n  - Daily Final Standings\n  - **Weekly Progress (week-to-date)**\n  - **Monthly Progress (month-to-date)**\n• Weekly FINAL summary Sundays 10:55 PM Pacific\n• Monthly FINAL summary last day 10:55 PM Pacific'
                         }
                     )
                     .setFooter({ text: '💼 BIG - Annual Premium Rankings' })
@@ -991,7 +972,6 @@ client.on('messageCreate', async message => {
 
             case 'timezone':
             case 'tz':
-                // Command to check current timezone status
                 const now = new Date();
                 const utcTime = now.toLocaleString('en-US', { 
                     timeZone: 'UTC', 
@@ -1019,42 +999,11 @@ client.on('messageCreate', async message => {
                 
                 await message.channel.send({ embeds: [tzEmbed] });
                 break;
-
-            case 'test':
-                // Test command to verify parsing (admin only)
-                if (message.author.id === message.guild.ownerId || message.member.permissions.has('ADMINISTRATOR')) {
-                    const testMessages = [
-                        'His: $4,000 NLG IUL Hers: $2,400 NLG IUL',
-                        'His: $1,000 NLG IUL Hers: $4,400 NLG IUL Child: $500',
-                        '$500 + $600 + $700 multiple sales',
-                        ':siren: FIRST SALE! :siren: \n$1,227.84 🐮  TLE\nw/ @Roan Hickey ⛹️‍♂️ \n#SD #FirstDayFirstSale',
-                        'Family package: Husband $3,000 Wife $2,500 Kids $500 each x2'
-                    ];
-                    
-                    let testResult = '**Parse Test Results:**\n';
-                    for (const msg of testMessages) {
-                        const parsed = parseMultipleSales(msg);
-                        testResult += `\n**Input:** \`${msg}\`\n`;
-                        if (parsed && parsed.length > 0) {
-                            testResult += `→ Found **${parsed.length} sale(s)**:\n`;
-                            parsed.forEach((sale, i) => {
-                                testResult += `   ${i + 1}. **$${sale.amount}** - "${sale.policyType}"\n`;
-                            });
-                            const total = parsed.reduce((sum, sale) => sum + sale.amount, 0);
-                            testResult += `   **Total: $${total.toLocaleString('en-US', {minimumFractionDigits: 2})}**\n`;
-                        } else {
-                            testResult += `→ No sales found\n`;
-                        }
-                    }
-                    
-                    await message.channel.send(testResult);
-                }
-                break;
         }
     }
 });
 
-// Helper function for DST check (also define it globally for reuse)
+// Helper function for DST check
 function isDST(date = new Date()) {
     const jan = new Date(date.getFullYear(), 0, 1).getTimezoneOffset();
     const jul = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
@@ -1082,12 +1031,12 @@ client.on('reconnecting', () => {
 async function start() {
     console.log('╔════════════════════════════════════════╗');
     console.log('║     🚀 BIG POLICY PULSE v4.7 🚀       ║');
-    console.log('║   CRITICAL FIX: Separated data resets  ║');
-    console.log('║   Weekly resets Monday, not Sunday     ║');
+    console.log('║   Optimized for Render.com deployment  ║');
     console.log('╚════════════════════════════════════════╝');
     console.log('');
     console.log('⏳ Starting AP tracking system...');
     console.log(`📁 Using data directory: ${DATA_DIR}`);
+    console.log(`🌐 Server port: ${PORT}`);
     
     await loadData();
     
@@ -1096,9 +1045,9 @@ async function start() {
     } catch (error) {
         console.error('❌ Error connecting to Discord:', error.message);
         console.log('\n🔍 Please verify:');
-        console.log('   1. TOKEN in .env file is correct');
+        console.log('   1. DISCORD_TOKEN in environment variables');
         console.log('   2. Bot is created in Discord Developer Portal');
-        console.log('   3. Bot permissions are correct');
+        console.log('   3. Bot has proper permissions');
         process.exit(1);
     }
 }
