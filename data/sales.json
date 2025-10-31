@@ -62,139 +62,37 @@
     }
   },
   "weekly": {
-    "user_keith_williams_04": {
-      "username": "keith.williams_04",
-      "total": 2890.18,
-      "count": 3,
-      "policies": {
-        "Transam Iul": 1,
-        "Amam Iul His": 1,
-        "Amam Iul Hers": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1089.9,
-          "type": "Amam Iul His",
-          "date": "2025-10-26T15:00:00.000Z"
-        },
-        {
-          "amount": 818.04,
-          "type": "Amam Iul Hers",
-          "date": "2025-10-26T15:01:00.000Z"
-        },
-        {
-          "amount": 982.24,
-          "type": "Transam Iul",
-          "date": "2025-10-27T16:00:00.000Z"
-        }
-      ]
+    "keith.williams_04": {
+      "total": 1683.4,
+      "count": 2
     },
-    "user_harrisonvandermey": {
-      "username": "harrisonvandermey",
-      "total": 450,
-      "count": 1,
-      "policies": {
-        "Gtl Wl": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 450,
-          "type": "Gtl Wl",
-          "date": "2025-10-27T11:00:00.000Z"
-        }
-      ]
+    "harrisonvandermey": {
+      "total": 450.0,
+      "count": 1
     },
-    "user_sellwithjoey": {
-      "username": "sellwithjoey",
-      "total": 2787.36,
-      "count": 3,
-      "policies": {
-        "Moo Ga": 2,
-        "Transam Iul": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 496.92,
-          "type": "Moo Ga",
-          "date": "2025-10-26T10:00:00.000Z"
-        },
-        {
-          "amount": 669,
-          "type": "Moo Ga",
-          "date": "2025-10-27T13:00:00.000Z"
-        },
-        {
-          "amount": 1621.44,
-          "type": "Transam Iul",
-          "date": "2025-10-27T13:30:00.000Z"
-        }
-      ]
+    "sellwithjoey": {
+      "total": 7812.96,
+      "count": 7
     },
-    "user_therealvblacklive": {
-      "username": "therealvblacklive",
-      "total": 4507.56,
-      "count": 2,
-      "policies": {
-        "Rna": 1,
-        "Foresters Iul": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 907.56,
-          "type": "Rna",
-          "date": "2025-10-27T18:00:00.000Z"
-        },
-        {
-          "amount": 3600.0,
-          "type": "Foresters Iul",
-          "date": "2025-10-29T20:00:00.000Z"
-        }
-      ]
-    },
-    "1410683197888659527": {
-      "username": "j_vill1",
-      "total": 1500,
-      "count": 1,
-      "policies": {
-        "Moo Iul Closed": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1500,
-          "type": "Moo Iul Closed",
-          "date": "2025-10-29T15:28:40.103Z"
-        }
-      ]
-    },
-    "user_loganobrienhere": {
-      "username": "loganobrienhere",
-      "total": 1480.08,
-      "count": 1,
-      "policies": {
-        "Amam Iul": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1480.08,
-          "type": "Amam Iul",
-          "date": "2025-10-29T20:00:00.000Z"
-        }
-      ]
-    },
-    "user_squizard33": {
-      "username": "squizard33",
+    "squizard33": {
       "total": 1639.44,
-      "count": 1,
-      "policies": {
-        "Amam 20 Year Term": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1639.44,
-          "type": "Amam 20 Year Term",
-          "date": "2025-10-29T20:00:00.000Z"
-        }
-      ]
+      "count": 1
+    },
+    "therealvblacklive": {
+      "total": 5339.76,
+      "count": 3
+    },
+    "loganobrienhere": {
+      "total": 10119.96,
+      "count": 9
+    },
+    "j_vill1": {
+      "total": 1500.0,
+      "count": 1
+    },
+    "getrichwithrich": {
+      "total": 2285.16,
+      "count": 2
     }
   },
   "monthly": {
@@ -5539,4 +5437,3 @@
     "monthly": 10,
     "monthlyTag": "2025-M10"
   }
-}
