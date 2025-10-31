@@ -5,6 +5,9 @@ const path = require('path');
 const cron = require('node-cron');
 const express = require('express');
 const https = require('https');
+const { exec } = require('child_process');
+const util = require('util');
+const execPromise = util.promisify(exec);
 
 // ========================================
 // SERVIDOR EXPRESS PARA RENDER (CRÍTICO)
@@ -122,33 +125,73 @@ async function loadData() {
     }
 }
 
-// Save data
+// Save data - Simplificado sin backup a Discord
 async function saveData() {
     try {
         await fs.mkdir(DATA_DIR, { recursive: true });
         await fs.writeFile(DATA_FILE, JSON.stringify(salesData, null, 2));
         console.log(`💾 Data saved to: ${DATA_FILE}`);
-        
-        // Backup to Discord if configured
-        if (process.env.BACKUP_CHANNEL_ID && client.isReady()) {
-            try {
-                const backupChannel = client.channels.cache.get(process.env.BACKUP_CHANNEL_ID);
-                if (backupChannel) {
-                    const dataString = JSON.stringify(salesData, null, 2);
-                    await backupChannel.send({
-                        content: `📁 Auto-backup - ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}`,
-                        files: [{
-                            attachment: Buffer.from(dataString),
-                            name: `sales_backup_${Date.now()}.json`
-                        }]
-                    });
-                }
-            } catch (backupError) {
-                console.error('⚠️ Could not backup to Discord:', backupError.message);
-            }
-        }
     } catch (error) {
         console.error('❌ Error saving data:', error);
+    }
+}
+
+// Función para sincronizar con GitHub
+async function syncToGitHub() {
+    if (!process.env.GITHUB_TOKEN) {
+        console.log('⚠️ No GitHub token configured, skipping GitHub sync');
+        return false;
+    }
+    
+    try {
+        console.log('🔄 Starting GitHub sync...');
+        
+        // Configurar git
+        await execPromise('git config --global user.email "bot@bigpolicy.com"');
+        await execPromise('git config --global user.name "BIG Policy Bot"');
+        
+        // Configurar remote con token
+        const gitUrl = `https://${process.env.GITHUB_TOKEN}@github.com/juanfe14-dev/big-policy-bot.git`;
+        await execPromise(`git remote set-url origin ${gitUrl}`);
+        
+        // Pull últimos cambios
+        await execPromise('git pull origin main --rebase');
+        
+        // Agregar archivo de datos
+        await execPromise(`git add ${DATA_FILE}`);
+        
+        // Commit con timestamp
+        const pacificTime = new Date().toLocaleString('en-US', { 
+            timeZone: 'America/Los_Angeles',
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+        
+        // Obtener estadísticas para el commit
+        const totalDaily = Object.keys(salesData.daily || {}).length;
+        const totalWeekly = Object.keys(salesData.weekly || {}).length;
+        const totalMonthly = Object.keys(salesData.monthly || {}).length;
+        
+        await execPromise(`git commit -m "Auto-update sales data - ${pacificTime} Pacific - ${totalDaily} daily, ${totalWeekly} weekly, ${totalMonthly} monthly agents"`);
+        
+        // Push a GitHub
+        await execPromise('git push origin main');
+        
+        console.log('✅ Successfully synced to GitHub');
+        console.log(`   📊 Updated: ${totalDaily} daily, ${totalWeekly} weekly, ${totalMonthly} monthly agents`);
+        return true;
+    } catch (error) {
+        // Si el error es porque no hay cambios, no es un error real
+        if (error.message.includes('nothing to commit')) {
+            console.log('ℹ️ No changes to sync to GitHub');
+            return true;
+        }
+        console.error('❌ Error syncing to GitHub:', error.message);
+        return false;
     }
 }
 
@@ -498,167 +541,13 @@ function generateAPLeaderboardFromData(data, title) {
     return embed;
 }
 
-// Generate Policy Count Leaderboard
-function generatePolicyLeaderboard(period = 'daily', title = '', skipResetCheck = false) {
-    if (!skipResetCheck) {
-        checkResets();
-    }
-    
-    const data = salesData[period];
-    const sorted = Object.entries(data)
-        .sort(([,a], [,b]) => b.count - a.count);
-
-    const periodTitle = {
-        'daily': '📋 DAILY LEADERBOARD',
-        'weekly': '📋 WEEKLY LEADERBOARD',
-        'monthly': '📋 MONTHLY LEADERBOARD'
-    };
-
-    const currentDate = new Date().toLocaleString('en-US', {
-        timeZone: 'America/Los_Angeles',
-        month: '2-digit',
-        day: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-
-    const embed = new EmbedBuilder()
-        .setColor(0x0099FF)
-        .setTitle(title || periodTitle[period])
-        .setDescription(`📋 **Ranked by Number of Policies**\n📍 Date: ${currentDate}\n━━━━━━━━━━━━━━━━━━━━━`)
-        .setTimestamp()
-        .setFooter({ text: '💼 BIG - Policy Count Rankings' });
-
-    if (sorted.length === 0) {
-        embed.addFields({
-            name: '📝 No Records',
-            value: 'No policies recorded for this period'
-        });
-    } else {
-        let topDescription = '';
-        const top3 = sorted.slice(0, 3);
-        
-        top3.forEach(([userId, data], index) => {
-            const medal = index === 0 ? '🥇 **POLICY LEADER**' : index === 1 ? '🥈 **2nd Place**' : '🥉 **3rd Place**';
-            topDescription += `${medal}\n`;
-            topDescription += `👤 **${data.username}**\n`;
-            topDescription += `📋 **${data.count} Policies**\n`;
-            topDescription += `💰 *$${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})} total AP*\n\n`;
-        });
-        
-        embed.addFields({
-            name: '🌟 **TOP POLICY WRITERS**',
-            value: topDescription || 'No data'
-        });
-
-        if (sorted.length > 3) {
-            let restDescription = '';
-            const rest = sorted.slice(3, 10);
-            
-            rest.forEach(([userId, data], index) => {
-                restDescription += `**${index + 4}.** ${data.username} - **${data.count} policies** ($${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})})\n`;
-            });
-            
-            if (restDescription) {
-                embed.addFields({
-                    name: '📈 **Other Agents**',
-                    value: restDescription
-                });
-            }
-        }
-
-        const totalPolicies = Object.values(data).reduce((sum, user) => sum + user.count, 0);
-        const activeAgents = sorted.length;
-        const avgPoliciesPerAgent = activeAgents > 0 ? totalPolicies / activeAgents : 0;
-
-        embed.addFields({
-            name: '📊 **POLICY SUMMARY**',
-            value: `**Total Policies:** ${totalPolicies}\n**Active Agents:** ${activeAgents}\n**Avg per Agent:** ${avgPoliciesPerAgent.toFixed(1)}`
-        });
-    }
-
-    return embed;
-}
-
-// Generate Policy Leaderboard from specific data
-function generatePolicyLeaderboardFromData(data, title) {
-    const sorted = Object.entries(data)
-        .sort(([,a], [,b]) => b.count - a.count);
-
-    const currentDate = new Date().toLocaleString('en-US', {
-        timeZone: 'America/Los_Angeles',
-        month: '2-digit',
-        day: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-
-    const embed = new EmbedBuilder()
-        .setColor(0x0099FF)
-        .setTitle(title)
-        .setDescription(`📋 **Ranked by Number of Policies**\n📍 Date: ${currentDate}\n━━━━━━━━━━━━━━━━━━━━━`)
-        .setTimestamp()
-        .setFooter({ text: '💼 BIG - Policy Count Rankings' });
-
-    if (sorted.length === 0) {
-        embed.addFields({
-            name: '📝 No Records',
-            value: 'No policies recorded for this period'
-        });
-    } else {
-        let topDescription = '';
-        const top3 = sorted.slice(0, 3);
-        
-        top3.forEach(([userId, data], index) => {
-            const medal = index === 0 ? '🥇 **POLICY LEADER**' : index === 1 ? '🥈 **2nd Place**' : '🥉 **3rd Place**';
-            topDescription += `${medal}\n`;
-            topDescription += `👤 **${data.username}**\n`;
-            topDescription += `📋 **${data.count} Policies**\n`;
-            topDescription += `💰 *$${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})} total AP*\n\n`;
-        });
-        
-        embed.addFields({
-            name: '🌟 **TOP POLICY WRITERS**',
-            value: topDescription || 'No data'
-        });
-
-        if (sorted.length > 3) {
-            let restDescription = '';
-            const rest = sorted.slice(3, 10);
-            
-            rest.forEach(([userId, data], index) => {
-                restDescription += `**${index + 4}.** ${data.username} - **${data.count} policies** ($${data.total.toLocaleString('en-US', {minimumFractionDigits: 2})})\n`;
-            });
-            
-            if (restDescription) {
-                embed.addFields({
-                    name: '📈 **Other Agents**',
-                    value: restDescription
-                });
-            }
-        }
-
-        const totalPolicies = Object.values(data).reduce((sum, user) => sum + user.count, 0);
-        const activeAgents = sorted.length;
-        const avgPoliciesPerAgent = activeAgents > 0 ? totalPolicies / activeAgents : 0;
-
-        embed.addFields({
-            name: '📊 **POLICY SUMMARY**',
-            value: `**Total Policies:** ${totalPolicies}\n**Active Agents:** ${activeAgents}\n**Avg per Agent:** ${avgPoliciesPerAgent.toFixed(1)}`
-        });
-    }
-
-    return embed;
-}
-
 // Bot ready
 client.once('ready', () => {
     console.log(`✅ ${client.user.tag} is online!`);
     console.log('🏢 Boundless Insurance Group - AP Tracking System');
     console.log(`📊 Sales channel: ${process.env.SALES_CHANNEL_ID}`);
     console.log(`📈 Reports channel: ${process.env.LEADERBOARD_CHANNEL_ID}`);
+    console.log(`🔐 GitHub sync: ${process.env.GITHUB_TOKEN ? 'Enabled' : 'Disabled'}`);
     console.log('🌐 Running on Render.com');
     console.log('💰 Tracking: Annual Premium (AP) Only');
     console.log('🔇 Silent mode: Only emoji reactions, no reply messages');
@@ -666,8 +555,7 @@ client.once('ready', () => {
     console.log('💵 Detects both $123 and 123$ formats');
     console.log('🕐 Timezone: Pacific Standard Time (PST/PDT)');
     console.log('📊 Daily Final Rankings: 10:55 PM Pacific');
-    console.log('🆕 Week-to-date progress: Shows with daily report');
-    console.log('📈 Month-to-date progress: Shows with daily report');
+    console.log('🔄 GitHub sync: Daily at 10:55 PM Pacific');
     
     // DST Check
     function isDST(date = new Date()) {
@@ -705,7 +593,7 @@ client.once('ready', () => {
         timezone: "UTC"
     });
 
-    // Daily summary at 10:55 PM Pacific
+    // Daily summary at 10:55 PM Pacific con GitHub sync
     const dailyUTCHour = getPacificToUTC(22);
     cron.schedule(`55 ${dailyUTCHour} * * *`, async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
@@ -736,10 +624,25 @@ client.once('ready', () => {
             
             await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
             console.log('📊 Final daily AP + weekly progress + monthly progress posted - 10:55 PM Pacific');
+            
+            // SINCRONIZAR CON GITHUB DESPUÉS DEL REPORTE DIARIO
+            console.log('🔄 Attempting GitHub sync after daily report...');
+            const syncSuccess = await syncToGitHub();
+            if (syncSuccess) {
+                console.log('✅ Daily GitHub sync completed');
+            }
         }
     }, {
         scheduled: true,
         timezone: "UTC"
+    });
+
+    // Sync adicional cada 3 horas (opcional pero recomendado)
+    cron.schedule('0 */3 * * *', async () => {
+        if (process.env.GITHUB_TOKEN) {
+            console.log('⏰ 3-hour GitHub sync triggered');
+            await syncToGitHub();
+        }
     });
 
     // Weekly summary - Sundays at 10:55 PM Pacific
@@ -931,12 +834,25 @@ client.on('messageCreate', async message => {
 
                 await message.channel.send({ embeds: [statsEmbed] });
                 break;
+                
+            case 'sync':
+                // Comando manual para sincronizar con GitHub
+                if (message.member.permissions.has('ADMINISTRATOR')) {
+                    await message.reply('🔄 Starting GitHub sync...');
+                    const success = await syncToGitHub();
+                    if (success) {
+                        await message.reply('✅ GitHub sync completed successfully');
+                    } else {
+                        await message.reply('❌ GitHub sync failed - check logs');
+                    }
+                }
+                break;
 
             case 'help':
             case 'commands':
                 const helpEmbed = new EmbedBuilder()
                     .setColor(0x0066CC)
-                    .setTitle('📚 **BIG Policy Pulse v4.7 - User Manual**')
+                    .setTitle('📚 **BIG Policy Pulse v5.0 - User Manual**')
                     .setDescription('Annual Premium Tracking System - Pacific Time Zone\n━━━━━━━━━━━━━━━━━━━━━')
                     .addFields(
                         { 
@@ -956,11 +872,15 @@ client.on('messageCreate', async message => {
                             value: '✅ Sale recorded\n💰 Money earned\n🔥 Total >$1,000\n🚀 Total >$5,000\n⭐ 3+ policies in one message'
                         },
                         {
-                            name: '⏰ **AUTOMATIC REPORTS (PST/PDT)**',
-                            value: 'AP leaderboard posts automatically:\n• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• Daily close at 10:55 PM Pacific:\n  - Daily Final Standings\n  - **Weekly Progress (week-to-date)**\n  - **Monthly Progress (month-to-date)**\n• Weekly FINAL summary Sundays 10:55 PM Pacific\n• Monthly FINAL summary last day 10:55 PM Pacific'
+                            name: '⏰ **AUTOMATIC FEATURES**',
+                            value: '• Every 3 hours: AP leaderboard (9am, 12pm, 3pm, 6pm, 9pm Pacific)\n• 10:55 PM Pacific: Daily Final + Weekly/Monthly Progress\n• Sundays 10:55 PM: Weekly FINAL\n• Last day 10:55 PM: Monthly FINAL\n• **GitHub sync:** Every 3 hours + Daily at 10:55 PM'
+                        },
+                        {
+                            name: '🔧 **ADMIN COMMANDS**',
+                            value: '`!sync` - Force GitHub sync (Admin only)'
                         }
                     )
-                    .setFooter({ text: '💼 BIG - Annual Premium Rankings' })
+                    .setFooter({ text: '💼 BIG - v5.0 with GitHub Auto-Sync' })
                     .setTimestamp();
                 
                 await message.channel.send({ embeds: [helpEmbed] });
@@ -1030,8 +950,8 @@ client.on('reconnecting', () => {
 // Start bot
 async function start() {
     console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v4.7 🚀       ║');
-    console.log('║   Optimized for Render.com deployment  ║');
+    console.log('║     🚀 BIG POLICY PULSE v5.0 🚀       ║');
+    console.log('║   GitHub Auto-Sync Edition             ║');
     console.log('╚════════════════════════════════════════╝');
     console.log('');
     console.log('⏳ Starting AP tracking system...');
