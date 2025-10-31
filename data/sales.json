@@ -932,20 +932,26 @@
     },
     "user_loganobrienhere": {
       "username": "loganobrienhere",
-      "total": 21206.46,
-      "count": 15,
+      "total": 29846.34,
+      "count": 23,
       "policies": {
         "6 Amam Ahl": 1,
         "Rna": 3,
         "Amam Hp": 2,
         "Amam Tms": 1,
-        "Amam Iul": 1,
+        "Amam Iul": 2,
         "Sale": 2,
         "Gerber": 1,
         "Gtl": 1,
         "Ladder": 1,
         "RNAAmAm": 1,
-        "Amam Ahl": 1
+        "Amam Ahl": 1,
+        "Transam Fex": 1,
+        "Moo Ga": 1,
+        "Transam Iul": 2,
+        "Nlg": 1,
+        "AM Iul": 1,
+        "Iule": 1
       },
       "policyDetails": [
         {
@@ -1022,6 +1028,46 @@
           "amount": 1700.64,
           "type": "Rna",
           "date": "2025-10-23T19:30:00-05:00"
+        },
+        {
+          "amount": 2157.12,
+          "type": "Transam Fex",
+          "date": "2025-10-29T15:04:00-05:00"
+        },
+        {
+          "amount": 264.72,
+          "type": "Moo Ga",
+          "date": "2025-10-29T15:04:00-05:00"
+        },
+        {
+          "amount": 970.68,
+          "type": "Transam Iul",
+          "date": "2025-10-29T15:04:00-05:00"
+        },
+        {
+          "amount": 1479.96,
+          "type": "Amam Iul",
+          "date": "2025-10-29T15:04:00-05:00"
+        },
+        {
+          "amount": 650.04,
+          "type": "Transam Iul",
+          "date": "2025-10-29T15:04:00-05:00"
+        },
+        {
+          "amount": 832.2,
+          "type": "Nlg",
+          "date": "2025-10-29T15:04:00-05:00"
+        },
+        {
+          "amount": 1402.44,
+          "type": "AM Iul",
+          "date": "2025-10-29T15:04:00-05:00"
+        },
+        {
+          "amount": 882.72,
+          "type": "Iule",
+          "date": "2025-10-29T15:04:00-05:00"
         }
       ]
     },
@@ -1488,8 +1534,8 @@
     },
     "user_loganobrienhere": {
       "username": "loganobrienhere",
-      "total": 21206.46,
-      "count": 15
+      "total": 29846.34,
+      "count": 23
     },
     "user_kayden_green": {
       "username": "kayden.green",
@@ -3675,16 +3721,62 @@
       },
       "user_loganobrienhere": {
         "username": "loganobrienhere",
-        "total": 1480.08,
-        "count": 1,
+        "total": 10119.96,
+        "count": 9,
         "policies": {
-          "Amam Iul": 1
+          "Amam Iul": 2,
+          "Transam Fex": 1,
+          "Moo Ga": 1,
+          "Transam Iul": 2,
+          "Nlg": 1,
+          "AM Iul": 1,
+          "Iule": 1
         },
         "policyDetails": [
           {
             "amount": 1480.08,
             "type": "Amam Iul",
             "date": "2025-10-29T20:00:00.000Z"
+          },
+          {
+            "amount": 2157.12,
+            "type": "Transam Fex",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 264.72,
+            "type": "Moo Ga",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 970.68,
+            "type": "Transam Iul",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 1479.96,
+            "type": "Amam Iul",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 650.04,
+            "type": "Transam Iul",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 832.2,
+            "type": "Nlg",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 1402.44,
+            "type": "AM Iul",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 882.72,
+            "type": "Iule",
+            "date": "2025-10-29T15:04:00-05:00"
           }
         ]
       },
@@ -4325,16 +4417,62 @@
       },
       "user_loganobrienhere": {
         "username": "loganobrienhere",
-        "total": 1480.08,
-        "count": 1,
+        "total": 10119.96,
+        "count": 9,
         "policies": {
-          "Amam Iul": 1
+          "Amam Iul": 2,
+          "Transam Fex": 1,
+          "Moo Ga": 1,
+          "Transam Iul": 2,
+          "Nlg": 1,
+          "AM Iul": 1,
+          "Iule": 1
         },
         "policyDetails": [
           {
             "amount": 1480.08,
             "type": "Amam Iul",
             "date": "2025-10-29T20:00:00.000Z"
+          },
+          {
+            "amount": 2157.12,
+            "type": "Transam Fex",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 264.72,
+            "type": "Moo Ga",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 970.68,
+            "type": "Transam Iul",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 1479.96,
+            "type": "Amam Iul",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 650.04,
+            "type": "Transam Iul",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 832.2,
+            "type": "Nlg",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 1402.44,
+            "type": "AM Iul",
+            "date": "2025-10-29T15:04:00-05:00"
+          },
+          {
+            "amount": 882.72,
+            "type": "Iule",
+            "date": "2025-10-29T15:04:00-05:00"
           }
         ]
       },
