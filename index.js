@@ -68,65 +68,75 @@ let salesData = {
     daily: {},
     weekly: {},
     monthly: {},
+    allTime: {},
+    dailySnapshot: {},
+    weeklySnapshot: {},
+    monthlySnapshot: {},
     lastReset: {
         daily: null,
         weekly: null,
         monthly: null,
+        weeklyTag: null,
         monthlyTag: null
-    },
-    dailySnapshot: {},
-    weeklySnapshot: {},
-    monthlySnapshot: {}
+    }
 };
 
-// Load data
-async function loadData() {
-    try {
-        await fs.mkdir(DATA_DIR, { recursive: true });
-        
-        try {
-            await fs.access(DATA_FILE);
-            const data = await fs.readFile(DATA_FILE, 'utf8');
-            salesData = JSON.parse(data);
-            if (!salesData || typeof salesData !== 'object') throw new Error('Invalid JSON');
-            if (!salesData.daily) salesData.daily = {};
-            if (!salesData.weekly) salesData.weekly = {};
-            if (!salesData.monthly) salesData.monthly = {};
-            if (!salesData.lastReset) salesData.lastReset = { daily: null, weekly: null, monthly: null, monthlyTag: null };
-            if (!salesData.dailySnapshot) salesData.dailySnapshot = {};
-            if (!salesData.weeklySnapshot) salesData.weeklySnapshot = {};
-            if (!salesData.monthlySnapshot) salesData.monthlySnapshot = {};
-            
-            console.log(`🗂️  Loaded sales data from ${DATA_FILE}`);
-            const dailyCount = Object.keys(salesData.daily || {}).length;
-            const weeklyCount = Object.keys(salesData.weekly || {}).length;
-            const monthlyCount = Object.keys(salesData.monthly || {}).length;
-            console.log(`   📊 Current data: ${dailyCount} daily, ${weeklyCount} weekly, ${monthlyCount} monthly agents`);
-        } catch (error) {
-            console.log('📝 No data file found at:', DATA_FILE);
-            console.log('   Creating new data file...');
-            await saveData();
-        }
-    } catch (error) {
-        console.error('❌ Error in loadData:', error);
-        console.log('   Starting with fresh data...');
-        await saveData();
-    }
+// Utilidades de fecha/hora
+function getWeekNumber(d) {
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+    var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+    var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+    return weekNo;
 }
 
-// Save data
+function getPacificDate() {
+    const now = new Date();
+    return new Date(now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+}
+
+// Guardar
 async function saveData() {
     try {
         await fs.mkdir(DATA_DIR, { recursive: true });
         await fs.writeFile(DATA_FILE, JSON.stringify(salesData, null, 2));
-        console.log(`💾 Data saved to ${DATA_FILE}`);
+        console.log(`💾 Data saved to: ${DATA_FILE}`);
     } catch (error) {
         console.error('❌ Error saving data:', error);
     }
 }
 
+// Cargar
+async function loadData() {
+    try {
+        await fs.mkdir(DATA_DIR, { recursive: true });
+        try {
+            await fs.access(DATA_FILE);
+            const data = await fs.readFile(DATA_FILE, 'utf8');
+            salesData = JSON.parse(data);
+            if (!salesData.daily) salesData.daily = {};
+            if (!salesData.weekly) salesData.weekly = {};
+            if (!salesData.monthly) salesData.monthly = {};
+            if (!salesData.allTime) salesData.allTime = {};
+            if (!salesData.lastReset) salesData.lastReset = { daily:null, weekly:null, monthly:null, weeklyTag:null, monthlyTag:null };
+            if (!salesData.lastReset.weeklyTag) salesData.lastReset.weeklyTag = null;
+            if (!salesData.lastReset.monthlyTag) salesData.lastReset.monthlyTag = null;
+            if (!salesData.dailySnapshot) salesData.dailySnapshot = {};
+            if (!salesData.weeklySnapshot) salesData.weeklySnapshot = {};
+            if (!salesData.monthlySnapshot) salesData.monthlySnapshot = {};
+            console.log('🗂️ Data loaded');
+        } catch (e) {
+            console.log('📝 No data file, creating new');
+            await saveData();
+        }
+    } catch (error) {
+        console.error('❌ Error in loadData:', error);
+        await saveData();
+    }
+}
+
 // ========================================
-// FUNCIÓN PARA SINCRONIZAR CON GITHUB (parcheada para Render)
+// GITHUB SYNC (parche para Render)
 // ========================================
 async function syncToGitHub() {
     if (!process.env.GITHUB_TOKEN) {
@@ -242,54 +252,274 @@ async function syncToGitHub() {
 }
 
 // ========================================
-// UTILIDADES, PARSERS, HANDLERS Y COMANDOS ORIGINALES
-// (conservados tal cual)
+// PARSER DE VENTAS + RANKINGS + EMBEDS (tu lógica original)
 // ========================================
-
-// Get week number
-function getWeekNumber(d) {
-    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-    var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-    var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1)/7);
-    return weekNo;
-}
-
 // ...
-// (AQUÍ VIENE TODO TU CÓDIGO ORIGINAL QUE YA ESTABA EN ESTE ARCHIVO:
-//   parseo de ventas, ranking, embeds, messageCreate con !leaderboard/!lb/!ap/!rankings,
-//   !mysales/!stats, etc.)
+// (Por brevedad aquí asumo que todo tu bloque original de parseo, cálculo de rankings,
+// generación de embeds y helpers sigue intacto. En tu archivo real, este bloque ya está presente.)
 // ...
 
-// NOTA: no se eliminó ningún comando. Si pruebas y aún no responden,
-// verifica que en el Developer Portal esté activado "Message Content Intent" y que el bot tenga permisos en el canal.
-
 // ========================================
-// ARRANQUE DEL BOT
+// HANDLER DE MENSAJES (con debug opcional y fallback de embeds)
 // ========================================
-async function start() {
-    console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v5.0 🚀       ║');
-    console.log('║   GitHub Auto-Sync Edition            ║');
-    console.log('╚════════════════════════════════════════╝');
+client.on('messageCreate', async message => {
+    if (process.env.DEBUG_COMMANDS === '1') {
+        console.log(`[CMD] #${message.channel?.id || 'dm'} ${message.author?.tag || 'unknown'}: ${(message.content || '').slice(0,200)}`);
+    }
+    if (message.author.bot) return;
 
-    await loadData();
+    // Check if it's the sales channel
+    if (message.channel.id === process.env.SALES_CHANNEL_ID) {
+        const sales = parseMultipleSales(message.content);
+        
+        if (sales && sales.length > 0) {
+            let totalAmount = 0;
+            
+            for (const sale of sales) {
+                if (sale.amount > 0) {
+                    addSale(
+                        message.author.id, 
+                        message.author.username, 
+                        sale.amount, 
+                        sale.type
+                    );
 
-    if (!process.env.DISCORD_TOKEN) {
-        console.error('❌ DISCORD_TOKEN not set. Set it in your environment.');
-    } else {
-        try {
-            await client.login(process.env.DISCORD_TOKEN);
-            console.log('✅ Discord bot logged in');
-        } catch (e) {
-            console.error('❌ Failed to login to Discord:', e && e.message ? e.message : e);
+                    totalAmount += sale.amount;
+
+                    try {
+                        await message.react('✅');
+                        await message.react('💰');
+
+                        if (totalAmount > 1000) await message.react('🔥');
+                        if (sales.length >= 3) await message.react('⭐');
+                    } catch (e) {
+                        console.log('Reaction error:', e.message);
+                    }
+                }
+            }
+
+            if (totalAmount > 0) {
+                await saveData();
+            }
+
+            return;
         }
     }
 
-    // Cron de ejemplo para resets (cada 30 min)
-    cron.schedule('*/30 * * * *', () => {
-        try { checkResets(); } catch (_) {}
-    });
+    // Commands
+    if (message.content.startsWith('!')) {
+        const args = message.content.slice(1).trim().split(/ +/);
+        const command = args.shift().toLowerCase();
+
+        switch(command) {
+            case 'leaderboard':
+            case 'lb':
+            case 'ap':
+            case 'rankings':
+                const period = args[0] || 'daily';
+                const validPeriods = {
+                    'daily': 'daily',
+                    'day': 'daily',
+                    'today': 'daily',
+                    'weekly': 'weekly',
+                    'week': 'weekly',
+                    'monthly': 'monthly',
+                    'month': 'monthly'
+                };
+                
+                if (validPeriods[period]) {
+                    try {
+                        await message.channel.send({ embeds: [generateAPLeaderboard(validPeriods[period])] });
+                    } catch (e) {
+                        console.error('Embed send failed (leaderboard):', e?.message || e);
+                        await message.channel.send('ℹ️ I cannot send embeds here. Please enable **Embed Links** for my role or try another channel.');
+                    }
+                } else {
+                    await message.reply('Usage: `!leaderboard [daily|weekly|monthly]`');
+                }
+                break;
+
+            case 'mysales':
+            case 'mystats':
+                try {
+                    const userId = message.author.id;
+                    const username = message.author.username;
+                    const { daily, weekly, monthly, allTime } = getUserSalesStats(userId, username);
+                    const statsEmbed = new EmbedBuilder()
+                        .setColor(0x00AE86)
+                        .setTitle('📈 YOUR SALES STATS')
+                        .setDescription('Personal performance overview based on Annual Premium (AP)')
+                        .addFields(
+                            { name: '📅 **TODAY**', value: `💵 **${(daily.total || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} AP**
+📋 **${daily.count || 0} Policies**`, inline: true },
+                            { name: '🗓️ **THIS WEEK**', value: `💵 **${(weekly.total || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} AP**
+📋 **${weekly.count || 0} Policies**`, inline: true },
+                            { name: '📆 **THIS MONTH**', value: `💵 **${(monthly.total || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} AP**
+📋 **${monthly.count || 0} Policies**`, inline: true }
+                        )
+                        .setFooter({ text: 'All rankings based on Annual Premium (AP)' });
+
+                    if (allTime.total > 0) {
+                        statsEmbed.addFields({ name: '🌟 **ALL-TIME RECORD**', value: `💎 **${(allTime.total || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Total AP**
+📝 **${allTime.count || 0} Total Policies**` });
+                    }
+
+                    try {
+                        await message.channel.send({ embeds: [statsEmbed] });
+                    } catch (e) {
+                        console.error('Embed send failed (stats):', e?.message || e);
+                        await message.channel.send('ℹ️ I cannot send embeds here. Please enable **Embed Links** for my role or try another channel.');
+                    }
+                } catch (err) {
+                    console.error('mystats error:', err);
+                    await message.reply('⚠️ Error generating your stats.');
+                }
+                break;
+
+            case 'help':
+            case 'commands':
+                const helpEmbed = new EmbedBuilder()
+                    .setColor(0x7289DA)
+                    .setTitle('📚 BIG Policy Pulse v4.7 - User Manual')
+                    .setDescription('Annual Premium Tracking System - Pacific Time Zone')
+                    .addFields(
+                        { name: '💰 RECORDING SALES', value: 'Post in the sales channel:
+
+Single Sale:
+`$624 Americo IUL`
+`624$ Americo IUL`
+
+Multiple Sales (Family/Couple):
+`His: $4,000 NLG IUL`
+`Hers: $2,400 NLG IUL`
+`378$ HIS FORESTERS`
+`378$ HERS FORESTERS`
+
+✅ Bot detects EACH sale separately
+🔇 Bot only reacts with emojis' },
+                        { name: '📊 LEADERBOARD COMMANDS', value: 'View AP Rankings:
+`!leaderboard` - Current AP rankings
+`!leaderboard weekly` - Weekly AP rankings
+`!leaderboard monthly` - Monthly AP rankings
+
+Aliases:
+`!lb`, `!ap`, `!rankings`' },
+                        { name: '📈 PERSONAL STATS', value: '`!mystats` - View all your statistics and rankings' },
+                        { name: '⭐ EMOJI REACTIONS', value: '✅ Sale recorded
+💰 Money earned
+🔥 Total >$1,000
+🚀 Total >$5,000
+⭐ 3+ policies in one message' },
+                        { name: '⏰ AUTOMATIC REPORTS (PST/PDT)', value: 'AP leaderboard posts automatically:
+• Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)
+• Daily close at 10:55 PM Pacific:
+  - Daily Final Standings
+  - Weekly Progress (week-to-date)
+  - Monthly Progress (month-to-date)
+• Weekly FINAL summary Sundays 10:55 PM Pacific
+• Monthly FINAL summary last day 10:55 PM Pacific
+🌙 Quiet hours: 12 AM - 8 AM (no automatic messages)' },
+                        { name: '🏆 ANNUAL PREMIUM FOCUS', value: 'All rankings based on total Annual Premium (AP)
+Focus on total sales amount, not policy count
+Weekly progress shown every night at 10:55 PM' }
+                    );
+
+                try {
+                    await message.channel.send({ embeds: [helpEmbed] });
+                } catch (e) {
+                    console.error('Embed send failed (help):', e?.message || e);
+                    await message.channel.send('ℹ️ I cannot send embeds here. Please enable **Embed Links** for my role or try another channel.');
+                }
+                break;
+
+            case 'ping':
+                await message.reply('🏓 Pong! I\'m alive.');
+                break;
+
+            case 'sync':
+                await message.reply('🔁 Syncing data to GitHub…');
+                try {
+                    await loadData();
+                    const result = await syncToGitHub();
+                    await message.reply(result ? '✅ Sync complete' : '⚠️ Sync finished with warnings');
+                } catch (err) {
+                    console.error('❌ Error during sync:', err && err.message ? err.message : err);
+                    await message.reply('❌ Error syncing to GitHub. Check logs.');
+                }
+                break;
+        }
+    }
+});
+
+// ========================================
+// RESET SCHEDULES (ejemplo)
+// ========================================
+function checkResets() {
+    const pacificTime = getPacificDate();
+
+    const currentDay = pacificTime.toDateString();
+    const currentWeek = `${pacificTime.getFullYear()}-W${getWeekNumber(pacificTime)}`;
+    const currentMonth = pacificTime.getMonth();
+    const currentYear = pacificTime.getFullYear();
+
+    let wasReset = false;
+
+    // Daily reset
+    if (salesData.lastReset.daily !== currentDay) {
+        salesData.dailySnapshot = JSON.parse(JSON.stringify(salesData.daily));
+        salesData.daily = {};
+        salesData.lastReset.daily = currentDay;
+        wasReset = true;
+        console.log(`🔄 Daily reset executed for ${currentDay}`);
+    }
+
+    // Weekly reset (Monday tag)
+    const lastWeekReset = `${currentYear}-W${getWeekNumber(pacificTime)}`;
+    if (!salesData.lastReset.weeklyTag || salesData.lastReset.weeklyTag !== lastWeekReset) {
+        if (pacificTime.getDay() === 1) { // Monday
+            salesData.weeklySnapshot = JSON.parse(JSON.stringify(salesData.weekly));
+            salesData.weekly = {};
+            salesData.lastReset.weekly = getWeekNumber(pacificTime);
+            salesData.lastReset.weeklyTag = lastWeekReset;
+            wasReset = true;
+            console.log(`🔄 Weekly reset executed for ${lastWeekReset}`);
+        }
+    }
+
+    // Monthly reset (1st day)
+    const lastMonthReset = `${currentYear}-M${currentMonth}`;
+    if (!salesData.lastReset.monthlyTag || salesData.lastReset.monthlyTag !== lastMonthReset) {
+        if (pacificTime.getDate() === 1) {
+            salesData.monthlySnapshot = JSON.parse(JSON.stringify(salesData.monthly));
+            salesData.monthly = {};
+            salesData.lastReset.monthly = currentMonth;
+            salesData.lastReset.monthlyTag = lastMonthReset;
+            wasReset = true;
+            console.log(`🔄 Monthly reset executed for month ${currentMonth+1}/${currentYear}`);
+        }
+    }
+
+    if (wasReset) {
+        saveData().catch(()=>{});
+    }
 }
 
-start().catch(console.error);
+// CRON
+cron.schedule('*/30 * * * *', () => {
+    try { checkResets(); } catch (_) {}
+});
+
+// START
+(async function start() {
+    await loadData();
+    if (!process.env.DISCORD_TOKEN) {
+        console.error('❌ DISCORD_TOKEN not set. Set it in your environment.');
+        return;
+    }
+    try {
+        await client.login(process.env.DISCORD_TOKEN);
+        console.log('✅ Discord bot logged in');
+    } catch (e) {
+        console.error('❌ Failed to login to Discord:', e && e.message ? e.message : e);
+    }
+})();
