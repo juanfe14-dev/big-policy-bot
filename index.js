@@ -383,34 +383,34 @@ client.on('messageCreate', async message => {
                     .setTitle('📚 BIG Policy Pulse v4.7 - User Manual')
                     .setDescription('Annual Premium Tracking System - Pacific Time Zone')
                     .addFields(
-                        { name: '💰 RECORDING SALES', value: 'Post in the sales channel:
+                        { name: '💰 RECORDING SALES', value: `Post in the sales channel:
 
 Single Sale:
-`$624 Americo IUL`
-`624$ Americo IUL`
+\`$624 Americo IUL\`
+\`624$ Americo IUL\` (both formats work)
 
 Multiple Sales (Family/Couple):
-`His: $4,000 NLG IUL`
-`Hers: $2,400 NLG IUL`
-`378$ HIS FORESTERS`
-`378$ HERS FORESTERS`
+\`His: $4,000 NLG IUL\`  
+\`Hers: $2,400 NLG IUL\`
+\`378$ HIS FORESTERS\`  
+\`378$ HERS FORESTERS\`
 
 ✅ Bot detects EACH sale separately
-🔇 Bot only reacts with emojis' },
-                        { name: '📊 LEADERBOARD COMMANDS', value: 'View AP Rankings:
-`!leaderboard` - Current AP rankings
-`!leaderboard weekly` - Weekly AP rankings
-`!leaderboard monthly` - Monthly AP rankings
+🔇 Bot only reacts with emojis` },
+                        { name: '📊 LEADERBOARD COMMANDS', value: `View AP Rankings:
+\`!leaderboard\` - Current AP rankings
+\`!leaderboard weekly\` - Weekly AP rankings
+\`!leaderboard monthly\` - Monthly AP rankings
 
 Aliases:
-`!lb`, `!ap`, `!rankings`' },
+\`!lb\`, \`!ap\`, \`!rankings\`` },
                         { name: '📈 PERSONAL STATS', value: '`!mystats` - View all your statistics and rankings' },
-                        { name: '⭐ EMOJI REACTIONS', value: '✅ Sale recorded
+                        { name: '⭐ EMOJI REACTIONS', value: `✅ Sale recorded
 💰 Money earned
 🔥 Total >$1,000
 🚀 Total >$5,000
-⭐ 3+ policies in one message' },
-                        { name: '⏰ AUTOMATIC REPORTS (PST/PDT)', value: 'AP leaderboard posts automatically:
+⭐ 3+ policies in one message` },
+                        { name: '⏰ AUTOMATIC REPORTS (PST/PDT)', value: `AP leaderboard posts automatically:
 • Every 3 hours (9am, 12pm, 3pm, 6pm, 9pm Pacific)
 • Daily close at 10:55 PM Pacific:
   - Daily Final Standings
@@ -418,14 +418,18 @@ Aliases:
   - Monthly Progress (month-to-date)
 • Weekly FINAL summary Sundays 10:55 PM Pacific
 • Monthly FINAL summary last day 10:55 PM Pacific
-🌙 Quiet hours: 12 AM - 8 AM (no automatic messages)' },
-                        { name: '🏆 ANNUAL PREMIUM FOCUS', value: 'All rankings based on total Annual Premium (AP)
+🌙 Quiet hours: 12 AM - 8 AM (no automatic messages)` },
+                        { name: '🏆 ANNUAL PREMIUM FOCUS', value: `All rankings based on total Annual Premium (AP)
 Focus on total sales amount, not policy count
-Weekly progress shown every night at 10:55 PM' }
+Weekly progress shown every night at 10:55 PM` }
                     );
 
                 try {
                     await message.channel.send({ embeds: [helpEmbed] });
+                } catch (e) {
+                    console.error('Embed send failed (help):', e?.message || e);
+                    await message.channel.send('ℹ️ I cannot send embeds here. Please enable **Embed Links** for my role or try another channel.');
+                }
                 } catch (e) {
                     console.error('Embed send failed (help):', e?.message || e);
                     await message.channel.send('ℹ️ I cannot send embeds here. Please enable **Embed Links** for my role or try another channel.');
