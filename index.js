@@ -146,9 +146,17 @@ async function syncToGitHub() {
     try {
         console.log('🔄 Starting GitHub sync...');
         
-        // Configurar git
-        await execPromise('git config --global user.email "bot@bigpolicy.com"');
-        await execPromise('git config --global user.name "BIG Policy Bot"');
+        // Verificar si git está inicializado, si no, inicializar
+        try {
+            await execPromise('git status');
+        } catch (e) {
+            console.log('Initializing git repository...');
+            await execPromise('git init');
+        }
+        
+        // Configurar git user (requerido para commits)
+        await execPromise('git config user.email "bot@bigpolicy.com"');
+        await execPromise('git config user.name "BIG Policy Bot"');
         
         // Configurar remote con token
         const gitUrl = `https://${process.env.GITHUB_TOKEN}@github.com/juanfe14-dev/big-policy-bot.git`;
@@ -165,29 +173,40 @@ async function syncToGitHub() {
         }
         
         // Fetch para obtener la rama remota
-        await execPromise('git fetch origin');
-        
-        // Configurar la rama actual para trackear origin/main
         try {
-            await execPromise('git branch --set-upstream-to=origin/main main');
+            await execPromise('git fetch origin');
         } catch (e) {
-            console.log('Branch tracking setup skipped');
+            console.log('Fetch skipped - may be first time');
+        }
+        
+        // Verificar si estamos en una rama, si no, crear main
+        try {
+            await execPromise('git branch --show-current');
+        } catch (e) {
+            await execPromise('git checkout -b main');
         }
         
         // Pull últimos cambios (con estrategia de merge)
         try {
             await execPromise('git pull origin main --no-rebase --allow-unrelated-histories');
         } catch (pullError) {
-            console.log('Pull skipped - may be first sync');
+            console.log('Pull skipped - may be first sync or conflicts');
         }
         
         // Agregar archivo de datos (usar -f para forzar ya que data/ está en .gitignore)
         await execPromise(`git add -f ${DATA_FILE}`);
         
+        // Verificar si hay cambios para commitear
+        const status = await execPromise('git status --porcelain');
+        if (!status.stdout || status.stdout.trim() === '') {
+            console.log('ℹ️ No changes to sync');
+            return true;
+        }
+        
         // Commit con timestamp
         const pacificTime = new Date().toLocaleString('en-US', { 
             timeZone: 'America/Los_Angeles',
-            month: '2-digit',
+            month: 'short',
             day: '2-digit',
             year: 'numeric',
             hour: '2-digit',
@@ -200,20 +219,22 @@ async function syncToGitHub() {
         const totalWeekly = Object.keys(salesData.weekly || {}).length;
         const totalMonthly = Object.keys(salesData.monthly || {}).length;
         
-        await execPromise(`git commit -m "Auto-update sales data - ${pacificTime} Pacific - ${totalDaily} daily, ${totalWeekly} weekly, ${totalMonthly} monthly agents"`);
+        const commitMessage = `Auto-update sales data - ${pacificTime} - ${totalDaily}d ${totalWeekly}w ${totalMonthly}m agents`;
+        
+        try {
+            await execPromise(`git commit -m "${commitMessage}"`);
+        } catch (commitError) {
+            console.log('Trying alternative commit...');
+            await execPromise(`git commit -m "Auto-update sales data"`);
+        }
         
         // Push a GitHub
-        await execPromise('git push origin main');
+        await execPromise('git push origin main --force-with-lease');
         
         console.log('✅ Successfully synced to GitHub');
         console.log(`   📊 Updated: ${totalDaily} daily, ${totalWeekly} weekly, ${totalMonthly} monthly agents`);
         return true;
     } catch (error) {
-        // Si el error es porque no hay cambios, no es un error real
-        if (error.message.includes('nothing to commit')) {
-            console.log('ℹ️ No changes to sync to GitHub');
-            return true;
-        }
         console.error('❌ Error syncing to GitHub:', error.message);
         return false;
     }
