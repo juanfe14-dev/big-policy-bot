@@ -181,8 +181,8 @@ async function syncToGitHub() {
             console.log('Pull skipped - may be first sync');
         }
         
-        // Agregar archivo de datos
-        await execPromise(`git add ${DATA_FILE}`);
+        // Agregar archivo de datos (usar -f para forzar ya que data/ está en .gitignore)
+        await execPromise(`git add -f ${DATA_FILE}`);
         
         // Commit con timestamp
         const pacificTime = new Date().toLocaleString('en-US', { 
