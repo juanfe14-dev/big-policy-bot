@@ -4,6 +4,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const cron = require('node-cron');
 const express = require('express');
+const http = require('http');
 const https = require('https');
 const { exec } = require('child_process');
 const util = require('util');
@@ -38,8 +39,15 @@ app.get('/health', (req, res) => {
 if (process.env.RENDER) {
     setInterval(() => {
         try {
-            https.get(`https://${process.env.RENDER_EXTERNAL_URL || 'localhost'}`,(r)=>r.resume());
+            let target = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}/health`;
+            if (!/^https?:\/\//i.test(target)) {
+                target = `https://${target}`;
+            }
+            const client = target.startsWith('https://') ? https : http;
+            client.get(target, (r) => r.resume()).on('error', () => {});
         } catch (_) {}
+    }, 5 * 60 * 1000);
+}
     }, 5 * 60 * 1000);
 }
 
