@@ -152,10 +152,34 @@ async function syncToGitHub() {
         
         // Configurar remote con token
         const gitUrl = `https://${process.env.GITHUB_TOKEN}@github.com/juanfe14-dev/big-policy-bot.git`;
-        await execPromise(`git remote set-url origin ${gitUrl}`);
         
-        // Pull últimos cambios
-        await execPromise('git pull origin main --rebase');
+        // Primero verificar si el remote existe, si no, agregarlo
+        try {
+            await execPromise('git remote get-url origin');
+            // Si existe, actualizar la URL
+            await execPromise(`git remote set-url origin ${gitUrl}`);
+        } catch (e) {
+            // Si no existe, agregarlo
+            console.log('Adding git remote...');
+            await execPromise(`git remote add origin ${gitUrl}`);
+        }
+        
+        // Fetch para obtener la rama remota
+        await execPromise('git fetch origin');
+        
+        // Configurar la rama actual para trackear origin/main
+        try {
+            await execPromise('git branch --set-upstream-to=origin/main main');
+        } catch (e) {
+            console.log('Branch tracking setup skipped');
+        }
+        
+        // Pull últimos cambios (con estrategia de merge)
+        try {
+            await execPromise('git pull origin main --no-rebase --allow-unrelated-histories');
+        } catch (pullError) {
+            console.log('Pull skipped - may be first sync');
+        }
         
         // Agregar archivo de datos
         await execPromise(`git add ${DATA_FILE}`);
