@@ -1,25 +1,3 @@
-
-// === AUTO REPORTS (scheduled posts) ===
-function getReportChannelId() {
-  return process.env.REPORTS_CHANNEL_ID || process.env.LEADERBOARD_CHANNEL_ID || process.env.SALES_CHANNEL_ID;
-}
-
-async function postLeaderboard(period, titleOverride) {
-  try {
-    const channelId = getReportChannelId();
-    if (!channelId) { console.log('⚠️ No REPORTS_CHANNEL_ID/LEADERBOARD_CHANNEL_ID/SALES_CHANNEL_ID set; skipping auto-post'); return; }
-    const channel = await client.channels.fetch(channelId).catch(()=>null);
-    if (!channel) { console.log('⚠️ Cannot fetch report channel ' + channelId); return; }
-    const embed = generateAPLeaderboard(period);
-    if (titleOverride && embed && typeof embed.setTitle === 'function') {
-      embed.setTitle(titleOverride);
-    }
-    await channel.send({ embeds: [embed] });
-    console.log(`📣 Auto-posted ${period} leaderboard to #${channelId}`);
-  } catch (err) {
-    console.error('Auto-post error:', err && err.message ? err.message : err);
-  }
-}
 require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const fs = require('fs').promises;
@@ -168,17 +146,6 @@ async function backupDailySales() {
         const backupFile = path.join(backupsDir, `sales-${tag}.json`);
         await fs.copyFile(DATA_FILE, backupFile);
         console.log(`📦 Daily backup created: ${backupFile}`);
-
-        // === Option B: push snapshot to GitHub immediately ===
-        if (process.env.GITHUB_TOKEN) {
-            try {
-                console.log('🔄 Syncing daily snapshot to GitHub...');
-                await syncToGitHub();
-                console.log('✅ Daily snapshot pushed to GitHub');
-            } catch (e) {
-                console.error('❌ Snapshot sync failed:', e?.message || e);
-            }
-        }
     } catch (err) {
         console.error('❌ Daily backup error:', err?.message || err);
     }
@@ -329,17 +296,15 @@ function checkResets() {
         }
     }
 
-    // Monthly reset
+    // Monthly reset (catch-up si el bot no estuvo activo el día 1)
     const lastMonthReset = `${currentYear}-M${currentMonth}`;
     if (!salesData.lastReset.monthlyTag || salesData.lastReset.monthlyTag !== lastMonthReset) {
-        if (pacificTime.getDate() === 1) {
-            salesData.monthlySnapshot = JSON.parse(JSON.stringify(salesData.monthly));
-            salesData.monthly = {};
-            salesData.lastReset.monthly = currentMonth;
-            salesData.lastReset.monthlyTag = lastMonthReset;
-            wasReset = true;
-            console.log(`🔄 Monthly reset executed for month ${currentMonth + 1}`);
-        }
+        salesData.monthlySnapshot = JSON.parse(JSON.stringify(salesData.monthly));
+        salesData.monthly = {};
+        salesData.lastReset.monthly = currentMonth;
+        salesData.lastReset.monthlyTag = lastMonthReset;
+        wasReset = true;
+        console.log(`🔄 Monthly reset executed for month ${currentMonth + 1} (catch-up)`);
     }
 
     if (wasReset) {
@@ -403,16 +368,13 @@ function parseMultipleSales(message) {
         }
         
         let policyType = foundPolicy || policyText;
-        
         const words = policyType.split(' ').filter(word => word.length > 0);
         if (words.length > 3) {
             policyType = words.slice(0, 3).join(' ');
         }
-        
         if (!policyType || policyType.length < 2) {
             policyType = 'General Policy';
         }
-        
         policyType = policyType.split(' ')
             .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
             .join(' ');
@@ -732,13 +694,16 @@ client.once('ready', () => {
 
     // Sync adicional cada 3 horas (opcional pero recomendado)
     cron.schedule('0 */3 * * *', async () => {
-if (process.env.GITHUB_TOKEN) {
+
+// Daily backup at 23:59 Pacific
+cron.schedule('59 23 * * *', async () => { await backupDailySales(); }, { timezone: 'America/Los_Angeles' });
+        if (process.env.GITHUB_TOKEN) {
             console.log('⏰ 3-hour GitHub sync triggered');
             await syncToGitHub();
         }
-    
-});
-// Weekly summary - Sundays at 10:55 PM Pacific
+    });
+
+    // Weekly summary - Sundays at 10:55 PM Pacific
     const weeklyUTCHour = getPacificToUTC(22);
     cron.schedule(`55 ${weeklyUTCHour} * * 0`, async () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
@@ -786,9 +751,6 @@ if (process.env.GITHUB_TOKEN) {
         timezone: "UTC"
     });
     
-
-// Daily backup at 23:59 Pacific (top-level)
-cron.schedule('59 23 * * *', async () => { await backupDailySales(); }, { timezone: 'America/Los_Angeles' });
     console.log('\n🌍 TIMEZONE INFORMATION:');
     const now = new Date();
     const utcTime = now.toLocaleString('en-US', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', hour12: true });
@@ -1069,26 +1031,3 @@ async function start() {
 }
 
 start();
-
-// === CRON: AUTO LEADERBOARDS ===
-// Every 3 hours: 9am, 12pm, 3pm, 6pm, 9pm Pacific
-cron.schedule('0 9,12,15,18,21 * * *', async () => {
-  await postLeaderboard('daily', '💵 DAILY PROGRESS (So Far)');
-}, { timezone: 'America/Los_Angeles' });
-
-// Daily close at 10:55 PM Pacific
-cron.schedule('55 22 * * *', async () => {
-  const now = getPacificDate();
-  await postLeaderboard('daily', '📣 DAILY FINAL STANDINGS');
-  await postLeaderboard('weekly', '📣 WEEKLY PROGRESS (Week-to-Date)');
-  await postLeaderboard('monthly', '📣 MONTHLY PROGRESS (Month-to-Date)');
-  // Sunday final
-  if (now.getDay() === 0) {
-    await postLeaderboard('weekly', '🏁 WEEKLY FINAL SUMMARY');
-  }
-  // Last day of month final
-  const lastDay = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
-  if (now.getDate() === lastDay) {
-    await postLeaderboard('monthly', '🏁 MONTHLY FINAL SUMMARY');
-  }
-}, { timezone: 'America/Los_Angeles' });
