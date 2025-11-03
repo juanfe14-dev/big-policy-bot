@@ -296,7 +296,7 @@ function checkResets() {
         }
     }
 
-    // Monthly reset (catch-up si el bot no estuvo activo el día 1)
+    // Monthly reset (catch-up if bot missed day 1)  <<<<< CAMBIO MÍNIMO
     const lastMonthReset = `${currentYear}-M${currentMonth}`;
     if (!salesData.lastReset.monthlyTag || salesData.lastReset.monthlyTag !== lastMonthReset) {
         salesData.monthlySnapshot = JSON.parse(JSON.stringify(salesData.monthly));
@@ -304,7 +304,7 @@ function checkResets() {
         salesData.lastReset.monthly = currentMonth;
         salesData.lastReset.monthlyTag = lastMonthReset;
         wasReset = true;
-        console.log(`🔄 Monthly reset executed for month ${currentMonth + 1} (catch-up)`);
+        console.log(`🔄 Monthly reset executed (catch-up) for month ${currentMonth + 1}`);
     }
 
     if (wasReset) {
@@ -368,13 +368,16 @@ function parseMultipleSales(message) {
         }
         
         let policyType = foundPolicy || policyText;
+        
         const words = policyType.split(' ').filter(word => word.length > 0);
         if (words.length > 3) {
             policyType = words.slice(0, 3).join(' ');
         }
+        
         if (!policyType || policyType.length < 2) {
             policyType = 'General Policy';
         }
+        
         policyType = policyType.split(' ')
             .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
             .join(' ');
