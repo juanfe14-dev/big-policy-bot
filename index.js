@@ -632,14 +632,16 @@ client.once('ready', async () => {
         }
         
         // Sync to GitHub every 3 hours
-
-// Daily backup at 23:59 Pacific
-cron.schedule('59 23 * * *', async () => { await backupDailySales(); }, { timezone: 'America/Los_Angeles' });
         if (process.env.GITHUB_TOKEN) {
             console.log('⏰ 3-hour GitHub sync triggered');
             await syncToGitHub();
         }
     });
+
+    // Daily backup at 23:59 Pacific
+    cron.schedule('59 23 * * *', async () => { 
+        await backupDailySales(); 
+    }, { timezone: 'America/Los_Angeles' });
 
     // Weekly summary - Sundays at 10:55 PM Pacific
     const weeklyUTCHour = getPacificToUTC(22);
@@ -946,8 +948,8 @@ client.on('reconnecting', () => {
 // Start bot
 async function start() {
     console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v5.0 🚀       ║');
-    console.log('║   GitHub Auto-Sync Edition             ║');
+    console.log('║     🚀 BIG POLICY PULSE v5.1 🚀       ║');
+    console.log('║   Fixed Monthly Filter Edition         ║');
     console.log('╚════════════════════════════════════════╝');
     console.log('');
     console.log('⏳ Starting AP tracking system...');
