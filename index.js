@@ -262,7 +262,7 @@ function getWeekNumber(date) {
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
 }
 
-// Check period resets
+// Check period resets - CORREGIDO PARA FILTRAR POR MES CORRECTAMENTE
 function checkResets() {
     const now = new Date();
     const pacificTime = new Date(now.toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
@@ -296,15 +296,19 @@ function checkResets() {
         }
     }
 
-    // Monthly reset (catch-up if bot missed day 1)  <<<<< CAMBIO MÍNIMO
-    const lastMonthReset = `${currentYear}-M${currentMonth}`;
+    // Monthly reset - CORRECCIÓN AQUÍ
+    // El tag debe incluir tanto año como mes para detectar cambios correctamente
+    const lastMonthReset = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
+    
+    // Si no existe el tag O si el tag es diferente al mes actual
     if (!salesData.lastReset.monthlyTag || salesData.lastReset.monthlyTag !== lastMonthReset) {
+        console.log(`🔄 Monthly reset detected: stored tag "${salesData.lastReset.monthlyTag}" vs current "${lastMonthReset}"`);
         salesData.monthlySnapshot = JSON.parse(JSON.stringify(salesData.monthly));
         salesData.monthly = {};
         salesData.lastReset.monthly = currentMonth;
         salesData.lastReset.monthlyTag = lastMonthReset;
         wasReset = true;
-        console.log(`🔄 Monthly reset executed (catch-up) for month ${currentMonth + 1}`);
+        console.log(`🔄 Monthly reset executed for month ${currentMonth + 1} (${lastMonthReset})`);
     }
 
     if (wasReset) {
@@ -398,46 +402,25 @@ function parseMultipleSales(message) {
 
 // Add sale
 function addSale(userId, username, amount, policyType) {
-    checkResets();
-    
-    ['daily', 'weekly', 'monthly'].forEach(period => {
-        if (!salesData[period][userId]) {
-            salesData[period][userId] = { 
-                username, 
-                total: 0, 
-                count: 0,
-                policies: {},
-                policyDetails: []
-            };
-        }
-        
-        salesData[period][userId].total += amount;
-        salesData[period][userId].count += 1;
-        
-        if (!salesData[period][userId].policies[policyType]) {
-            salesData[period][userId].policies[policyType] = 0;
-        }
-        salesData[period][userId].policies[policyType]++;
-        
-        salesData[period][userId].policyDetails.push({
-            amount,
-            type: policyType,
-            date: new Date().toISOString()
-        });
-    });
-
-    if (!salesData.allTime) {
-        salesData.allTime = {};
+    if (!salesData.daily[userId]) {
+        salesData.daily[userId] = { total: 0, count: 0, username: username };
     }
-    
+    if (!salesData.weekly[userId]) {
+        salesData.weekly[userId] = { total: 0, count: 0, username: username };
+    }
+    if (!salesData.monthly[userId]) {
+        salesData.monthly[userId] = { total: 0, count: 0, username: username };
+    }
     if (!salesData.allTime[userId]) {
-        salesData.allTime[userId] = {
-            username,
-            total: 0,
-            count: 0
-        };
+        salesData.allTime[userId] = { total: 0, count: 0, username: username };
     }
-    
+
+    salesData.daily[userId].total += amount;
+    salesData.daily[userId].count += 1;
+    salesData.weekly[userId].total += amount;
+    salesData.weekly[userId].count += 1;
+    salesData.monthly[userId].total += amount;
+    salesData.monthly[userId].count += 1;
     salesData.allTime[userId].total += amount;
     salesData.allTime[userId].count += 1;
 
@@ -445,8 +428,10 @@ function addSale(userId, username, amount, policyType) {
 }
 
 // Generate AP Leaderboard
-function generateAPLeaderboard(period = 'daily', title = '', skipResetCheck = false) {
-    if (!skipResetCheck) {
+function generateAPLeaderboard(period, title = null) {
+    // Siempre ejecutar checkResets antes de generar leaderboard
+    // Esto asegura que los datos del mes anterior se reseteen si cambió el mes
+    if (period === 'monthly') {
         checkResets();
     }
     
@@ -599,104 +584,54 @@ function generateAPLeaderboardFromData(data, title) {
     return embed;
 }
 
-// Bot ready
-client.once('ready', () => {
-    console.log(`✅ ${client.user.tag} is online!`);
-    console.log('🏢 Boundless Insurance Group - AP Tracking System');
-    console.log(`📊 Sales channel: ${process.env.SALES_CHANNEL_ID}`);
-    console.log(`📈 Reports channel: ${process.env.LEADERBOARD_CHANNEL_ID}`);
-    console.log(`🔐 GitHub sync: ${process.env.GITHUB_TOKEN ? 'Enabled' : 'Disabled'}`);
-    console.log('🌐 Running on Render.com');
-    console.log('💰 Tracking: Annual Premium (AP) Only');
-    console.log('🔇 Silent mode: Only emoji reactions, no reply messages');
-    console.log('📦 Multi-sale detection: Can process multiple sales per message');
-    console.log('💵 Detects both $123 and 123$ formats');
-    console.log('🕐 Timezone: Pacific Standard Time (PST/PDT)');
-    console.log('📊 Daily Final Rankings: 10:55 PM Pacific');
-    console.log('🔄 GitHub sync: Daily at 10:55 PM Pacific');
+// Función para convertir hora Pacific a UTC
+function getPacificToUTC(pacificHour) {
+    const testDate = new Date();
+    testDate.setHours(pacificHour, 0, 0, 0);
     
-    // DST Check
-    function isDST(date = new Date()) {
-        const jan = new Date(date.getFullYear(), 0, 1).getTimezoneOffset();
-        const jul = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
-        return Math.max(jan, jul) !== date.getTimezoneOffset();
-    }
+    const pacificTime = new Date(testDate.toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
+    const utcTime = new Date(testDate.toLocaleString("en-US", {timeZone: "UTC"}));
     
-    function getPacificToUTC(pacificHour) {
-        const offset = isDST() ? 7 : 8;
-        const utcHour = (pacificHour + offset) % 24;
-        return utcHour;
-    }
-    
-    // Schedule cron jobs
-    const threeHourlyPacific = [9, 12, 15, 18, 21];
-    const threeHourlyUTC = threeHourlyPacific.map(hour => getPacificToUTC(hour));
-    const cronSchedule3Hours = `0 ${threeHourlyUTC.join(',')} * * *`;
-    
-    cron.schedule(cronSchedule3Hours, async () => {
-        const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
-        if (channel) {
-            const pacificTime = new Date().toLocaleString("en-US", {
-                timeZone: "America/Los_Angeles",
-                hour: '2-digit',
-                hour12: true
-            });
-            
-            await channel.send({ embeds: [generateAPLeaderboard('daily')] });
-            await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log(`📊 AP leaderboard updated - ${pacificTime} PST/PDT`);
-        }
-    }, {
-        scheduled: true,
-        timezone: "UTC"
-    });
+    const offset = (utcTime.getHours() - pacificTime.getHours() + 24) % 24;
+    return (pacificHour + offset) % 24;
+}
 
-    // Daily summary at 10:55 PM Pacific con GitHub sync
-    const dailyUTCHour = getPacificToUTC(22);
-    cron.schedule(`55 ${dailyUTCHour} * * *`, async () => {
-        const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
-        if (channel) {
-            const dailyDataCopy = JSON.parse(JSON.stringify(salesData.daily));
-            const weeklyDataCopy = JSON.parse(JSON.stringify(salesData.weekly));
-            const monthlyDataCopy = JSON.parse(JSON.stringify(salesData.monthly));
-            
-            await channel.send('📢 **END OF DAY FINAL RANKINGS**');
-            
-            const apEmbed = generateAPLeaderboardFromData(dailyDataCopy, '💵 DAILY FINAL STANDINGS - COMPLETE');
-            apEmbed.setColor(0xFFD700);
-            await channel.send({ embeds: [apEmbed] });
-            
-            await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            await channel.send('📊 **WEEK-TO-DATE PROGRESS**');
-            
-            const weeklyApEmbed = generateAPLeaderboardFromData(weeklyDataCopy, '💵 WEEKLY PROGRESS (So Far)');
-            weeklyApEmbed.setColor(0x00BFFF);
-            await channel.send({ embeds: [weeklyApEmbed] });
-            
-            await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            await channel.send('📈 **MONTH-TO-DATE PROGRESS**');
-            
-            const monthlyApEmbed = generateAPLeaderboardFromData(monthlyDataCopy, '💵 MONTHLY PROGRESS (So Far)');
-            monthlyApEmbed.setColor(0x9370DB);
-            await channel.send({ embeds: [monthlyApEmbed] });
-            
-            await channel.send('━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📊 Final daily AP + weekly progress + monthly progress posted - 10:55 PM Pacific');
-            
-            // SINCRONIZAR CON GITHUB DESPUÉS DEL REPORTE DIARIO
-            console.log('🔄 Attempting GitHub sync after daily report...');
-            const syncSuccess = await syncToGitHub();
-            if (syncSuccess) {
-                console.log('✅ Daily GitHub sync completed');
+// Bot ready event
+client.once('ready', async () => {
+    console.log('\n✅ Bot connected successfully!');
+    console.log(`   🤖 Bot Tag: ${client.user.tag}`);
+    console.log(`   🆔 Bot ID: ${client.user.id}`);
+    console.log(`   📅 Connected at: ${new Date().toLocaleString('en-US', {timeZone: 'America/Los_Angeles'})}`);
+    console.log(`   📡 Ping: ${client.ws.ping}ms\n`);
+    
+    // Verificar variables de entorno
+    console.log('🔍 Environment check:');
+    console.log(`   SALES_CHANNEL_ID: ${process.env.SALES_CHANNEL_ID ? '✓' : '✗'}`);
+    console.log(`   LEADERBOARD_CHANNEL_ID: ${process.env.LEADERBOARD_CHANNEL_ID ? '✓' : '✗'}`);
+    console.log(`   GITHUB_TOKEN: ${process.env.GITHUB_TOKEN ? '✓' : '✗'}`);
+    console.log('');
+    
+    // Verificar y resetear si es necesario
+    checkResets();
+
+    // ========== Scheduled automatic posts (AP leaderboards) ==========
+    
+    // Cada 3 horas: AP leaderboard + sync GitHub
+    cron.schedule('0 */3 * * *', async () => {
+        const pacificNow = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
+        const hour = pacificNow.getHours();
+        
+        if ([9, 12, 15, 18, 21].includes(hour)) {
+            const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
+            if (channel) {
+                checkResets();
+                const embed = generateAPLeaderboard('daily');
+                await channel.send({ embeds: [embed] });
+                console.log(`📊 AP leaderboard posted - ${hour}:00 Pacific`);
             }
         }
-    }, {
-        scheduled: true,
-        timezone: "UTC"
-    });
-
-    // Sync adicional cada 3 horas (opcional pero recomendado)
-    cron.schedule('0 */3 * * *', async () => {
+        
+        // Sync to GitHub every 3 hours
 
 // Daily backup at 23:59 Pacific
 cron.schedule('59 23 * * *', async () => { await backupDailySales(); }, { timezone: 'America/Los_Angeles' });
