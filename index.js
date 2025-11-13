@@ -5,6 +5,47 @@ const path = require('path');
 const cron = require('node-cron');
 const express = require('express');
 const https = require('https');
+function githubApiRequest(path, method, body) {
+    const token = process.env.GITHUB_TOKEN;
+    if (!token) {
+        return Promise.reject(new Error('GITHUB_TOKEN not set'));
+    }
+
+    const options = {
+        hostname: 'api.github.com',
+        path,
+        method,
+        headers: {
+            'User-Agent': 'big-policy-bot',
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+        },
+    };
+
+    return new Promise((resolve, reject) => {
+        const req = https.request(options, (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                if (res.statusCode >= 200 && res.statusCode < 300) {
+                    resolve(data ? JSON.parse(data) : {});
+                } else {
+                    reject(new Error(`GitHub API ${res.statusCode}: ${data}`));
+                }
+            });
+        });
+
+        req.on('error', reject);
+
+        if (body) {
+            req.write(JSON.stringify(body));
+        }
+
+        req.end();
+    });
+}
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
@@ -157,100 +198,67 @@ async function syncToGitHub() {
         console.log('⚠️ No GitHub token configured, skipping GitHub sync');
         return false;
     }
-    
+
     try {
-        console.log('🔄 Starting GitHub sync...');
-        
-        // Verificar si git está inicializado, si no, inicializar
-        try {
-            await execPromise('git status');
-        } catch (e) {
-            console.log('Initializing git repository...');
-            await execPromise('git init');
-        }
-        
-        // Configurar git user (requerido para commits)
-        await execPromise('git config user.email "bot@bigpolicy.com"');
-        await execPromise('git config user.name "BIG Policy Bot"');
-        
-        // Configurar remote con token
-        const gitUrl = `https://${process.env.GITHUB_TOKEN}@github.com/juanfe14-dev/big-policy-bot.git`;
-        
-        // Primero verificar si el remote existe, si no, agregarlo
-        try {
-            await execPromise('git remote get-url origin');
-            // Si existe, actualizar la URL
-            await execPromise(`git remote set-url origin ${gitUrl}`);
-        } catch (e) {
-            // Si no existe, agregarlo
-            console.log('Adding git remote...');
-            await execPromise(`git remote add origin ${gitUrl}`);
-        }
-        
-        // Fetch para obtener la rama remota
-        try {
-            await execPromise('git fetch origin');
-        } catch (e) {
-            console.log('Fetch skipped - may be first time');
-        }
-        
-        // Verificar si estamos en una rama, si no, crear main
-        try {
-            await execPromise('git branch --show-current');
-        } catch (e) {
-            await execPromise('git checkout -b main');
-        }
-        
-        // Pull últimos cambios (con estrategia de merge)
-        try {
-            await execPromise('git pull origin main --no-rebase --allow-unrelated-histories');
-        } catch (pullError) {
-            console.log('Pull skipped - may be first sync or conflicts');
-        }
-        
-        // Agregar archivo de datos (usar -f para forzar ya que data/ está en .gitignore)
-        await execPromise('git add -f data/sales.json');
-        
-        // Verificar si hay cambios para commitear
-        const status = await execPromise('git status --porcelain');
-        if (!status.stdout || status.stdout.trim() === '') {
-            console.log('ℹ️ No changes to sync');
-            return true;
-        }
-        
-        // Commit con timestamp
-        const pacificTime = new Date().toLocaleString('en-US', { 
+        console.log('🔄 Starting GitHub sync (GitHub API)...');
+
+        // Asegurar que el archivo existe y leer contenido
+        await fs.mkdir(DATA_DIR, { recursive: true });
+        const raw = await fs.readFile(DATA_FILE, 'utf8');
+
+        const contentBase64 = Buffer.from(raw, 'utf8').toString('base64');
+
+        // Stats para el mensaje
+        const totalDaily = Object.keys(salesData.daily || {}).length;
+        const totalWeekly = Object.keys(salesData.weekly || {}).length;
+        const totalMonthly = Object.keys(salesData.monthly || {}).length;
+
+        const pacificTime = new Date().toLocaleString('en-US', {
             timeZone: 'America/Los_Angeles',
             month: 'short',
             day: '2-digit',
             year: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
-            hour12: true
+            hour12: true,
         });
-        
-        // Obtener estadísticas para el commit
-        const totalDaily = Object.keys(salesData.daily || {}).length;
-        const totalWeekly = Object.keys(salesData.weekly || {}).length;
-        const totalMonthly = Object.keys(salesData.monthly || {}).length;
-        
+
         const commitMessage = `Auto-update sales data - ${pacificTime} - ${totalDaily}d ${totalWeekly}w ${totalMonthly}m agents`;
-        
+
+        // Intentar obtener el sha actual del archivo (si ya existe)
+        let sha;
         try {
-            await execPromise(`git commit -m "${commitMessage}"`);
-        } catch (commitError) {
-            console.log('Trying alternative commit...');
-            await execPromise(`git commit -m "Auto-update sales data"`);
+            const existing = await githubApiRequest(
+                '/repos/juanfe14-dev/big-policy-bot/contents/data/sales.json?ref=main',
+                'GET'
+            );
+            sha = existing.sha;
+        } catch (e) {
+            console.log('ℹ️ sales.json does not exist yet in repo, it will be created');
         }
-        
-        // Push a GitHub
-        await execPromise('git push origin main --force-with-lease');
-        
-        console.log('✅ Successfully synced to GitHub');
+
+        // Preparar body para la API de GitHub
+        const body = {
+            message: commitMessage,
+            content: contentBase64,
+            branch: 'main',
+        };
+        if (sha) {
+            body.sha = sha;
+        }
+
+        // PUT crea o actualiza el archivo en GitHub
+        await githubApiRequest(
+            '/repos/juanfe14-dev/big-policy-bot/contents/data/sales.json',
+            'PUT',
+            body
+        );
+
+        console.log('✅ Successfully synced to GitHub (API)');
         console.log(`   📊 Updated: ${totalDaily} daily, ${totalWeekly} weekly, ${totalMonthly} monthly agents`);
         return true;
     } catch (error) {
-        console.error('❌ Error syncing to GitHub:', error.message);
+        console.error('❌ Error syncing to GitHub (API):', error.message);
         return false;
     }
 }
