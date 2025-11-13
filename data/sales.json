@@ -2,13 +2,19 @@
   "daily": {
     "user_hadyn_waldie": {
       "username": "hadyn_waldie",
-      "total": 2483.16,
-      "count": 4,
+      "total": 3144.96,
+      "count": 6,
       "policies": {
-        "MOO GA": 1,
-        "TransAm IUL": 3
+        "MOO GA": 2,
+        "TransAm IUL": 3,
+        "GA": 1
       },
       "policyDetails": [
+        {
+          "amount": 192.48,
+          "type": "MOO GA",
+          "date": "2025-11-01T16:34:00.000Z"
+        },
         {
           "amount": 192.48,
           "type": "MOO GA",
@@ -28,6 +34,11 @@
           "amount": 826.44,
           "type": "TransAm IUL",
           "date": "2025-11-08T02:12:00.000Z"
+        },
+        {
+          "amount": 469.32,
+          "type": "GA",
+          "date": "2025-11-13T18:03:00.000Z"
         }
       ]
     },
@@ -48,13 +59,14 @@
     },
     "user_getrichwithrich": {
       "username": "getrichwithrich",
-      "total": 33063.96,
-      "count": 17,
+      "total": 47062.44,
+      "count": 25,
       "policies": {
-        "IULE": 7,
+        "IULE": 12,
         "Ladder UW": 1,
-        "Foresters YT": 1,
-        "RNA": 1,
+        "Foresters YT": 2,
+        "RNA": 2,
+        "UW": 1,
         "Ladder": 1,
         "LP": 3,
         "AHL": 2,
@@ -74,6 +86,46 @@
         {
           "amount": 1581.24,
           "type": "Ladder UW",
+          "date": "2025-11-02T02:59:00.000Z"
+        },
+        {
+          "amount": 1372.32,
+          "type": "IULE",
+          "date": "2025-11-02T02:59:00.000Z"
+        },
+        {
+          "amount": 227.04,
+          "type": "Foresters YT",
+          "date": "2025-11-02T02:59:00.000Z"
+        },
+        {
+          "amount": 4124.76,
+          "type": "IULE",
+          "date": "2025-11-02T07:55:00.000Z"
+        },
+        {
+          "amount": 1731.84,
+          "type": "IULE",
+          "date": "2025-11-02T07:55:00.000Z"
+        },
+        {
+          "amount": 3269.88,
+          "type": "RNA",
+          "date": "2025-11-03T14:04:00.000Z"
+        },
+        {
+          "amount": 1023.0,
+          "type": "IULE",
+          "date": "2025-11-01T18:23:00.000Z"
+        },
+        {
+          "amount": 668.4,
+          "type": "IULE",
+          "date": "2025-11-01T22:19:00.000Z"
+        },
+        {
+          "amount": 1581.24,
+          "type": "UW",
           "date": "2025-11-02T02:59:00.000Z"
         },
         {
@@ -145,6 +197,57 @@
           "amount": 2733.84,
           "type": "AHL",
           "date": "2025-11-12T21:37:00.000Z"
+        }
+      ]
+    },
+    "user_keith.williams_04": {
+      "username": "keith.williams_04",
+      "total": 7456.08,
+      "count": 7,
+      "policies": {
+        "Foresters term": 1,
+        "Transamerica IUL": 1,
+        "AmAm Safecare term": 1,
+        "Foresters Term": 1,
+        "Liberty Bankers FEX His": 1,
+        "Foresters Term Hers": 1,
+        "AmAm IUL": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 462.36,
+          "type": "Foresters term",
+          "date": "2025-11-01T16:57:00.000Z"
+        },
+        {
+          "amount": 987.96,
+          "type": "Transamerica IUL",
+          "date": "2025-11-06T04:57:00.000Z"
+        },
+        {
+          "amount": 1059.0,
+          "type": "AmAm Safecare term",
+          "date": "2025-11-07T02:48:00.000Z"
+        },
+        {
+          "amount": 888.36,
+          "type": "Foresters Term",
+          "date": "2025-11-08T19:55:00.000Z"
+        },
+        {
+          "amount": 1482.24,
+          "type": "Liberty Bankers FEX His",
+          "date": "2025-11-11T04:46:00.000Z"
+        },
+        {
+          "amount": 1178.16,
+          "type": "Foresters Term Hers",
+          "date": "2025-11-11T04:46:00.000Z"
+        },
+        {
+          "amount": 1398.0,
+          "type": "AmAm IUL",
+          "date": "2025-11-12T01:57:00.000Z"
         }
       ]
     },
@@ -224,51 +327,6 @@
           "amount": 771.12,
           "type": "Term AnAm",
           "date": "2025-11-11T21:20:00.000Z"
-        }
-      ]
-    },
-    "user_keith.williams_04": {
-      "username": "keith.williams_04",
-      "total": 6993.72,
-      "count": 6,
-      "policies": {
-        "Transamerica IUL": 1,
-        "AmAm Safecare term": 1,
-        "Foresters Term": 1,
-        "Liberty Bankers FEX His": 1,
-        "Foresters Term Hers": 1,
-        "AmAm IUL": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 987.96,
-          "type": "Transamerica IUL",
-          "date": "2025-11-06T04:57:00.000Z"
-        },
-        {
-          "amount": 1059.0,
-          "type": "AmAm Safecare term",
-          "date": "2025-11-07T02:48:00.000Z"
-        },
-        {
-          "amount": 888.36,
-          "type": "Foresters Term",
-          "date": "2025-11-08T19:55:00.000Z"
-        },
-        {
-          "amount": 1482.24,
-          "type": "Liberty Bankers FEX His",
-          "date": "2025-11-11T04:46:00.000Z"
-        },
-        {
-          "amount": 1178.16,
-          "type": "Foresters Term Hers",
-          "date": "2025-11-11T04:46:00.000Z"
-        },
-        {
-          "amount": 1398.0,
-          "type": "AmAm IUL",
-          "date": "2025-11-12T01:57:00.000Z"
         }
       ]
     },
@@ -420,13 +478,19 @@
   "weekly": {
     "user_hadyn_waldie": {
       "username": "hadyn_waldie",
-      "total": 2483.16,
-      "count": 4,
+      "total": 3144.96,
+      "count": 6,
       "policies": {
-        "MOO GA": 1,
-        "TransAm IUL": 3
+        "MOO GA": 2,
+        "TransAm IUL": 3,
+        "GA": 1
       },
       "policyDetails": [
+        {
+          "amount": 192.48,
+          "type": "MOO GA",
+          "date": "2025-11-01T16:34:00.000Z"
+        },
         {
           "amount": 192.48,
           "type": "MOO GA",
@@ -446,6 +510,11 @@
           "amount": 826.44,
           "type": "TransAm IUL",
           "date": "2025-11-08T02:12:00.000Z"
+        },
+        {
+          "amount": 469.32,
+          "type": "GA",
+          "date": "2025-11-13T18:03:00.000Z"
         }
       ]
     },
@@ -466,13 +535,14 @@
     },
     "user_getrichwithrich": {
       "username": "getrichwithrich",
-      "total": 33063.96,
-      "count": 17,
+      "total": 47062.44,
+      "count": 25,
       "policies": {
-        "IULE": 7,
+        "IULE": 12,
         "Ladder UW": 1,
-        "Foresters YT": 1,
-        "RNA": 1,
+        "Foresters YT": 2,
+        "RNA": 2,
+        "UW": 1,
         "Ladder": 1,
         "LP": 3,
         "AHL": 2,
@@ -492,6 +562,46 @@
         {
           "amount": 1581.24,
           "type": "Ladder UW",
+          "date": "2025-11-02T02:59:00.000Z"
+        },
+        {
+          "amount": 1372.32,
+          "type": "IULE",
+          "date": "2025-11-02T02:59:00.000Z"
+        },
+        {
+          "amount": 227.04,
+          "type": "Foresters YT",
+          "date": "2025-11-02T02:59:00.000Z"
+        },
+        {
+          "amount": 4124.76,
+          "type": "IULE",
+          "date": "2025-11-02T07:55:00.000Z"
+        },
+        {
+          "amount": 1731.84,
+          "type": "IULE",
+          "date": "2025-11-02T07:55:00.000Z"
+        },
+        {
+          "amount": 3269.88,
+          "type": "RNA",
+          "date": "2025-11-03T14:04:00.000Z"
+        },
+        {
+          "amount": 1023.0,
+          "type": "IULE",
+          "date": "2025-11-01T18:23:00.000Z"
+        },
+        {
+          "amount": 668.4,
+          "type": "IULE",
+          "date": "2025-11-01T22:19:00.000Z"
+        },
+        {
+          "amount": 1581.24,
+          "type": "UW",
           "date": "2025-11-02T02:59:00.000Z"
         },
         {
@@ -563,6 +673,57 @@
           "amount": 2733.84,
           "type": "AHL",
           "date": "2025-11-12T21:37:00.000Z"
+        }
+      ]
+    },
+    "user_keith.williams_04": {
+      "username": "keith.williams_04",
+      "total": 7456.08,
+      "count": 7,
+      "policies": {
+        "Foresters term": 1,
+        "Transamerica IUL": 1,
+        "AmAm Safecare term": 1,
+        "Foresters Term": 1,
+        "Liberty Bankers FEX His": 1,
+        "Foresters Term Hers": 1,
+        "AmAm IUL": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 462.36,
+          "type": "Foresters term",
+          "date": "2025-11-01T16:57:00.000Z"
+        },
+        {
+          "amount": 987.96,
+          "type": "Transamerica IUL",
+          "date": "2025-11-06T04:57:00.000Z"
+        },
+        {
+          "amount": 1059.0,
+          "type": "AmAm Safecare term",
+          "date": "2025-11-07T02:48:00.000Z"
+        },
+        {
+          "amount": 888.36,
+          "type": "Foresters Term",
+          "date": "2025-11-08T19:55:00.000Z"
+        },
+        {
+          "amount": 1482.24,
+          "type": "Liberty Bankers FEX His",
+          "date": "2025-11-11T04:46:00.000Z"
+        },
+        {
+          "amount": 1178.16,
+          "type": "Foresters Term Hers",
+          "date": "2025-11-11T04:46:00.000Z"
+        },
+        {
+          "amount": 1398.0,
+          "type": "AmAm IUL",
+          "date": "2025-11-12T01:57:00.000Z"
         }
       ]
     },
@@ -642,51 +803,6 @@
           "amount": 771.12,
           "type": "Term AnAm",
           "date": "2025-11-11T21:20:00.000Z"
-        }
-      ]
-    },
-    "user_keith.williams_04": {
-      "username": "keith.williams_04",
-      "total": 6993.72,
-      "count": 6,
-      "policies": {
-        "Transamerica IUL": 1,
-        "AmAm Safecare term": 1,
-        "Foresters Term": 1,
-        "Liberty Bankers FEX His": 1,
-        "Foresters Term Hers": 1,
-        "AmAm IUL": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 987.96,
-          "type": "Transamerica IUL",
-          "date": "2025-11-06T04:57:00.000Z"
-        },
-        {
-          "amount": 1059.0,
-          "type": "AmAm Safecare term",
-          "date": "2025-11-07T02:48:00.000Z"
-        },
-        {
-          "amount": 888.36,
-          "type": "Foresters Term",
-          "date": "2025-11-08T19:55:00.000Z"
-        },
-        {
-          "amount": 1482.24,
-          "type": "Liberty Bankers FEX His",
-          "date": "2025-11-11T04:46:00.000Z"
-        },
-        {
-          "amount": 1178.16,
-          "type": "Foresters Term Hers",
-          "date": "2025-11-11T04:46:00.000Z"
-        },
-        {
-          "amount": 1398.0,
-          "type": "AmAm IUL",
-          "date": "2025-11-12T01:57:00.000Z"
         }
       ]
     },
@@ -838,13 +954,19 @@
   "monthly": {
     "user_hadyn_waldie": {
       "username": "hadyn_waldie",
-      "total": 2483.16,
-      "count": 4,
+      "total": 3144.96,
+      "count": 6,
       "policies": {
-        "MOO GA": 1,
-        "TransAm IUL": 3
+        "MOO GA": 2,
+        "TransAm IUL": 3,
+        "GA": 1
       },
       "policyDetails": [
+        {
+          "amount": 192.48,
+          "type": "MOO GA",
+          "date": "2025-11-01T16:34:00.000Z"
+        },
         {
           "amount": 192.48,
           "type": "MOO GA",
@@ -864,6 +986,11 @@
           "amount": 826.44,
           "type": "TransAm IUL",
           "date": "2025-11-08T02:12:00.000Z"
+        },
+        {
+          "amount": 469.32,
+          "type": "GA",
+          "date": "2025-11-13T18:03:00.000Z"
         }
       ]
     },
@@ -884,13 +1011,14 @@
     },
     "user_getrichwithrich": {
       "username": "getrichwithrich",
-      "total": 33063.96,
-      "count": 17,
+      "total": 47062.44,
+      "count": 25,
       "policies": {
-        "IULE": 7,
+        "IULE": 12,
         "Ladder UW": 1,
-        "Foresters YT": 1,
-        "RNA": 1,
+        "Foresters YT": 2,
+        "RNA": 2,
+        "UW": 1,
         "Ladder": 1,
         "LP": 3,
         "AHL": 2,
@@ -910,6 +1038,46 @@
         {
           "amount": 1581.24,
           "type": "Ladder UW",
+          "date": "2025-11-02T02:59:00.000Z"
+        },
+        {
+          "amount": 1372.32,
+          "type": "IULE",
+          "date": "2025-11-02T02:59:00.000Z"
+        },
+        {
+          "amount": 227.04,
+          "type": "Foresters YT",
+          "date": "2025-11-02T02:59:00.000Z"
+        },
+        {
+          "amount": 4124.76,
+          "type": "IULE",
+          "date": "2025-11-02T07:55:00.000Z"
+        },
+        {
+          "amount": 1731.84,
+          "type": "IULE",
+          "date": "2025-11-02T07:55:00.000Z"
+        },
+        {
+          "amount": 3269.88,
+          "type": "RNA",
+          "date": "2025-11-03T14:04:00.000Z"
+        },
+        {
+          "amount": 1023.0,
+          "type": "IULE",
+          "date": "2025-11-01T18:23:00.000Z"
+        },
+        {
+          "amount": 668.4,
+          "type": "IULE",
+          "date": "2025-11-01T22:19:00.000Z"
+        },
+        {
+          "amount": 1581.24,
+          "type": "UW",
           "date": "2025-11-02T02:59:00.000Z"
         },
         {
@@ -981,6 +1149,57 @@
           "amount": 2733.84,
           "type": "AHL",
           "date": "2025-11-12T21:37:00.000Z"
+        }
+      ]
+    },
+    "user_keith.williams_04": {
+      "username": "keith.williams_04",
+      "total": 7456.08,
+      "count": 7,
+      "policies": {
+        "Foresters term": 1,
+        "Transamerica IUL": 1,
+        "AmAm Safecare term": 1,
+        "Foresters Term": 1,
+        "Liberty Bankers FEX His": 1,
+        "Foresters Term Hers": 1,
+        "AmAm IUL": 1
+      },
+      "policyDetails": [
+        {
+          "amount": 462.36,
+          "type": "Foresters term",
+          "date": "2025-11-01T16:57:00.000Z"
+        },
+        {
+          "amount": 987.96,
+          "type": "Transamerica IUL",
+          "date": "2025-11-06T04:57:00.000Z"
+        },
+        {
+          "amount": 1059.0,
+          "type": "AmAm Safecare term",
+          "date": "2025-11-07T02:48:00.000Z"
+        },
+        {
+          "amount": 888.36,
+          "type": "Foresters Term",
+          "date": "2025-11-08T19:55:00.000Z"
+        },
+        {
+          "amount": 1482.24,
+          "type": "Liberty Bankers FEX His",
+          "date": "2025-11-11T04:46:00.000Z"
+        },
+        {
+          "amount": 1178.16,
+          "type": "Foresters Term Hers",
+          "date": "2025-11-11T04:46:00.000Z"
+        },
+        {
+          "amount": 1398.0,
+          "type": "AmAm IUL",
+          "date": "2025-11-12T01:57:00.000Z"
         }
       ]
     },
@@ -1060,51 +1279,6 @@
           "amount": 771.12,
           "type": "Term AnAm",
           "date": "2025-11-11T21:20:00.000Z"
-        }
-      ]
-    },
-    "user_keith.williams_04": {
-      "username": "keith.williams_04",
-      "total": 6993.72,
-      "count": 6,
-      "policies": {
-        "Transamerica IUL": 1,
-        "AmAm Safecare term": 1,
-        "Foresters Term": 1,
-        "Liberty Bankers FEX His": 1,
-        "Foresters Term Hers": 1,
-        "AmAm IUL": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 987.96,
-          "type": "Transamerica IUL",
-          "date": "2025-11-06T04:57:00.000Z"
-        },
-        {
-          "amount": 1059.0,
-          "type": "AmAm Safecare term",
-          "date": "2025-11-07T02:48:00.000Z"
-        },
-        {
-          "amount": 888.36,
-          "type": "Foresters Term",
-          "date": "2025-11-08T19:55:00.000Z"
-        },
-        {
-          "amount": 1482.24,
-          "type": "Liberty Bankers FEX His",
-          "date": "2025-11-11T04:46:00.000Z"
-        },
-        {
-          "amount": 1178.16,
-          "type": "Foresters Term Hers",
-          "date": "2025-11-11T04:46:00.000Z"
-        },
-        {
-          "amount": 1398.0,
-          "type": "AmAm IUL",
-          "date": "2025-11-12T01:57:00.000Z"
         }
       ]
     },
@@ -1326,8 +1500,8 @@
     },
     "user_getrichwithrich": {
       "username": "getrichwithrich",
-      "total": 89477.48,
-      "count": 46
+      "total": 103475.96,
+      "count": 54
     },
     "user_zaide_johnson": {
       "username": "zaide_johnson",
@@ -1341,8 +1515,8 @@
     },
     "user_hadyn_waldie": {
       "username": "hadyn_waldie",
-      "total": 5995.2,
-      "count": 8
+      "total": 6657.0,
+      "count": 10
     },
     "user_handmade.by.hilllery": {
       "username": "handmade.by.hilllery",
@@ -1359,15 +1533,15 @@
       "total": 25322,
       "count": 3
     },
+    "user_keith.williams_04": {
+      "username": "keith.williams_04",
+      "total": 7456.08,
+      "count": 7
+    },
     "user_daddychill09627": {
       "username": "daddychill09627",
       "total": 3332.16,
       "count": 4
-    },
-    "user_keith.williams_04": {
-      "username": "keith.williams_04",
-      "total": 6993.72,
-      "count": 6
     },
     "user_kayden.green": {
       "username": "kayden.green",
