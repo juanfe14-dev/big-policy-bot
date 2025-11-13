@@ -5,6 +5,7 @@ const path = require('path');
 const cron = require('node-cron');
 const express = require('express');
 const https = require('https');
+
 function githubApiRequest(path, method, body) {
     const token = process.env.GITHUB_TOKEN;
     if (!token) {
@@ -46,9 +47,6 @@ function githubApiRequest(path, method, body) {
         req.end();
     });
 }
-const { exec } = require('child_process');
-const util = require('util');
-const execPromise = util.promisify(exec);
 
 // ========================================
 // SERVIDOR EXPRESS PARA RENDER (CRÍTICO)
@@ -92,6 +90,27 @@ app.get('/health', (req, res) => {
 // Ping endpoint para monitoreo
 app.get('/ping', (req, res) => {
     res.status(200).send('pong');
+});
+
+// Endpoint para ver el archivo de ventas actual (opcionalmente protegido con ADMIN_SECRET)
+app.get('/sales.json', async (req, res) => {
+    try {
+        const secret = process.env.ADMIN_SECRET;
+
+        // Si ADMIN_SECRET está configurado, exigir ?secret=... en la URL
+        if (secret && req.query.secret !== secret) {
+            return res.status(401).send('Unauthorized');
+        }
+
+        await fs.access(DATA_FILE);
+        const raw = await fs.readFile(DATA_FILE, 'utf8');
+
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).send(raw);
+    } catch (err) {
+        console.error('❌ Error reading sales.json:', err);
+        res.status(500).send('Error reading sales data');
+    }
 });
 
 // ========================================
@@ -183,7 +202,7 @@ async function backupDailySales() {
         const backupsDir = path.join(DATA_DIR, 'backups');
         await fs.mkdir(backupsDir, { recursive: true });
         const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
-        const tag = now.toISOString().slice(0,10); // YYYY-MM-DD (Pacific day)
+        const tag = now.toISOString().slice(0, 10); // YYYY-MM-DD (Pacific day)
         const backupFile = path.join(backupsDir, `sales-${tag}.json`);
         await fs.copyFile(DATA_FILE, backupFile);
         console.log(`📦 Daily backup created: ${backupFile}`);
