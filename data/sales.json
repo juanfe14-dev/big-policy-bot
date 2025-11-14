@@ -1,5 +1,11 @@
 {
-  "daily": {},
+  "daily": {
+    "780617237877882892": {
+      "total": 703.56,
+      "count": 1,
+      "username": "keith.williams_04"
+    }
+  },
   "weekly": {
     "user_hadyn_waldie": {
       "username": "hadyn_waldie",
@@ -447,6 +453,11 @@
       "total": 1039.56,
       "count": 1,
       "username": "gymboi2016"
+    },
+    "780617237877882892": {
+      "total": 703.56,
+      "count": 1,
+      "username": "keith.williams_04"
     }
   },
   "monthly": {
@@ -896,6 +907,11 @@
       "total": 1039.56,
       "count": 1,
       "username": "gymboi2016"
+    },
+    "780617237877882892": {
+      "total": 703.56,
+      "count": 1,
+      "username": "keith.williams_04"
     }
   },
   "allTime": {
@@ -1043,6 +1059,11 @@
       "total": 1039.56,
       "count": 1,
       "username": "gymboi2016"
+    },
+    "780617237877882892": {
+      "total": 703.56,
+      "count": 1,
+      "username": "keith.williams_04"
     }
   },
   "dailySnapshot": {
