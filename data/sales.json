@@ -1,5 +1,21 @@
 {
-  "daily": {},
+  "daily": {
+    "1141460353679642645": {
+      "total": 684,
+      "count": 1,
+      "username": "harrisonvandermey"
+    },
+    "907419205727584286": {
+      "total": 1209.72,
+      "count": 1,
+      "username": "the_top_one_percentile"
+    },
+    "1356772443997605978": {
+      "total": 892.56,
+      "count": 1,
+      "username": "hadyn_waldie"
+    }
+  },
   "weekly": {
     "user_hadyn_waldie": {
       "username": "hadyn_waldie",
@@ -427,6 +443,21 @@
           "date": "2025-11-12T04:09:00.000Z"
         }
       ]
+    },
+    "1141460353679642645": {
+      "total": 684,
+      "count": 1,
+      "username": "harrisonvandermey"
+    },
+    "907419205727584286": {
+      "total": 1209.72,
+      "count": 1,
+      "username": "the_top_one_percentile"
+    },
+    "1356772443997605978": {
+      "total": 892.56,
+      "count": 1,
+      "username": "hadyn_waldie"
     }
   },
   "monthly": {
@@ -856,6 +887,21 @@
           "date": "2025-11-12T04:09:00.000Z"
         }
       ]
+    },
+    "1141460353679642645": {
+      "total": 684,
+      "count": 1,
+      "username": "harrisonvandermey"
+    },
+    "907419205727584286": {
+      "total": 1209.72,
+      "count": 1,
+      "username": "the_top_one_percentile"
+    },
+    "1356772443997605978": {
+      "total": 892.56,
+      "count": 1,
+      "username": "hadyn_waldie"
     }
   },
   "allTime": {
@@ -983,6 +1029,21 @@
       "username": "gymboi2016",
       "total": 952.32,
       "count": 1
+    },
+    "1141460353679642645": {
+      "total": 684,
+      "count": 1,
+      "username": "harrisonvandermey"
+    },
+    "907419205727584286": {
+      "total": 1209.72,
+      "count": 1,
+      "username": "the_top_one_percentile"
+    },
+    "1356772443997605978": {
+      "total": 892.56,
+      "count": 1,
+      "username": "hadyn_waldie"
     }
   },
   "dailySnapshot": {
