@@ -1,26 +1,5 @@
 {
-  "daily": {
-    "780617237877882892": {
-      "total": 703.56,
-      "count": 1,
-      "username": "keith.williams_04"
-    },
-    "1347906039785197652": {
-      "total": 638.4,
-      "count": 1,
-      "username": "audieosho"
-    },
-    "384918453443624961": {
-      "total": 600,
-      "count": 1,
-      "username": "selfmedicate111"
-    },
-    "548322241746567169": {
-      "total": 580.6,
-      "count": 1,
-      "username": "gymboi2016"
-    }
-  },
+  "daily": {},
   "weekly": {
     "user_hadyn_waldie": {
       "username": "hadyn_waldie",
@@ -1112,23 +1091,23 @@
     }
   },
   "dailySnapshot": {
-    "1141460353679642645": {
-      "total": 684,
+    "780617237877882892": {
+      "total": 703.56,
       "count": 1,
-      "username": "harrisonvandermey"
+      "username": "keith.williams_04"
     },
-    "907419205727584286": {
-      "total": 1209.72,
+    "1347906039785197652": {
+      "total": 638.4,
       "count": 1,
-      "username": "the_top_one_percentile"
+      "username": "audieosho"
     },
-    "1356772443997605978": {
-      "total": 892.56,
+    "384918453443624961": {
+      "total": 600,
       "count": 1,
-      "username": "hadyn_waldie"
+      "username": "selfmedicate111"
     },
     "548322241746567169": {
-      "total": 1039.56,
+      "total": 580.6,
       "count": 1,
       "username": "gymboi2016"
     }
@@ -2619,7 +2598,7 @@
     }
   },
   "lastReset": {
-    "daily": "Fri Nov 14 2025",
+    "daily": "Sat Nov 15 2025",
     "weekly": 44,
     "weeklyTag": "2025-W44",
     "monthly": 10,
