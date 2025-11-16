@@ -1,9 +1,14 @@
 {
   "daily": {
     "1032557343172468788": {
-      "total": 2174.04,
-      "count": 2,
+      "total": 4865.76,
+      "count": 4,
       "username": "richvigga"
+    },
+    "1342657107819757698": {
+      "total": 1737.36,
+      "count": 1,
+      "username": "therealvblacklive"
     }
   },
   "weekly": {
@@ -470,9 +475,14 @@
       "username": "selfmedicate111"
     },
     "1032557343172468788": {
-      "total": 2174.04,
-      "count": 2,
+      "total": 4865.76,
+      "count": 4,
       "username": "richvigga"
+    },
+    "1342657107819757698": {
+      "total": 1737.36,
+      "count": 1,
+      "username": "therealvblacklive"
     }
   },
   "monthly": {
@@ -939,9 +949,14 @@
       "username": "selfmedicate111"
     },
     "1032557343172468788": {
-      "total": 2174.04,
-      "count": 2,
+      "total": 4865.76,
+      "count": 4,
       "username": "richvigga"
+    },
+    "1342657107819757698": {
+      "total": 1737.36,
+      "count": 1,
+      "username": "therealvblacklive"
     }
   },
   "allTime": {
@@ -1106,9 +1121,14 @@
       "username": "selfmedicate111"
     },
     "1032557343172468788": {
-      "total": 2174.04,
-      "count": 2,
+      "total": 4865.76,
+      "count": 4,
       "username": "richvigga"
+    },
+    "1342657107819757698": {
+      "total": 1737.36,
+      "count": 1,
+      "username": "therealvblacklive"
     }
   },
   "dailySnapshot": {
