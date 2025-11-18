@@ -1,11 +1,5 @@
 {
-  "daily": {
-    "321165687152443392": {
-      "total": 2053,
-      "count": 1,
-      "username": "fadednoodler"
-    }
-  },
+  "daily": {},
   "weekly": {
     "321165687152443392": {
       "total": 2053,
@@ -669,7 +663,13 @@
       "username": "fadednoodler"
     }
   },
-  "dailySnapshot": {},
+  "dailySnapshot": {
+    "321165687152443392": {
+      "total": 2053,
+      "count": 1,
+      "username": "fadednoodler"
+    }
+  },
   "weeklySnapshot": {
     "user_hadyn_waldie": {
       "username": "hadyn_waldie",
@@ -2629,7 +2629,7 @@
     }
   },
   "lastReset": {
-    "daily": "Mon Nov 17 2025",
+    "daily": "Tue Nov 18 2025",
     "weekly": 47,
     "weeklyTag": "2025-W47",
     "monthly": 10,
