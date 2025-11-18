@@ -1,10 +1,31 @@
 {
-  "daily": {},
+  "daily": {
+    "836024312711610448": {
+      "total": 300,
+      "count": 1,
+      "username": "roanhickey"
+    },
+    "780617237877882892": {
+      "total": 1937.28,
+      "count": 1,
+      "username": "keith.williams_04"
+    }
+  },
   "weekly": {
     "321165687152443392": {
       "total": 2053,
       "count": 1,
       "username": "fadednoodler"
+    },
+    "836024312711610448": {
+      "total": 300,
+      "count": 1,
+      "username": "roanhickey"
+    },
+    "780617237877882892": {
+      "total": 1937.28,
+      "count": 1,
+      "username": "keith.williams_04"
     }
   },
   "monthly": {
@@ -456,8 +477,8 @@
       "username": "gymboi2016"
     },
     "780617237877882892": {
-      "total": 703.56,
-      "count": 1,
+      "total": 2640.84,
+      "count": 2,
       "username": "keith.williams_04"
     },
     "1347906039785197652": {
@@ -484,6 +505,11 @@
       "total": 2053,
       "count": 1,
       "username": "fadednoodler"
+    },
+    "836024312711610448": {
+      "total": 300,
+      "count": 1,
+      "username": "roanhickey"
     }
   },
   "allTime": {
@@ -633,8 +659,8 @@
       "username": "gymboi2016"
     },
     "780617237877882892": {
-      "total": 703.56,
-      "count": 1,
+      "total": 2640.84,
+      "count": 2,
       "username": "keith.williams_04"
     },
     "1347906039785197652": {
@@ -661,6 +687,11 @@
       "total": 2053,
       "count": 1,
       "username": "fadednoodler"
+    },
+    "836024312711610448": {
+      "total": 300,
+      "count": 1,
+      "username": "roanhickey"
     }
   },
   "dailySnapshot": {
