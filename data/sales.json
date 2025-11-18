@@ -1,6 +1,18 @@
 {
-  "daily": {},
-  "weekly": {},
+  "daily": {
+    "321165687152443392": {
+      "total": 2053,
+      "count": 1,
+      "username": "fadednoodler"
+    }
+  },
+  "weekly": {
+    "321165687152443392": {
+      "total": 2053,
+      "count": 1,
+      "username": "fadednoodler"
+    }
+  },
   "monthly": {
     "user_hadyn_waldie": {
       "username": "hadyn_waldie",
@@ -473,6 +485,11 @@
       "total": 1737.36,
       "count": 1,
       "username": "therealvblacklive"
+    },
+    "321165687152443392": {
+      "total": 2053,
+      "count": 1,
+      "username": "fadednoodler"
     }
   },
   "allTime": {
@@ -645,6 +662,11 @@
       "total": 1737.36,
       "count": 1,
       "username": "therealvblacklive"
+    },
+    "321165687152443392": {
+      "total": 2053,
+      "count": 1,
+      "username": "fadednoodler"
     }
   },
   "dailySnapshot": {},
