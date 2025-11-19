@@ -1,26 +1,5 @@
 {
-  "daily": {
-    "836024312711610448": {
-      "total": 300,
-      "count": 1,
-      "username": "roanhickey"
-    },
-    "780617237877882892": {
-      "total": 1937.28,
-      "count": 1,
-      "username": "keith.williams_04"
-    },
-    "1356772443997605978": {
-      "total": 1344,
-      "count": 1,
-      "username": "hadyn_waldie"
-    },
-    "1264830499130441813": {
-      "total": 552.84,
-      "count": 1,
-      "username": "daddychill09627"
-    }
-  },
+  "daily": {},
   "weekly": {
     "321165687152443392": {
       "total": 2053,
@@ -725,10 +704,25 @@
     }
   },
   "dailySnapshot": {
-    "321165687152443392": {
-      "total": 2053,
+    "836024312711610448": {
+      "total": 300,
       "count": 1,
-      "username": "fadednoodler"
+      "username": "roanhickey"
+    },
+    "780617237877882892": {
+      "total": 1937.28,
+      "count": 1,
+      "username": "keith.williams_04"
+    },
+    "1356772443997605978": {
+      "total": 1344,
+      "count": 1,
+      "username": "hadyn_waldie"
+    },
+    "1264830499130441813": {
+      "total": 552.84,
+      "count": 1,
+      "username": "daddychill09627"
     }
   },
   "weeklySnapshot": {
@@ -2690,7 +2684,7 @@
     }
   },
   "lastReset": {
-    "daily": "Tue Nov 18 2025",
+    "daily": "Wed Nov 19 2025",
     "weekly": 47,
     "weeklyTag": "2025-W47",
     "monthly": 10,
