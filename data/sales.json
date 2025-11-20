@@ -1,31 +1,5 @@
 {
-  "daily": {
-    "1264830499130441813": {
-      "total": 1404.96,
-      "count": 1,
-      "username": "daddychill09627"
-    },
-    "1134874074552729601": {
-      "total": 4048.44,
-      "count": 1,
-      "username": "getrichwithrich"
-    },
-    "566734854008602624": {
-      "total": 2834.04,
-      "count": 1,
-      "username": "loganobrienhere"
-    },
-    "1356772443997605978": {
-      "total": 1566.48,
-      "count": 1,
-      "username": "hadyn_waldie"
-    },
-    "1415746228137889924": {
-      "total": 4889.5199999999995,
-      "count": 2,
-      "username": "sellwithjoey"
-    }
-  },
+  "daily": {},
   "weekly": {
     "321165687152443392": {
       "total": 2053,
@@ -775,25 +749,30 @@
     }
   },
   "dailySnapshot": {
-    "836024312711610448": {
-      "total": 300,
+    "1264830499130441813": {
+      "total": 1404.96,
       "count": 1,
-      "username": "roanhickey"
+      "username": "daddychill09627"
     },
-    "780617237877882892": {
-      "total": 1937.28,
+    "1134874074552729601": {
+      "total": 4048.44,
       "count": 1,
-      "username": "keith.williams_04"
+      "username": "getrichwithrich"
+    },
+    "566734854008602624": {
+      "total": 2834.04,
+      "count": 1,
+      "username": "loganobrienhere"
     },
     "1356772443997605978": {
-      "total": 1344,
+      "total": 1566.48,
       "count": 1,
       "username": "hadyn_waldie"
     },
-    "1264830499130441813": {
-      "total": 552.84,
-      "count": 1,
-      "username": "daddychill09627"
+    "1415746228137889924": {
+      "total": 4889.5199999999995,
+      "count": 2,
+      "username": "sellwithjoey"
     }
   },
   "weeklySnapshot": {
@@ -2755,7 +2734,7 @@
     }
   },
   "lastReset": {
-    "daily": "Wed Nov 19 2025",
+    "daily": "Thu Nov 20 2025",
     "weekly": 47,
     "weeklyTag": "2025-W47",
     "monthly": 10,
