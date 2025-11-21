@@ -1,5 +1,16 @@
 {
-  "daily": {},
+  "daily": {
+    "780617237877882892": {
+      "total": 960,
+      "count": 1,
+      "username": "keith.williams_04"
+    },
+    "1342657107819757698": {
+      "total": 1663.32,
+      "count": 1,
+      "username": "therealvblacklive"
+    }
+  },
   "weekly": {
     "321165687152443392": {
       "total": 2053,
@@ -12,8 +23,8 @@
       "username": "roanhickey"
     },
     "780617237877882892": {
-      "total": 5584.799999999999,
-      "count": 4,
+      "total": 6544.799999999999,
+      "count": 5,
       "username": "keith.williams_04"
     },
     "1356772443997605978": {
@@ -50,6 +61,11 @@
       "total": 2155.3199999999997,
       "count": 2,
       "username": "kayden.green"
+    },
+    "1342657107819757698": {
+      "total": 1663.32,
+      "count": 1,
+      "username": "therealvblacklive"
     }
   },
   "monthly": {
@@ -501,8 +517,8 @@
       "username": "gymboi2016"
     },
     "780617237877882892": {
-      "total": 6288.36,
-      "count": 5,
+      "total": 7248.36,
+      "count": 6,
       "username": "keith.williams_04"
     },
     "1347906039785197652": {
@@ -521,8 +537,8 @@
       "username": "richvigga"
     },
     "1342657107819757698": {
-      "total": 1737.36,
-      "count": 1,
+      "total": 3400.68,
+      "count": 2,
       "username": "therealvblacklive"
     },
     "321165687152443392": {
@@ -708,8 +724,8 @@
       "username": "gymboi2016"
     },
     "780617237877882892": {
-      "total": 6288.36,
-      "count": 5,
+      "total": 7248.36,
+      "count": 6,
       "username": "keith.williams_04"
     },
     "1347906039785197652": {
@@ -728,8 +744,8 @@
       "username": "richvigga"
     },
     "1342657107819757698": {
-      "total": 1737.36,
-      "count": 1,
+      "total": 3400.68,
+      "count": 2,
       "username": "therealvblacklive"
     },
     "321165687152443392": {
