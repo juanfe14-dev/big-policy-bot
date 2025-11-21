@@ -1,36 +1,5 @@
 {
-  "daily": {
-    "1134874074552729601": {
-      "total": 4863.4,
-      "count": 3,
-      "username": "getrichwithrich"
-    },
-    "780617237877882892": {
-      "total": 3647.5199999999995,
-      "count": 3,
-      "username": "keith.williams_04"
-    },
-    "1141460353679642645": {
-      "total": 807.84,
-      "count": 2,
-      "username": "harrisonvandermey"
-    },
-    "566734854008602624": {
-      "total": 11550.16,
-      "count": 4,
-      "username": "loganobrienhere"
-    },
-    "477900273612750858": {
-      "total": 2155.3199999999997,
-      "count": 2,
-      "username": "kayden.green"
-    },
-    "1264830499130441813": {
-      "total": 584.64,
-      "count": 1,
-      "username": "daddychill09627"
-    }
-  },
+  "daily": {},
   "weekly": {
     "321165687152443392": {
       "total": 2053,
@@ -800,30 +769,35 @@
     }
   },
   "dailySnapshot": {
-    "1264830499130441813": {
-      "total": 1404.96,
-      "count": 1,
-      "username": "daddychill09627"
-    },
     "1134874074552729601": {
-      "total": 4048.44,
-      "count": 1,
+      "total": 4863.4,
+      "count": 3,
       "username": "getrichwithrich"
     },
+    "780617237877882892": {
+      "total": 3647.5199999999995,
+      "count": 3,
+      "username": "keith.williams_04"
+    },
+    "1141460353679642645": {
+      "total": 807.84,
+      "count": 2,
+      "username": "harrisonvandermey"
+    },
     "566734854008602624": {
-      "total": 2834.04,
-      "count": 1,
+      "total": 11550.16,
+      "count": 4,
       "username": "loganobrienhere"
     },
-    "1356772443997605978": {
-      "total": 1566.48,
-      "count": 1,
-      "username": "hadyn_waldie"
-    },
-    "1415746228137889924": {
-      "total": 4889.5199999999995,
+    "477900273612750858": {
+      "total": 2155.3199999999997,
       "count": 2,
-      "username": "sellwithjoey"
+      "username": "kayden.green"
+    },
+    "1264830499130441813": {
+      "total": 584.64,
+      "count": 1,
+      "username": "daddychill09627"
     }
   },
   "weeklySnapshot": {
@@ -2785,7 +2759,7 @@
     }
   },
   "lastReset": {
-    "daily": "Thu Nov 20 2025",
+    "daily": "Fri Nov 21 2025",
     "weekly": 47,
     "weeklyTag": "2025-W47",
     "monthly": 10,
