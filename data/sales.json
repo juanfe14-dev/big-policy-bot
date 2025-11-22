@@ -1,26 +1,5 @@
 {
-  "daily": {
-    "780617237877882892": {
-      "total": 960,
-      "count": 1,
-      "username": "keith.williams_04"
-    },
-    "1342657107819757698": {
-      "total": 3446.2799999999997,
-      "count": 2,
-      "username": "therealvblacklive"
-    },
-    "477900273612750858": {
-      "total": 1472.28,
-      "count": 2,
-      "username": "kayden.green"
-    },
-    "1264830499130441813": {
-      "total": 1118.28,
-      "count": 1,
-      "username": "daddychill09627"
-    }
-  },
+  "daily": {},
   "weekly": {
     "321165687152443392": {
       "total": 2053,
@@ -795,33 +774,23 @@
     }
   },
   "dailySnapshot": {
-    "1134874074552729601": {
-      "total": 4863.4,
-      "count": 3,
-      "username": "getrichwithrich"
-    },
     "780617237877882892": {
-      "total": 3647.5199999999995,
-      "count": 3,
+      "total": 960,
+      "count": 1,
       "username": "keith.williams_04"
     },
-    "1141460353679642645": {
-      "total": 807.84,
+    "1342657107819757698": {
+      "total": 3446.2799999999997,
       "count": 2,
-      "username": "harrisonvandermey"
-    },
-    "566734854008602624": {
-      "total": 11550.16,
-      "count": 4,
-      "username": "loganobrienhere"
+      "username": "therealvblacklive"
     },
     "477900273612750858": {
-      "total": 2155.3199999999997,
+      "total": 1472.28,
       "count": 2,
       "username": "kayden.green"
     },
     "1264830499130441813": {
-      "total": 584.64,
+      "total": 1118.28,
       "count": 1,
       "username": "daddychill09627"
     }
@@ -2785,7 +2754,7 @@
     }
   },
   "lastReset": {
-    "daily": "Fri Nov 21 2025",
+    "daily": "Sat Nov 22 2025",
     "weekly": 47,
     "weeklyTag": "2025-W47",
     "monthly": 10,
