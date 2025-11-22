@@ -1,5 +1,11 @@
 {
-  "daily": {},
+  "daily": {
+    "466076938012983297": {
+      "total": 356.4,
+      "count": 1,
+      "username": "squizard33"
+    }
+  },
   "weekly": {
     "321165687152443392": {
       "total": 2053,
@@ -55,6 +61,11 @@
       "total": 3446.2799999999997,
       "count": 2,
       "username": "therealvblacklive"
+    },
+    "466076938012983297": {
+      "total": 356.4,
+      "count": 1,
+      "username": "squizard33"
     }
   },
   "monthly": {
@@ -564,6 +575,11 @@
       "total": 3627.5999999999995,
       "count": 4,
       "username": "kayden.green"
+    },
+    "466076938012983297": {
+      "total": 356.4,
+      "count": 1,
+      "username": "squizard33"
     }
   },
   "allTime": {
@@ -771,6 +787,11 @@
       "total": 3627.5999999999995,
       "count": 4,
       "username": "kayden.green"
+    },
+    "466076938012983297": {
+      "total": 356.4,
+      "count": 1,
+      "username": "squizard33"
     }
   },
   "dailySnapshot": {
