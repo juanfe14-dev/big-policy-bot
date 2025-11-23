@@ -1,16 +1,5 @@
 {
-  "daily": {
-    "466076938012983297": {
-      "total": 356.4,
-      "count": 1,
-      "username": "squizard33"
-    },
-    "780617237877882892": {
-      "total": 2553.72,
-      "count": 3,
-      "username": "keith.williams_04"
-    }
-  },
+  "daily": {},
   "weekly": {
     "321165687152443392": {
       "total": 2053,
@@ -800,25 +789,15 @@
     }
   },
   "dailySnapshot": {
+    "466076938012983297": {
+      "total": 356.4,
+      "count": 1,
+      "username": "squizard33"
+    },
     "780617237877882892": {
-      "total": 960,
-      "count": 1,
+      "total": 2553.72,
+      "count": 3,
       "username": "keith.williams_04"
-    },
-    "1342657107819757698": {
-      "total": 3446.2799999999997,
-      "count": 2,
-      "username": "therealvblacklive"
-    },
-    "477900273612750858": {
-      "total": 1472.28,
-      "count": 2,
-      "username": "kayden.green"
-    },
-    "1264830499130441813": {
-      "total": 1118.28,
-      "count": 1,
-      "username": "daddychill09627"
     }
   },
   "weeklySnapshot": {
@@ -2780,7 +2759,7 @@
     }
   },
   "lastReset": {
-    "daily": "Sat Nov 22 2025",
+    "daily": "Sun Nov 23 2025",
     "weekly": 47,
     "weeklyTag": "2025-W47",
     "monthly": 10,
