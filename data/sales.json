@@ -1,6 +1,18 @@
 {
-  "daily": {},
-  "weekly": {},
+  "daily": {
+    "765370554512572458": {
+      "total": 697.72,
+      "count": 1,
+      "username": "handmade.by.hilllery"
+    }
+  },
+  "weekly": {
+    "765370554512572458": {
+      "total": 697.72,
+      "count": 1,
+      "username": "handmade.by.hilllery"
+    }
+  },
   "monthly": {
     "user_hadyn_waldie": {
       "username": "hadyn_waldie",
@@ -513,6 +525,11 @@
       "total": 356.4,
       "count": 1,
       "username": "squizard33"
+    },
+    "765370554512572458": {
+      "total": 697.72,
+      "count": 1,
+      "username": "handmade.by.hilllery"
     }
   },
   "allTime": {
@@ -725,6 +742,11 @@
       "total": 356.4,
       "count": 1,
       "username": "squizard33"
+    },
+    "765370554512572458": {
+      "total": 697.72,
+      "count": 1,
+      "username": "handmade.by.hilllery"
     }
   },
   "dailySnapshot": {},
