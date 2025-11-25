@@ -1,26 +1,5 @@
 {
-  "daily": {
-    "765370554512572458": {
-      "total": 697.72,
-      "count": 1,
-      "username": "handmade.by.hilllery"
-    },
-    "780617237877882892": {
-      "total": 1031.04,
-      "count": 1,
-      "username": "keith.williams_04"
-    },
-    "477900273612750858": {
-      "total": 404.28,
-      "count": 1,
-      "username": "kayden.green"
-    },
-    "1134874074552729601": {
-      "total": 6707.16,
-      "count": 2,
-      "username": "getrichwithrich"
-    }
-  },
+  "daily": {},
   "weekly": {
     "765370554512572458": {
       "total": 697.72,
@@ -779,7 +758,28 @@
       "username": "handmade.by.hilllery"
     }
   },
-  "dailySnapshot": {},
+  "dailySnapshot": {
+    "765370554512572458": {
+      "total": 697.72,
+      "count": 1,
+      "username": "handmade.by.hilllery"
+    },
+    "780617237877882892": {
+      "total": 1031.04,
+      "count": 1,
+      "username": "keith.williams_04"
+    },
+    "477900273612750858": {
+      "total": 404.28,
+      "count": 1,
+      "username": "kayden.green"
+    },
+    "1134874074552729601": {
+      "total": 6707.16,
+      "count": 2,
+      "username": "getrichwithrich"
+    }
+  },
   "weeklySnapshot": {
     "321165687152443392": {
       "total": 2053,
@@ -2327,7 +2327,7 @@
     }
   },
   "lastReset": {
-    "daily": "Mon Nov 24 2025",
+    "daily": "Tue Nov 25 2025",
     "weekly": 48,
     "weeklyTag": "2025-W48",
     "monthly": 10,
