@@ -768,28 +768,7 @@
       "username": "handmade.by.hilllery"
     }
   },
-  "dailySnapshot": {
-    "1134874074552729601": {
-      "total": 6349.8,
-      "count": 2,
-      "username": "getrichwithrich"
-    },
-    "780617237877882892": {
-      "total": 1672.92,
-      "count": 2,
-      "username": "keith.williams_04"
-    },
-    "466076938012983297": {
-      "total": 1457.4,
-      "count": 1,
-      "username": "squizard33"
-    },
-    "1264830499130441813": {
-      "total": 2156.16,
-      "count": 1,
-      "username": "daddychill09627"
-    }
-  },
+  "dailySnapshot": {},
   "weeklySnapshot": {
     "321165687152443392": {
       "total": 2053,
@@ -2337,7 +2316,7 @@
     }
   },
   "lastReset": {
-    "daily": "Wed Nov 26 2025",
+    "daily": "Thu Nov 27 2025",
     "weekly": 48,
     "weeklyTag": "2025-W48",
     "monthly": 10,
