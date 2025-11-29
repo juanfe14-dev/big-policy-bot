@@ -1,16 +1,5 @@
 {
-  "daily": {
-    "466076938012983297": {
-      "total": 1669.68,
-      "count": 2,
-      "username": "squizard33"
-    },
-    "1032557343172468788": {
-      "total": 1900.08,
-      "count": 1,
-      "username": "richvigga"
-    }
-  },
+  "daily": {},
   "weekly": {
     "765370554512572458": {
       "total": 697.72,
@@ -784,7 +773,18 @@
       "username": "handmade.by.hilllery"
     }
   },
-  "dailySnapshot": {},
+  "dailySnapshot": {
+    "466076938012983297": {
+      "total": 1669.68,
+      "count": 2,
+      "username": "squizard33"
+    },
+    "1032557343172468788": {
+      "total": 1900.08,
+      "count": 1,
+      "username": "richvigga"
+    }
+  },
   "weeklySnapshot": {
     "321165687152443392": {
       "total": 2053,
@@ -2332,7 +2332,7 @@
     }
   },
   "lastReset": {
-    "daily": "Fri Nov 28 2025",
+    "daily": "Sat Nov 29 2025",
     "weekly": 48,
     "weeklyTag": "2025-W48",
     "monthly": 10,
