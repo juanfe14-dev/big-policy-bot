@@ -1,6 +1,226 @@
 {
   "daily": {},
-  "weekly": {
+  "weekly": {},
+  "monthly": {},
+  "allTime": {
+    "user_keith_williams_04": {
+      "username": "keith.williams_04",
+      "total": 59026.51,
+      "count": 44
+    },
+    "user_harrisonvandermey": {
+      "username": "harrisonvandermey",
+      "total": 20298.48,
+      "count": 19
+    },
+    "user_harveymckeown": {
+      "username": "harveymckeown",
+      "total": 1392,
+      "count": 1
+    },
+    "user_sellwithjoey": {
+      "username": "sellwithjoey",
+      "total": 62353.11,
+      "count": 45
+    },
+    "user_fadednoodler": {
+      "username": "fadednoodler",
+      "total": 9910.2,
+      "count": 8
+    },
+    "user_richvigga": {
+      "username": "richvigga",
+      "total": 14513.28,
+      "count": 11
+    },
+    "user_squizard33": {
+      "username": "squizard33",
+      "total": 7168.8,
+      "count": 8
+    },
+    "user_therealvblacklive": {
+      "username": "therealvblacklive",
+      "total": 26988.6,
+      "count": 17
+    },
+    "user_loganobrienhere": {
+      "username": "loganobrienhere",
+      "total": 27782.1,
+      "count": 19
+    },
+    "user_kayden_green": {
+      "username": "kayden.green",
+      "total": 7465.32,
+      "count": 6
+    },
+    "user_roanhickey": {
+      "username": "roanhickey",
+      "total": 10820.4,
+      "count": 11
+    },
+    "user_the_top_one_percentile": {
+      "username": "the_top_one_percentile",
+      "total": 15792.72,
+      "count": 13
+    },
+    "1410683197888659527": {
+      "username": "j_vill1",
+      "total": 1500,
+      "count": 1
+    },
+    "user_coltoncaycedo": {
+      "username": "coltoncaycedo",
+      "total": 872,
+      "count": 1
+    },
+    "user_getrichwithrich": {
+      "username": "getrichwithrich",
+      "total": 89477.48,
+      "count": 46
+    },
+    "user_zaide_johnson": {
+      "username": "zaide_johnson",
+      "total": 7020.24,
+      "count": 8
+    },
+    "user_issuedpaid": {
+      "username": "issuedpaid",
+      "total": 5413.08,
+      "count": 2
+    },
+    "user_hadyn_waldie": {
+      "username": "hadyn_waldie",
+      "total": 6464.52,
+      "count": 9
+    },
+    "user_handmade.by.hilllery": {
+      "username": "handmade.by.hilllery",
+      "total": 1173.96,
+      "count": 1
+    },
+    "user_nate_dawg707": {
+      "username": "nate_dawg707",
+      "total": 1682,
+      "count": 1
+    },
+    "user_tkleib24": {
+      "username": "tkleib24",
+      "total": 25322,
+      "count": 3
+    },
+    "user_keith.williams_04": {
+      "username": "keith.williams_04",
+      "total": 7456.08,
+      "count": 7
+    },
+    "user_daddychill09627": {
+      "username": "daddychill09627",
+      "total": 3332.16,
+      "count": 4
+    },
+    "user_kayden.green": {
+      "username": "kayden.green",
+      "total": 392.52,
+      "count": 1
+    },
+    "user_gymboi2016": {
+      "username": "gymboi2016",
+      "total": 952.32,
+      "count": 1
+    },
+    "1141460353679642645": {
+      "total": 1491.8400000000001,
+      "count": 3,
+      "username": "harrisonvandermey"
+    },
+    "907419205727584286": {
+      "total": 1209.72,
+      "count": 1,
+      "username": "the_top_one_percentile"
+    },
+    "1356772443997605978": {
+      "total": 3803.04,
+      "count": 3,
+      "username": "hadyn_waldie"
+    },
+    "548322241746567169": {
+      "total": 1620.1599999999999,
+      "count": 2,
+      "username": "gymboi2016"
+    },
+    "780617237877882892": {
+      "total": 12506.039999999997,
+      "count": 12,
+      "username": "keith.williams_04"
+    },
+    "1347906039785197652": {
+      "total": 638.4,
+      "count": 1,
+      "username": "audieosho"
+    },
+    "384918453443624961": {
+      "total": 600,
+      "count": 1,
+      "username": "selfmedicate111"
+    },
+    "1032557343172468788": {
+      "total": 6765.84,
+      "count": 5,
+      "username": "richvigga"
+    },
+    "1342657107819757698": {
+      "total": 5183.639999999999,
+      "count": 3,
+      "username": "therealvblacklive"
+    },
+    "321165687152443392": {
+      "total": 2053,
+      "count": 1,
+      "username": "fadednoodler"
+    },
+    "836024312711610448": {
+      "total": 300,
+      "count": 1,
+      "username": "roanhickey"
+    },
+    "1264830499130441813": {
+      "total": 5816.88,
+      "count": 5,
+      "username": "daddychill09627"
+    },
+    "1134874074552729601": {
+      "total": 21968.800000000003,
+      "count": 8,
+      "username": "getrichwithrich"
+    },
+    "566734854008602624": {
+      "total": 14384.2,
+      "count": 5,
+      "username": "loganobrienhere"
+    },
+    "1415746228137889924": {
+      "total": 4889.5199999999995,
+      "count": 2,
+      "username": "sellwithjoey"
+    },
+    "477900273612750858": {
+      "total": 4031.879999999999,
+      "count": 5,
+      "username": "kayden.green"
+    },
+    "466076938012983297": {
+      "total": 3483.4800000000005,
+      "count": 4,
+      "username": "squizard33"
+    },
+    "765370554512572458": {
+      "total": 697.72,
+      "count": 1,
+      "username": "handmade.by.hilllery"
+    }
+  },
+  "dailySnapshot": {},
+  "weeklySnapshot": {
     "765370554512572458": {
       "total": 697.72,
       "count": 1,
@@ -37,7 +257,7 @@
       "username": "richvigga"
     }
   },
-  "monthly": {
+  "monthlySnapshot": {
     "user_hadyn_waldie": {
       "username": "hadyn_waldie",
       "total": 2952.48,
@@ -556,1775 +776,11 @@
       "username": "handmade.by.hilllery"
     }
   },
-  "allTime": {
-    "user_keith_williams_04": {
-      "username": "keith.williams_04",
-      "total": 59026.51,
-      "count": 44
-    },
-    "user_harrisonvandermey": {
-      "username": "harrisonvandermey",
-      "total": 20298.48,
-      "count": 19
-    },
-    "user_harveymckeown": {
-      "username": "harveymckeown",
-      "total": 1392,
-      "count": 1
-    },
-    "user_sellwithjoey": {
-      "username": "sellwithjoey",
-      "total": 62353.11,
-      "count": 45
-    },
-    "user_fadednoodler": {
-      "username": "fadednoodler",
-      "total": 9910.2,
-      "count": 8
-    },
-    "user_richvigga": {
-      "username": "richvigga",
-      "total": 14513.28,
-      "count": 11
-    },
-    "user_squizard33": {
-      "username": "squizard33",
-      "total": 7168.8,
-      "count": 8
-    },
-    "user_therealvblacklive": {
-      "username": "therealvblacklive",
-      "total": 26988.6,
-      "count": 17
-    },
-    "user_loganobrienhere": {
-      "username": "loganobrienhere",
-      "total": 27782.1,
-      "count": 19
-    },
-    "user_kayden_green": {
-      "username": "kayden.green",
-      "total": 7465.32,
-      "count": 6
-    },
-    "user_roanhickey": {
-      "username": "roanhickey",
-      "total": 10820.4,
-      "count": 11
-    },
-    "user_the_top_one_percentile": {
-      "username": "the_top_one_percentile",
-      "total": 15792.72,
-      "count": 13
-    },
-    "1410683197888659527": {
-      "username": "j_vill1",
-      "total": 1500,
-      "count": 1
-    },
-    "user_coltoncaycedo": {
-      "username": "coltoncaycedo",
-      "total": 872,
-      "count": 1
-    },
-    "user_getrichwithrich": {
-      "username": "getrichwithrich",
-      "total": 89477.48,
-      "count": 46
-    },
-    "user_zaide_johnson": {
-      "username": "zaide_johnson",
-      "total": 7020.24,
-      "count": 8
-    },
-    "user_issuedpaid": {
-      "username": "issuedpaid",
-      "total": 5413.08,
-      "count": 2
-    },
-    "user_hadyn_waldie": {
-      "username": "hadyn_waldie",
-      "total": 6464.52,
-      "count": 9
-    },
-    "user_handmade.by.hilllery": {
-      "username": "handmade.by.hilllery",
-      "total": 1173.96,
-      "count": 1
-    },
-    "user_nate_dawg707": {
-      "username": "nate_dawg707",
-      "total": 1682,
-      "count": 1
-    },
-    "user_tkleib24": {
-      "username": "tkleib24",
-      "total": 25322,
-      "count": 3
-    },
-    "user_keith.williams_04": {
-      "username": "keith.williams_04",
-      "total": 7456.08,
-      "count": 7
-    },
-    "user_daddychill09627": {
-      "username": "daddychill09627",
-      "total": 3332.16,
-      "count": 4
-    },
-    "user_kayden.green": {
-      "username": "kayden.green",
-      "total": 392.52,
-      "count": 1
-    },
-    "user_gymboi2016": {
-      "username": "gymboi2016",
-      "total": 952.32,
-      "count": 1
-    },
-    "1141460353679642645": {
-      "total": 1491.8400000000001,
-      "count": 3,
-      "username": "harrisonvandermey"
-    },
-    "907419205727584286": {
-      "total": 1209.72,
-      "count": 1,
-      "username": "the_top_one_percentile"
-    },
-    "1356772443997605978": {
-      "total": 3803.04,
-      "count": 3,
-      "username": "hadyn_waldie"
-    },
-    "548322241746567169": {
-      "total": 1620.1599999999999,
-      "count": 2,
-      "username": "gymboi2016"
-    },
-    "780617237877882892": {
-      "total": 12506.039999999997,
-      "count": 12,
-      "username": "keith.williams_04"
-    },
-    "1347906039785197652": {
-      "total": 638.4,
-      "count": 1,
-      "username": "audieosho"
-    },
-    "384918453443624961": {
-      "total": 600,
-      "count": 1,
-      "username": "selfmedicate111"
-    },
-    "1032557343172468788": {
-      "total": 6765.84,
-      "count": 5,
-      "username": "richvigga"
-    },
-    "1342657107819757698": {
-      "total": 5183.639999999999,
-      "count": 3,
-      "username": "therealvblacklive"
-    },
-    "321165687152443392": {
-      "total": 2053,
-      "count": 1,
-      "username": "fadednoodler"
-    },
-    "836024312711610448": {
-      "total": 300,
-      "count": 1,
-      "username": "roanhickey"
-    },
-    "1264830499130441813": {
-      "total": 5816.88,
-      "count": 5,
-      "username": "daddychill09627"
-    },
-    "1134874074552729601": {
-      "total": 21968.800000000003,
-      "count": 8,
-      "username": "getrichwithrich"
-    },
-    "566734854008602624": {
-      "total": 14384.2,
-      "count": 5,
-      "username": "loganobrienhere"
-    },
-    "1415746228137889924": {
-      "total": 4889.5199999999995,
-      "count": 2,
-      "username": "sellwithjoey"
-    },
-    "477900273612750858": {
-      "total": 4031.879999999999,
-      "count": 5,
-      "username": "kayden.green"
-    },
-    "466076938012983297": {
-      "total": 3483.4800000000005,
-      "count": 4,
-      "username": "squizard33"
-    },
-    "765370554512572458": {
-      "total": 697.72,
-      "count": 1,
-      "username": "handmade.by.hilllery"
-    }
-  },
-  "dailySnapshot": {},
-  "weeklySnapshot": {
-    "321165687152443392": {
-      "total": 2053,
-      "count": 1,
-      "username": "fadednoodler"
-    },
-    "836024312711610448": {
-      "total": 300,
-      "count": 1,
-      "username": "roanhickey"
-    },
-    "780617237877882892": {
-      "total": 9098.519999999999,
-      "count": 8,
-      "username": "keith.williams_04"
-    },
-    "1356772443997605978": {
-      "total": 2910.48,
-      "count": 2,
-      "username": "hadyn_waldie"
-    },
-    "1264830499130441813": {
-      "total": 3660.7200000000003,
-      "count": 4,
-      "username": "daddychill09627"
-    },
-    "1134874074552729601": {
-      "total": 8911.84,
-      "count": 4,
-      "username": "getrichwithrich"
-    },
-    "566734854008602624": {
-      "total": 14384.2,
-      "count": 5,
-      "username": "loganobrienhere"
-    },
-    "1415746228137889924": {
-      "total": 4889.5199999999995,
-      "count": 2,
-      "username": "sellwithjoey"
-    },
-    "1141460353679642645": {
-      "total": 807.84,
-      "count": 2,
-      "username": "harrisonvandermey"
-    },
-    "477900273612750858": {
-      "total": 3627.5999999999995,
-      "count": 4,
-      "username": "kayden.green"
-    },
-    "1342657107819757698": {
-      "total": 3446.2799999999997,
-      "count": 2,
-      "username": "therealvblacklive"
-    },
-    "466076938012983297": {
-      "total": 356.4,
-      "count": 1,
-      "username": "squizard33"
-    }
-  },
-  "monthlySnapshot": {
-    "user_keith_williams_04": {
-      "username": "keith.williams_04",
-      "total": 58564.15,
-      "count": 43,
-      "policies": {
-        "Amam Iul": 4,
-        "Foresters Term": 11,
-        "Transamerica Fex": 1,
-        "Amam Iul His": 1,
-        "Amam Iul Hers": 1,
-        "Transam Iul": 1,
-        "Ladder 20 year term": 1,
-        "TransAmerica FEX": 1,
-        "Ladder Term": 3,
-        "Ladder term": 2,
-        "foresters term": 1,
-        "AmAm IUL": 10,
-        "Forester Term": 1,
-        "AHL": 1,
-        "Transamerica FEX": 1,
-        "AmAm FEX": 1,
-        "Foresters term": 1,
-        "TransAm IUL": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1192.8,
-          "type": "Amam Iul",
-          "date": "2025-10-21T16:22:15.545328918Z"
-        },
-        {
-          "amount": 565.44,
-          "type": "Foresters Term",
-          "date": "2025-10-21T20:37:41.772906741Z"
-        },
-        {
-          "amount": 1328.28,
-          "type": "Foresters Term",
-          "date": "2025-10-21T23:47:10.187655740Z"
-        },
-        {
-          "amount": 3142.8,
-          "type": "Amam Iul",
-          "date": "2025-10-22T00:50:40.338216208Z"
-        },
-        {
-          "amount": 1206,
-          "type": "Amam Iul",
-          "date": "2025-10-22T22:35:49.947934634Z"
-        },
-        {
-          "amount": 1162.8,
-          "type": "Amam Iul",
-          "date": "2025-10-23T19:10:07.036619485Z"
-        },
-        {
-          "amount": 807.24,
-          "type": "Foresters Term",
-          "date": "2025-10-23T22:54:02.552018512Z"
-        },
-        {
-          "amount": 1197.84,
-          "type": "Transamerica Fex",
-          "date": "2025-10-25T12:00:00.000Z"
-        },
-        {
-          "amount": 1089.9,
-          "type": "Amam Iul His",
-          "date": "2025-10-26T15:00:00.000Z"
-        },
-        {
-          "amount": 818.04,
-          "type": "Amam Iul Hers",
-          "date": "2025-10-26T15:01:00.000Z"
-        },
-        {
-          "amount": 982.24,
-          "type": "Transam Iul",
-          "date": "2025-10-27T16:00:00.000Z"
-        },
-        {
-          "amount": 1624,
-          "type": "Ladder 20 year term",
-          "date": "2025-10-07T00:37:00Z"
-        },
-        {
-          "amount": 1198.32,
-          "type": "TransAmerica FEX",
-          "date": "2025-10-07T23:20:00Z"
-        },
-        {
-          "amount": 1943.88,
-          "type": "Ladder Term",
-          "date": "2025-10-07T23:20:00Z"
-        },
-        {
-          "amount": 1081.56,
-          "type": "Foresters Term",
-          "date": "2025-10-09T03:21:00Z"
-        },
-        {
-          "amount": 1572,
-          "type": "Ladder term",
-          "date": "2025-10-09T05:05:00Z"
-        },
-        {
-          "amount": 960,
-          "type": "Foresters Term",
-          "date": "2025-10-10T01:36:00Z"
-        },
-        {
-          "amount": 1085,
-          "type": "foresters term",
-          "date": "2025-10-10T14:47:00Z"
-        },
-        {
-          "amount": 1421.04,
-          "type": "Ladder term",
-          "date": "2025-10-10T14:47:00Z"
-        },
-        {
-          "amount": 421.44,
-          "type": "Ladder Term",
-          "date": "2025-10-10T14:47:00Z"
-        },
-        {
-          "amount": 633,
-          "type": "AmAm IUL",
-          "date": "2025-10-10T22:34:00Z"
-        },
-        {
-          "amount": 502.56,
-          "type": "AmAm IUL",
-          "date": "2025-10-10T22:34:00Z"
-        },
-        {
-          "amount": 1465.05,
-          "type": "AmAm IUL",
-          "date": "2025-10-10T22:34:00Z"
-        },
-        {
-          "amount": 5400,
-          "type": "AmAm IUL",
-          "date": "2025-10-11T16:21:00Z"
-        },
-        {
-          "amount": 1302,
-          "type": "AmAm IUL",
-          "date": "2025-10-11T16:21:00Z"
-        },
-        {
-          "amount": 585.96,
-          "type": "Forester Term",
-          "date": "2025-10-11T16:21:00Z"
-        },
-        {
-          "amount": 991.2,
-          "type": "Foresters Term",
-          "date": "2025-10-11T16:21:00Z"
-        },
-        {
-          "amount": 3118.44,
-          "type": "AHL",
-          "date": "2025-10-13T21:38:00Z"
-        },
-        {
-          "amount": 1068.5,
-          "type": "Transamerica FEX",
-          "date": "2025-10-14T16:46:00Z"
-        },
-        {
-          "amount": 729.6,
-          "type": "Foresters Term",
-          "date": "2025-10-14T22:51:00Z"
-        },
-        {
-          "amount": 1680,
-          "type": "AmAm IUL",
-          "date": "2025-10-15T00:41:00Z"
-        },
-        {
-          "amount": 2386.8,
-          "type": "AmAm IUL",
-          "date": "2025-10-15T00:41:00Z"
-        },
-        {
-          "amount": 2640,
-          "type": "AmAm FEX",
-          "date": "2025-10-16T21:15:00Z"
-        },
-        {
-          "amount": 1020,
-          "type": "Foresters Term",
-          "date": "2025-10-19T02:01:00Z"
-        },
-        {
-          "amount": 852.36,
-          "type": "Foresters Term",
-          "date": "2025-10-19T02:01:00Z"
-        },
-        {
-          "amount": 929.28,
-          "type": "Foresters Term",
-          "date": "2025-10-19T18:54:00Z"
-        },
-        {
-          "amount": 792.24,
-          "type": "Foresters Term",
-          "date": "2025-10-19T18:54:00Z"
-        },
-        {
-          "amount": 932.4,
-          "type": "Foresters term",
-          "date": "2025-10-20T17:25:00Z"
-        },
-        {
-          "amount": 3142.8,
-          "type": "AmAm IUL",
-          "date": "2025-10-21T23:47:00Z"
-        },
-        {
-          "amount": 1089.9,
-          "type": "AmAm IUL",
-          "date": "2025-10-26T20:54:00Z"
-        },
-        {
-          "amount": 818.04,
-          "type": "AmAm IUL",
-          "date": "2025-10-26T20:54:00Z"
-        },
-        {
-          "amount": 982.24,
-          "type": "TransAm IUL",
-          "date": "2025-10-28T02:12:00Z"
-        },
-        {
-          "amount": 701.16,
-          "type": "Ladder Term",
-          "date": "2025-10-28T22:21:00Z"
-        }
-      ]
-    },
-    "user_harrisonvandermey": {
-      "username": "harrisonvandermey",
-      "total": 15779.53,
-      "count": 17,
-      "policies": {
-        "Moo Lp": 2,
-        "Term": 3,
-        "Nlg Iul": 1,
-        "Gtl Wl": 1,
-        "TLE": 1,
-        "IULE": 2,
-        "AMAM IC ‍ ️": 1,
-        "IULE ‍ ️": 1,
-        "CB GIWL": 1,
-        "MOO AD OTS": 1,
-        "term S/O Vernell": 1,
-        "IULE OTS": 1,
-        "Americo AD": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 489.01,
-          "type": "Moo Lp",
-          "date": "2025-10-21T21:14:14.853652870Z"
-        },
-        {
-          "amount": 390.48,
-          "type": "Moo Lp",
-          "date": "2025-10-21T21:14:14.853661147Z"
-        },
-        {
-          "amount": 589.68,
-          "type": "Term",
-          "date": "2025-10-23T02:19:17.184090463Z"
-        },
-        {
-          "amount": 907.2,
-          "type": "Term",
-          "date": "2025-10-23T02:19:17.184097207Z"
-        },
-        {
-          "amount": 431.04,
-          "type": "Nlg Iul",
-          "date": "2025-10-23T02:19:17.184102733Z"
-        },
-        {
-          "amount": 1071.72,
-          "type": "Term",
-          "date": "2025-10-24T17:07:43.400731996Z"
-        },
-        {
-          "amount": 450,
-          "type": "Gtl Wl",
-          "date": "2025-10-27T11:00:00.000Z"
-        },
-        {
-          "amount": 563.4,
-          "type": "TLE",
-          "date": "2025-10-06T16:29:00Z"
-        },
-        {
-          "amount": 1770.12,
-          "type": "IULE",
-          "date": "2025-10-06T16:29:00Z"
-        },
-        {
-          "amount": 1872,
-          "type": "AMAM IC ‍ ️",
-          "date": "2025-10-08T21:11:00Z"
-        },
-        {
-          "amount": 1451,
-          "type": "IULE ‍ ️",
-          "date": "2025-10-08T21:11:00Z"
-        },
-        {
-          "amount": 1191.36,
-          "type": "CB GIWL",
-          "date": "2025-10-10T18:40:00Z"
-        },
-        {
-          "amount": 761.28,
-          "type": "MOO AD OTS",
-          "date": "2025-10-14T00:15:00Z"
-        },
-        {
-          "amount": 511,
-          "type": "term S/O Vernell",
-          "date": "2025-10-15T00:01:00Z"
-        },
-        {
-          "amount": 1083.24,
-          "type": "IULE OTS",
-          "date": "2025-10-16T23:13:00Z"
-        },
-        {
-          "amount": 1671,
-          "type": "IULE",
-          "date": "2025-10-16T23:13:00Z"
-        },
-        {
-          "amount": 576,
-          "type": "Americo AD",
-          "date": "2025-10-22T17:39:00Z"
-        }
-      ]
-    },
-    "user_harveymckeown": {
-      "username": "harveymckeown",
-      "total": 1392,
-      "count": 1,
-      "policies": {
-        "Corebridge Fex": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1392,
-          "type": "Corebridge Fex",
-          "date": "2025-10-21T22:14:05.849987514Z"
-        }
-      ]
-    },
-    "user_sellwithjoey": {
-      "username": "sellwithjoey",
-      "total": 61189.35,
-      "count": 44,
-      "policies": {
-        "Moo Iule": 3,
-        "Transam Fex": 1,
-        "Moo Ga": 2,
-        "Transam Iul": 1,
-        "MOO IULE": 21,
-        "MOO": 3,
-        "MOO GA": 6,
-        "MOO IULE ‍ ️": 1,
-        "AMAM IUL": 2,
-        "TransAm IUL": 3,
-        "TransAm FEX": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1234.68,
-          "type": "Moo Iule",
-          "date": "2025-10-22T02:25:44.844313144Z"
-        },
-        {
-          "amount": 1551.96,
-          "type": "Moo Iule",
-          "date": "2025-10-22T04:13:22.771434932Z"
-        },
-        {
-          "amount": 1011,
-          "type": "Moo Iule",
-          "date": "2025-10-22T04:13:22.771440237Z"
-        },
-        {
-          "amount": 2031.36,
-          "type": "Transam Fex",
-          "date": "2025-10-23T15:39:49.714187620Z"
-        },
-        {
-          "amount": 496.92,
-          "type": "Moo Ga",
-          "date": "2025-10-26T10:00:00.000Z"
-        },
-        {
-          "amount": 669,
-          "type": "Moo Ga",
-          "date": "2025-10-27T13:00:00.000Z"
-        },
-        {
-          "amount": 1621.44,
-          "type": "Transam Iul",
-          "date": "2025-10-27T13:30:00.000Z"
-        },
-        {
-          "amount": 1151.88,
-          "type": "MOO IULE",
-          "date": "2025-10-07T18:54:00Z"
-        },
-        {
-          "amount": 1192.68,
-          "type": "MOO IULE",
-          "date": "2025-10-07T21:39:00Z"
-        },
-        {
-          "amount": 871.92,
-          "type": "MOO IULE",
-          "date": "2025-10-07T21:39:00Z"
-        },
-        {
-          "amount": 447.24,
-          "type": "MOO IULE",
-          "date": "2025-10-08T03:23:00Z"
-        },
-        {
-          "amount": 1757.04,
-          "type": "MOO IULE",
-          "date": "2025-10-08T03:23:00Z"
-        },
-        {
-          "amount": 850.32,
-          "type": "MOO IULE",
-          "date": "2025-10-08T03:23:00Z"
-        },
-        {
-          "amount": 1192.68,
-          "type": "MOO IULE",
-          "date": "2025-10-08T19:55:00Z"
-        },
-        {
-          "amount": 1502.28,
-          "type": "MOO IULE",
-          "date": "2025-10-08T21:14:00Z"
-        },
-        {
-          "amount": 1328,
-          "type": "MOO",
-          "date": "2025-10-09T01:52:00Z"
-        },
-        {
-          "amount": 957.72,
-          "type": "MOO",
-          "date": "2025-10-09T01:52:00Z"
-        },
-        {
-          "amount": 1853.36,
-          "type": "MOO IULE",
-          "date": "2025-10-09T19:37:00Z"
-        },
-        {
-          "amount": 791.4,
-          "type": "MOO IULE",
-          "date": "2025-10-09T21:41:00Z"
-        },
-        {
-          "amount": 987,
-          "type": "MOO IULE",
-          "date": "2025-10-09T21:41:00Z"
-        },
-        {
-          "amount": 1171.44,
-          "type": "MOO IULE",
-          "date": "2025-10-09T21:41:00Z"
-        },
-        {
-          "amount": 661.2,
-          "type": "MOO",
-          "date": "2025-10-09T21:41:00Z"
-        },
-        {
-          "amount": 2183.04,
-          "type": "MOO IULE",
-          "date": "2025-10-10T20:08:00Z"
-        },
-        {
-          "amount": 1785,
-          "type": "MOO IULE",
-          "date": "2025-10-10T20:08:00Z"
-        },
-        {
-          "amount": 4693.44,
-          "type": "MOO IULE",
-          "date": "2025-10-10T20:08:00Z"
-        },
-        {
-          "amount": 1065.82,
-          "type": "MOO GA",
-          "date": "2025-10-11T21:24:00Z"
-        },
-        {
-          "amount": 602.76,
-          "type": "MOO GA",
-          "date": "2025-10-11T21:24:00Z"
-        },
-        {
-          "amount": 762.96,
-          "type": "MOO IULE",
-          "date": "2025-10-14T01:06:00Z"
-        },
-        {
-          "amount": 2295.73,
-          "type": "MOO IULE",
-          "date": "2025-10-15T00:59:00Z"
-        },
-        {
-          "amount": 1740.72,
-          "type": "MOO IULE",
-          "date": "2025-10-18T02:03:00Z"
-        },
-        {
-          "amount": 1841.76,
-          "type": "MOO IULE",
-          "date": "2025-10-18T02:03:00Z"
-        },
-        {
-          "amount": 272.04,
-          "type": "MOO GA",
-          "date": "2025-10-18T02:03:00Z"
-        },
-        {
-          "amount": 1426.32,
-          "type": "MOO IULE ‍ ️",
-          "date": "2025-10-18T02:03:00Z"
-        },
-        {
-          "amount": 1002.96,
-          "type": "MOO IULE",
-          "date": "2025-10-18T02:03:00Z"
-        },
-        {
-          "amount": 1065.84,
-          "type": "MOO GA",
-          "date": "2025-10-18T16:59:00Z"
-        },
-        {
-          "amount": 5803.2,
-          "type": "AMAM IUL",
-          "date": "2025-10-20T23:30:00Z"
-        },
-        {
-          "amount": 1502.28,
-          "type": "MOO IULE",
-          "date": "2025-10-21T04:32:00Z"
-        },
-        {
-          "amount": 669,
-          "type": "MOO GA",
-          "date": "2025-10-28T00:07:00Z"
-        },
-        {
-          "amount": 1621.44,
-          "type": "TransAm IUL",
-          "date": "2025-10-28T00:07:00Z"
-        },
-        {
-          "amount": 2157.12,
-          "type": "TransAm FEX",
-          "date": "2025-10-30T18:03:00Z"
-        },
-        {
-          "amount": 264.72,
-          "type": "MOO GA",
-          "date": "2025-10-30T18:03:00Z"
-        },
-        {
-          "amount": 970.68,
-          "type": "TransAm IUL",
-          "date": "2025-10-30T18:03:00Z"
-        },
-        {
-          "amount": 1479.96,
-          "type": "AMAM IUL",
-          "date": "2025-10-30T18:03:00Z"
-        },
-        {
-          "amount": 650.04,
-          "type": "TransAm IUL",
-          "date": "2025-10-30T18:03:00Z"
-        }
-      ]
-    },
-    "user_fadednoodler": {
-      "username": "fadednoodler",
-      "total": 9910.2,
-      "count": 8,
-      "policies": {
-        "Amam Sc": 1,
-        "Gtl": 1,
-        "GA": 2,
-        "Americo": 2,
-        "AmAm TMS": 1,
-        "GTL": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 2968.68,
-          "type": "Amam Sc",
-          "date": "2025-10-22T22:02:23.758022235Z"
-        },
-        {
-          "amount": 2073.96,
-          "type": "Gtl",
-          "date": "2025-10-24T21:32:16.310770972Z"
-        },
-        {
-          "amount": 128.16,
-          "type": "GA",
-          "date": "2025-10-04T20:45:00Z"
-        },
-        {
-          "amount": 808.56,
-          "type": "GA",
-          "date": "2025-10-05T18:11:00Z"
-        },
-        {
-          "amount": 1006.8,
-          "type": "Americo",
-          "date": "2025-10-08T23:21:00Z"
-        },
-        {
-          "amount": 1002,
-          "type": "Americo",
-          "date": "2025-10-13T18:25:00Z"
-        },
-        {
-          "amount": 1108.08,
-          "type": "AmAm TMS",
-          "date": "2025-10-18T01:29:00Z"
-        },
-        {
-          "amount": 813.96,
-          "type": "GTL",
-          "date": "2025-10-18T18:59:00Z"
-        }
-      ]
-    },
-    "user_richvigga": {
-      "username": "richvigga",
-      "total": 10399.68,
-      "count": 8,
-      "policies": {
-        "6 Aig Giwl": 1,
-        "Nlg Iul": 1,
-        "IULE ‍ ️": 1,
-        "IULE": 1,
-        "Americo": 1,
-        "AHL": 1,
-        "AmAm SC": 1,
-        "CB GIWL": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1833,
-          "type": "6 Aig Giwl",
-          "date": "2025-10-23T00:02:11.430233845Z"
-        },
-        {
-          "amount": 1200,
-          "type": "Nlg Iul",
-          "date": "2025-10-24T23:11:08.507112598Z"
-        },
-        {
-          "amount": 1124.64,
-          "type": "IULE ‍ ️",
-          "date": "2025-10-07T01:08:00Z"
-        },
-        {
-          "amount": 1238.52,
-          "type": "IULE",
-          "date": "2025-10-09T21:10:00Z"
-        },
-        {
-          "amount": 1061.52,
-          "type": "Americo",
-          "date": "2025-10-15T22:10:00Z"
-        },
-        {
-          "amount": 637.68,
-          "type": "AHL",
-          "date": "2025-10-16T17:08:00Z"
-        },
-        {
-          "amount": 1470.72,
-          "type": "AmAm SC",
-          "date": "2025-10-18T21:03:00Z"
-        },
-        {
-          "amount": 1833.6,
-          "type": "CB GIWL",
-          "date": "2025-10-23T00:02:00Z"
-        }
-      ]
-    },
-    "user_squizard33": {
-      "username": "squizard33",
-      "total": 6223.56,
-      "count": 7,
-      "policies": {
-        "Iule": 1,
-        "Amam 20 Year Term": 1,
-        "FEX": 2,
-        "ADB": 2,
-        "GIWL": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 2905.2,
-          "type": "Iule",
-          "date": "2025-10-23T02:14:57.216927573Z"
-        },
-        {
-          "amount": 1639.44,
-          "type": "Amam 20 Year Term",
-          "date": "2025-10-29T20:00:00.000Z"
-        },
-        {
-          "amount": 468,
-          "type": "FEX",
-          "date": "2025-10-08T01:39:00Z"
-        },
-        {
-          "amount": 172.8,
-          "type": "ADB",
-          "date": "2025-10-11T23:27:00Z"
-        },
-        {
-          "amount": 128.64,
-          "type": "ADB",
-          "date": "2025-10-11T23:27:00Z"
-        },
-        {
-          "amount": 238.44,
-          "type": "FEX",
-          "date": "2025-10-11T23:27:00Z"
-        },
-        {
-          "amount": 671.04,
-          "type": "GIWL",
-          "date": "2025-10-15T22:55:00Z"
-        }
-      ]
-    },
-    "user_therealvblacklive": {
-      "username": "therealvblacklive",
-      "total": 24791.88,
-      "count": 15,
-      "policies": {
-        "Gerber Take Over": 1,
-        "Rna": 1,
-        "Foresters Iul": 1,
-        "RNA": 2,
-        "IULE from this morning": 1,
-        "IULE": 1,
-        "NLG IUL": 3,
-        "NLG": 2,
-        "ADB": 1,
-        "AHL": 1,
-        "Unspecified": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1316.4,
-          "type": "Gerber Take Over",
-          "date": "2025-10-23T23:26:49.168175632Z"
-        },
-        {
-          "amount": 907.56,
-          "type": "Rna",
-          "date": "2025-10-27T18:00:00.000Z"
-        },
-        {
-          "amount": 3600,
-          "type": "Foresters Iul",
-          "date": "2025-10-29T20:00:00.000Z"
-        },
-        {
-          "amount": 1841.76,
-          "type": "RNA",
-          "date": "2025-10-04T20:22:00Z"
-        },
-        {
-          "amount": 1282.2,
-          "type": "IULE from this morning",
-          "date": "2025-10-04T20:54:00Z"
-        },
-        {
-          "amount": 714.36,
-          "type": "IULE",
-          "date": "2025-10-07T23:28:00Z"
-        },
-        {
-          "amount": 7959.96,
-          "type": "NLG IUL",
-          "date": "2025-10-10T04:02:00Z"
-        },
-        {
-          "amount": 222.24,
-          "type": "NLG IUL",
-          "date": "2025-10-10T04:02:00Z"
-        },
-        {
-          "amount": 240,
-          "type": "NLG IUL",
-          "date": "2025-10-10T04:02:00Z"
-        },
-        {
-          "amount": 2596.68,
-          "type": "NLG",
-          "date": "2025-10-16T01:35:00Z"
-        },
-        {
-          "amount": 576,
-          "type": "ADB",
-          "date": "2025-10-21T00:15:00Z"
-        },
-        {
-          "amount": 478.56,
-          "type": "AHL",
-          "date": "2025-10-21T00:15:00Z"
-        },
-        {
-          "amount": 1316.4,
-          "type": "Unspecified",
-          "date": "2025-10-23T23:26:00Z"
-        },
-        {
-          "amount": 907.56,
-          "type": "RNA",
-          "date": "2025-10-28T02:38:00Z"
-        },
-        {
-          "amount": 832.2,
-          "type": "NLG",
-          "date": "2025-10-30T22:52:00Z"
-        }
-      ]
-    },
-    "user_loganobrienhere": {
-      "username": "loganobrienhere",
-      "total": 22918.86,
-      "count": 16,
-      "policies": {
-        "6 Amam Ahl": 1,
-        "Rna": 1,
-        "Amam Hp": 1,
-        "Amam Tms": 1,
-        "Amam Iul": 1,
-        "Unspecified": 2,
-        "AmAm HP": 2,
-        "Gerber": 1,
-        "AmAm SC / AHL": 1,
-        "GTL": 1,
-        "ladder": 1,
-        "RNA+AmAm": 1,
-        "AmAm + AHL": 1,
-        "AmAm TMS": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1821,
-          "type": "6 Amam Ahl",
-          "date": "2025-10-24T00:30:54.645026119Z"
-        },
-        {
-          "amount": 1700.64,
-          "type": "Rna",
-          "date": "2025-10-24T01:26:44.681423185Z"
-        },
-        {
-          "amount": 2209.2,
-          "type": "Amam Hp",
-          "date": "2025-10-25T14:00:00.000Z"
-        },
-        {
-          "amount": 818.64,
-          "type": "Amam Tms",
-          "date": "2025-10-25T14:30:00.000Z"
-        },
-        {
-          "amount": 1480.08,
-          "type": "Amam Iul",
-          "date": "2025-10-29T20:00:00.000Z"
-        },
-        {
-          "amount": 941.76,
-          "type": "Unspecified",
-          "date": "2025-10-04T00:49:00Z"
-        },
-        {
-          "amount": 1337.88,
-          "type": "Unspecified",
-          "date": "2025-10-04T21:53:00Z"
-        },
-        {
-          "amount": 997.02,
-          "type": "AmAm HP",
-          "date": "2025-10-04T21:53:00Z"
-        },
-        {
-          "amount": 1341.6,
-          "type": "Gerber",
-          "date": "2025-10-07T20:20:00Z"
-        },
-        {
-          "amount": 1767,
-          "type": "AmAm SC / AHL",
-          "date": "2025-10-16T22:11:00Z"
-        },
-        {
-          "amount": 933.96,
-          "type": "GTL",
-          "date": "2025-10-17T19:47:00Z"
-        },
-        {
-          "amount": 754.8,
-          "type": "ladder",
-          "date": "2025-10-17T19:47:00Z"
-        },
-        {
-          "amount": 1965.84,
-          "type": "RNA+AmAm",
-          "date": "2025-10-18T22:07:00Z"
-        },
-        {
-          "amount": 1821.6,
-          "type": "AmAm + AHL",
-          "date": "2025-10-24T00:30:00Z"
-        },
-        {
-          "amount": 2209.2,
-          "type": "AmAm HP",
-          "date": "2025-10-26T01:38:00Z"
-        },
-        {
-          "amount": 818.64,
-          "type": "AmAm TMS",
-          "date": "2025-10-26T01:38:00Z"
-        }
-      ]
-    },
-    "user_kayden_green": {
-      "username": "kayden.green",
-      "total": 7465.32,
-      "count": 6,
-      "policies": {
-        "Corebridge Giwl": 1,
-        "Foresters Adb Combo": 1,
-        "TransAm": 1,
-        "FORESTERS ADB": 2,
-        "COREBRIDGE GIWL": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 2370,
-          "type": "Corebridge Giwl",
-          "date": "2025-10-24T02:47:50.778067054Z"
-        },
-        {
-          "amount": 452.76,
-          "type": "Foresters Adb Combo",
-          "date": "2025-10-24T02:47:50.778072501Z"
-        },
-        {
-          "amount": 2536.2,
-          "type": "TransAm",
-          "date": "2025-10-03T17:49:00Z"
-        },
-        {
-          "amount": 364.2,
-          "type": "FORESTERS ADB",
-          "date": "2025-10-04T21:29:00Z"
-        },
-        {
-          "amount": 1289.4,
-          "type": "COREBRIDGE GIWL",
-          "date": "2025-10-07T02:22:00Z"
-        },
-        {
-          "amount": 452.76,
-          "type": "FORESTERS ADB",
-          "date": "2025-10-24T02:47:00Z"
-        }
-      ]
-    },
-    "user_roanhickey": {
-      "username": "roanhickey",
-      "total": 7870.56,
-      "count": 8,
-      "policies": {
-        "Royal Neighbors Ep": 1,
-        "ADB AM": 1,
-        "IUL AM": 1,
-        "Equity Protection Royal Neighbors": 1,
-        "Survivor Protector ANAM": 1,
-        "IULE AnAm": 2,
-        "AHL Term": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 957.96,
-          "type": "Royal Neighbors Ep",
-          "date": "2025-10-24T18:11:12.079367265Z"
-        },
-        {
-          "amount": 456,
-          "type": "ADB AM",
-          "date": "2025-10-11T18:56:00Z"
-        },
-        {
-          "amount": 708,
-          "type": "IUL AM",
-          "date": "2025-10-11T18:56:00Z"
-        },
-        {
-          "amount": 1020,
-          "type": "Equity Protection Royal Neighbors",
-          "date": "2025-10-14T16:52:00Z"
-        },
-        {
-          "amount": 1656,
-          "type": "Survivor Protector ANAM",
-          "date": "2025-10-16T14:53:00Z"
-        },
-        {
-          "amount": 696,
-          "type": "IULE AnAm",
-          "date": "2025-10-17T19:13:00Z"
-        },
-        {
-          "amount": 600,
-          "type": "IULE AnAm",
-          "date": "2025-10-17T19:13:00Z"
-        },
-        {
-          "amount": 1776.6,
-          "type": "AHL Term",
-          "date": "2025-10-20T17:10:00Z"
-        }
-      ]
-    },
-    "user_the_top_one_percentile": {
-      "username": "the_top_one_percentile",
-      "total": 13759.2,
-      "count": 11,
-      "policies": {
-        "Moo Wl": 1,
-        "KCL Term": 1,
-        "Ladder 10yr term": 1,
-        "/yr": 1,
-        "AmAm IUL": 1,
-        "MOO IULE": 2,
-        "TransAm FEX": 1,
-        "AmAm FEX": 1,
-        "Corebridge FEX": 1,
-        "RNA FEX": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1367.28,
-          "type": "Moo Wl",
-          "date": "2025-10-24T21:13:50.602579520Z"
-        },
-        {
-          "amount": 1641.12,
-          "type": "KCL Term",
-          "date": "2025-10-06T14:07:00Z"
-        },
-        {
-          "amount": 728.28,
-          "type": "Ladder 10yr term",
-          "date": "2025-10-07T11:53:00Z"
-        },
-        {
-          "amount": 475.08,
-          "type": "/yr",
-          "date": "2025-10-07T11:53:00Z"
-        },
-        {
-          "amount": 1560,
-          "type": "AmAm IUL",
-          "date": "2025-10-09T21:00:00Z"
-        },
-        {
-          "amount": 1199.28,
-          "type": "MOO IULE",
-          "date": "2025-10-15T17:02:00Z"
-        },
-        {
-          "amount": 2749.8,
-          "type": "TransAm FEX",
-          "date": "2025-10-15T17:02:00Z"
-        },
-        {
-          "amount": 2472,
-          "type": "AmAm FEX",
-          "date": "2025-10-15T17:02:00Z"
-        },
-        {
-          "amount": 181.2,
-          "type": "MOO IULE",
-          "date": "2025-10-15T17:02:00Z"
-        },
-        {
-          "amount": 305.16,
-          "type": "Corebridge FEX",
-          "date": "2025-10-17T00:49:00Z"
-        },
-        {
-          "amount": 1080,
-          "type": "RNA FEX",
-          "date": "2025-10-20T22:05:00Z"
-        }
-      ]
-    },
-    "1410683197888659527": {
-      "username": "j_vill1",
-      "total": 1500,
-      "count": 1,
-      "policies": {
-        "Moo Iul Closed": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1500,
-          "type": "Moo Iul Closed",
-          "date": "2025-10-29T15:28:40.103Z"
-        }
-      ]
-    },
-    "user_coltoncaycedo": {
-      "username": "coltoncaycedo",
-      "total": 872,
-      "count": 1,
-      "policies": {
-        "TranAm FeX": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 872,
-          "type": "TranAm FeX",
-          "date": "2025-10-01T15:55:00Z"
-        }
-      ]
-    },
-    "user_getrichwithrich": {
-      "username": "getrichwithrich",
-      "total": 56413.52,
-      "count": 29,
-      "policies": {
-        "Ladder": 4,
-        "IULE": 9,
-        "RNA": 2,
-        "LP": 6,
-        "TransAM FEX": 1,
-        "Foresters SF": 2,
-        "TransAm ES": 1,
-        "Aflac": 1,
-        "TLE": 2,
-        "AM IUL": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 463.32,
-          "type": "Ladder",
-          "date": "2025-10-03T18:54:00Z"
-        },
-        {
-          "amount": 3241.92,
-          "type": "IULE",
-          "date": "2025-10-05T16:51:00Z"
-        },
-        {
-          "amount": 1669.08,
-          "type": "IULE",
-          "date": "2025-10-05T16:51:00Z"
-        },
-        {
-          "amount": 3058.92,
-          "type": "RNA",
-          "date": "2025-10-07T00:51:00Z"
-        },
-        {
-          "amount": 2461.44,
-          "type": "IULE",
-          "date": "2025-10-07T00:51:00Z"
-        },
-        {
-          "amount": 1798.08,
-          "type": "LP",
-          "date": "2025-10-07T13:55:00Z"
-        },
-        {
-          "amount": 893,
-          "type": "TransAM FEX",
-          "date": "2025-10-07T13:55:00Z"
-        },
-        {
-          "amount": 2219.64,
-          "type": "LP",
-          "date": "2025-10-08T03:17:00Z"
-        },
-        {
-          "amount": 1685.76,
-          "type": "RNA",
-          "date": "2025-10-08T03:17:00Z"
-        },
-        {
-          "amount": 1447.2,
-          "type": "IULE",
-          "date": "2025-10-08T13:49:00Z"
-        },
-        {
-          "amount": 2138.76,
-          "type": "IULE",
-          "date": "2025-10-09T02:49:00Z"
-        },
-        {
-          "amount": 2806.44,
-          "type": "IULE",
-          "date": "2025-10-09T21:26:00Z"
-        },
-        {
-          "amount": 1104.72,
-          "type": "LP",
-          "date": "2025-10-11T14:12:00Z"
-        },
-        {
-          "amount": 714.72,
-          "type": "LP",
-          "date": "2025-10-11T14:12:00Z"
-        },
-        {
-          "amount": 4231.68,
-          "type": "IULE",
-          "date": "2025-10-11T22:24:00Z"
-        },
-        {
-          "amount": 1661.16,
-          "type": "Ladder",
-          "date": "2025-10-11T22:24:00Z"
-        },
-        {
-          "amount": 3584.76,
-          "type": "IULE",
-          "date": "2025-10-12T15:37:00Z"
-        },
-        {
-          "amount": 3013.56,
-          "type": "Foresters SF",
-          "date": "2025-10-14T02:03:00Z"
-        },
-        {
-          "amount": 2231.28,
-          "type": "Foresters SF",
-          "date": "2025-10-14T02:03:00Z"
-        },
-        {
-          "amount": 4450.8,
-          "type": "LP",
-          "date": "2025-10-17T13:19:00Z"
-        },
-        {
-          "amount": 2694.6,
-          "type": "TransAm ES",
-          "date": "2025-10-18T13:16:00Z"
-        },
-        {
-          "amount": 955.28,
-          "type": "Ladder",
-          "date": "2025-10-18T13:16:00Z"
-        },
-        {
-          "amount": 1005.24,
-          "type": "Aflac",
-          "date": "2025-10-18T13:16:00Z"
-        },
-        {
-          "amount": 1493.56,
-          "type": "Ladder",
-          "date": "2025-10-18T13:16:00Z"
-        },
-        {
-          "amount": 988.08,
-          "type": "TLE",
-          "date": "2025-10-18T13:16:00Z"
-        },
-        {
-          "amount": 698.04,
-          "type": "TLE",
-          "date": "2025-10-18T13:16:00Z"
-        },
-        {
-          "amount": 1417.32,
-          "type": "LP",
-          "date": "2025-10-18T22:32:00Z"
-        },
-        {
-          "amount": 1402.44,
-          "type": "AM IUL",
-          "date": "2025-10-31T16:20:00Z"
-        },
-        {
-          "amount": 882.72,
-          "type": "IULE",
-          "date": "2025-10-31T16:20:00Z"
-        }
-      ]
-    },
-    "user_zaide_johnson": {
-      "username": "zaide_johnson",
-      "total": 7020.24,
-      "count": 8,
-      "policies": {
-        "Americo": 1,
-        "GA Individual + Spouse": 2,
-        "GTL": 3,
-        "GA": 2
-      },
-      "policyDetails": [
-        {
-          "amount": 1474.08,
-          "type": "Americo",
-          "date": "2025-10-07T21:22:00Z"
-        },
-        {
-          "amount": 1274.76,
-          "type": "GA Individual + Spouse",
-          "date": "2025-10-08T00:43:00Z"
-        },
-        {
-          "amount": 779.16,
-          "type": "GA Individual + Spouse",
-          "date": "2025-10-08T22:38:00Z"
-        },
-        {
-          "amount": 924,
-          "type": "GTL",
-          "date": "2025-10-10T01:56:00Z"
-        },
-        {
-          "amount": 669.96,
-          "type": "GTL",
-          "date": "2025-10-13T18:56:00Z"
-        },
-        {
-          "amount": 327.72,
-          "type": "GA",
-          "date": "2025-10-13T18:56:00Z"
-        },
-        {
-          "amount": 592.92,
-          "type": "GTL",
-          "date": "2025-10-16T18:03:00Z"
-        },
-        {
-          "amount": 977.64,
-          "type": "GA",
-          "date": "2025-10-18T01:07:00Z"
-        }
-      ]
-    },
-    "user_issuedpaid": {
-      "username": "issuedpaid",
-      "total": 5413.08,
-      "count": 2,
-      "policies": {
-        "Foresters Smart UL": 2
-      },
-      "policyDetails": [
-        {
-          "amount": 3840,
-          "type": "Foresters Smart UL",
-          "date": "2025-10-08T21:11:00Z"
-        },
-        {
-          "amount": 1573.08,
-          "type": "Foresters Smart UL",
-          "date": "2025-10-09T16:20:00Z"
-        }
-      ]
-    },
-    "user_hadyn_waldie": {
-      "username": "hadyn_waldie",
-      "total": 2519.16,
-      "count": 2,
-      "policies": {
-        "foresters term": 1,
-        "IULE": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1620,
-          "type": "foresters term",
-          "date": "2025-10-10T18:04:00Z"
-        },
-        {
-          "amount": 899.16,
-          "type": "IULE",
-          "date": "2025-10-18T00:07:00Z"
-        }
-      ]
-    },
-    "user_handmade.by.hilllery": {
-      "username": "handmade.by.hilllery",
-      "total": 1173.96,
-      "count": 1,
-      "policies": {
-        "GTL FEX": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1173.96,
-          "type": "GTL FEX",
-          "date": "2025-10-11T19:19:00Z"
-        }
-      ]
-    },
-    "user_nate_dawg707": {
-      "username": "nate_dawg707",
-      "total": 1682,
-      "count": 1,
-      "policies": {
-        "Foresters": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 1682,
-          "type": "Foresters",
-          "date": "2025-10-14T01:47:00Z"
-        }
-      ]
-    },
-    "user_tkleib24": {
-      "username": "tkleib24",
-      "total": 25322,
-      "count": 3,
-      "policies": {
-        "Unspecified": 1,
-        "F&G IUL": 1,
-        "AMAM IUL": 1
-      },
-      "policyDetails": [
-        {
-          "amount": 10488,
-          "type": "Unspecified",
-          "date": "2025-10-15T02:02:00Z"
-        },
-        {
-          "amount": 13200,
-          "type": "F&G IUL",
-          "date": "2025-10-16T15:56:00Z"
-        },
-        {
-          "amount": 1634,
-          "type": "AMAM IUL",
-          "date": "2025-10-16T15:56:00Z"
-        }
-      ]
-    }
-  },
   "lastReset": {
-    "daily": "Sun Nov 30 2025",
-    "weekly": 48,
-    "weeklyTag": "2025-W48",
-    "monthly": 10,
-    "monthlyTag": "2025-10"
+    "daily": "Mon Dec 01 2025",
+    "weekly": 49,
+    "weeklyTag": "2025-W49",
+    "monthly": 11,
+    "monthlyTag": "2025-11"
   }
 }
