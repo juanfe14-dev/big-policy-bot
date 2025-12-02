@@ -1,7 +1,55 @@
 {
-  "daily": {},
-  "weekly": {},
-  "monthly": {},
+  "daily": {
+    "1264830499130441813": {
+      "total": 628.92,
+      "count": 1,
+      "username": "daddychill09627"
+    },
+    "566734854008602624": {
+      "total": 1337.04,
+      "count": 1,
+      "username": "loganobrienhere"
+    },
+    "780617237877882892": {
+      "total": 1527.2399999999998,
+      "count": 2,
+      "username": "keith.williams_04"
+    }
+  },
+  "weekly": {
+    "1264830499130441813": {
+      "total": 628.92,
+      "count": 1,
+      "username": "daddychill09627"
+    },
+    "566734854008602624": {
+      "total": 1337.04,
+      "count": 1,
+      "username": "loganobrienhere"
+    },
+    "780617237877882892": {
+      "total": 1527.2399999999998,
+      "count": 2,
+      "username": "keith.williams_04"
+    }
+  },
+  "monthly": {
+    "1264830499130441813": {
+      "total": 628.92,
+      "count": 1,
+      "username": "daddychill09627"
+    },
+    "566734854008602624": {
+      "total": 1337.04,
+      "count": 1,
+      "username": "loganobrienhere"
+    },
+    "780617237877882892": {
+      "total": 1527.2399999999998,
+      "count": 2,
+      "username": "keith.williams_04"
+    }
+  },
   "allTime": {
     "user_keith_williams_04": {
       "username": "keith.williams_04",
@@ -149,8 +197,8 @@
       "username": "gymboi2016"
     },
     "780617237877882892": {
-      "total": 12506.039999999997,
-      "count": 12,
+      "total": 14033.279999999997,
+      "count": 14,
       "username": "keith.williams_04"
     },
     "1347906039785197652": {
@@ -184,8 +232,8 @@
       "username": "roanhickey"
     },
     "1264830499130441813": {
-      "total": 5816.88,
-      "count": 5,
+      "total": 6445.8,
+      "count": 6,
       "username": "daddychill09627"
     },
     "1134874074552729601": {
@@ -194,8 +242,8 @@
       "username": "getrichwithrich"
     },
     "566734854008602624": {
-      "total": 14384.2,
-      "count": 5,
+      "total": 15721.240000000002,
+      "count": 6,
       "username": "loganobrienhere"
     },
     "1415746228137889924": {
