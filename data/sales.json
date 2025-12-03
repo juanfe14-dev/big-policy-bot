@@ -1,46 +1,5 @@
 {
-  "daily": {
-    "1134874074552729601": {
-      "total": 477,
-      "count": 1,
-      "username": "getrichwithrich"
-    },
-    "466076938012983297": {
-      "total": 3909.2200000000003,
-      "count": 4,
-      "username": "squizard33"
-    },
-    "1356772443997605978": {
-      "total": 3777.48,
-      "count": 2,
-      "username": "hadyn_waldie"
-    },
-    "1032557343172468788": {
-      "total": 864,
-      "count": 1,
-      "username": "richvigga"
-    },
-    "1342657107819757698": {
-      "total": 984,
-      "count": 1,
-      "username": "therealvblacklive"
-    },
-    "566734854008602624": {
-      "total": 5626.56,
-      "count": 2,
-      "username": "loganobrienhere"
-    },
-    "780617237877882892": {
-      "total": 2092.2,
-      "count": 2,
-      "username": "keith.williams_04"
-    },
-    "1264830499130441813": {
-      "total": 420,
-      "count": 1,
-      "username": "daddychill09627"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1264830499130441813": {
       "total": 2020.1999999999998,
@@ -343,25 +302,45 @@
     }
   },
   "dailySnapshot": {
-    "1264830499130441813": {
-      "total": 1600.1999999999998,
+    "1134874074552729601": {
+      "total": 477,
+      "count": 1,
+      "username": "getrichwithrich"
+    },
+    "466076938012983297": {
+      "total": 3909.2200000000003,
+      "count": 4,
+      "username": "squizard33"
+    },
+    "1356772443997605978": {
+      "total": 3777.48,
       "count": 2,
-      "username": "daddychill09627"
+      "username": "hadyn_waldie"
+    },
+    "1032557343172468788": {
+      "total": 864,
+      "count": 1,
+      "username": "richvigga"
+    },
+    "1342657107819757698": {
+      "total": 984,
+      "count": 1,
+      "username": "therealvblacklive"
     },
     "566734854008602624": {
-      "total": 1337.04,
-      "count": 1,
+      "total": 5626.56,
+      "count": 2,
       "username": "loganobrienhere"
     },
     "780617237877882892": {
-      "total": 2511.24,
-      "count": 3,
+      "total": 2092.2,
+      "count": 2,
       "username": "keith.williams_04"
     },
-    "1032557343172468788": {
-      "total": 489.24,
+    "1264830499130441813": {
+      "total": 420,
       "count": 1,
-      "username": "richvigga"
+      "username": "daddychill09627"
     }
   },
   "weeklySnapshot": {
@@ -921,7 +900,7 @@
     }
   },
   "lastReset": {
-    "daily": "Tue Dec 02 2025",
+    "daily": "Wed Dec 03 2025",
     "weekly": 49,
     "weeklyTag": "2025-W49",
     "monthly": 11,
