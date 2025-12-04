@@ -1,26 +1,5 @@
 {
-  "daily": {
-    "1342657107819757698": {
-      "total": 1542.12,
-      "count": 1,
-      "username": "therealvblacklive"
-    },
-    "1344172920796221463": {
-      "total": 636,
-      "count": 1,
-      "username": "stk4355"
-    },
-    "1134874074552729601": {
-      "total": 1465.08,
-      "count": 1,
-      "username": "getrichwithrich"
-    },
-    "321165687152443392": {
-      "total": 533.76,
-      "count": 1,
-      "username": "fadednoodler"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1264830499130441813": {
       "total": 2020.1999999999998,
@@ -348,45 +327,25 @@
     }
   },
   "dailySnapshot": {
-    "1134874074552729601": {
-      "total": 477,
-      "count": 1,
-      "username": "getrichwithrich"
-    },
-    "466076938012983297": {
-      "total": 3909.2200000000003,
-      "count": 4,
-      "username": "squizard33"
-    },
-    "1356772443997605978": {
-      "total": 3777.48,
-      "count": 2,
-      "username": "hadyn_waldie"
-    },
-    "1032557343172468788": {
-      "total": 864,
-      "count": 1,
-      "username": "richvigga"
-    },
     "1342657107819757698": {
-      "total": 984,
+      "total": 1542.12,
       "count": 1,
       "username": "therealvblacklive"
     },
-    "566734854008602624": {
-      "total": 5626.56,
-      "count": 2,
-      "username": "loganobrienhere"
-    },
-    "780617237877882892": {
-      "total": 2092.2,
-      "count": 2,
-      "username": "keith.williams_04"
-    },
-    "1264830499130441813": {
-      "total": 420,
+    "1344172920796221463": {
+      "total": 636,
       "count": 1,
-      "username": "daddychill09627"
+      "username": "stk4355"
+    },
+    "1134874074552729601": {
+      "total": 1465.08,
+      "count": 1,
+      "username": "getrichwithrich"
+    },
+    "321165687152443392": {
+      "total": 533.76,
+      "count": 1,
+      "username": "fadednoodler"
     }
   },
   "weeklySnapshot": {
@@ -946,7 +905,7 @@
     }
   },
   "lastReset": {
-    "daily": "Wed Dec 03 2025",
+    "daily": "Thu Dec 04 2025",
     "weekly": 49,
     "weeklyTag": "2025-W49",
     "monthly": 11,
