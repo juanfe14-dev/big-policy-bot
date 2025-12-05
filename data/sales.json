@@ -1,21 +1,5 @@
 {
-  "daily": {
-    "1134874074552729601": {
-      "total": 3777.24,
-      "count": 1,
-      "username": "getrichwithrich"
-    },
-    "1342657107819757698": {
-      "total": 1164.72,
-      "count": 2,
-      "username": "therealvblacklive"
-    },
-    "1347906039785197652": {
-      "total": 1694.52,
-      "count": 1,
-      "username": "audieosho"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1264830499130441813": {
       "total": 2020.1999999999998,
@@ -353,25 +337,20 @@
     }
   },
   "dailySnapshot": {
-    "1342657107819757698": {
-      "total": 1542.12,
-      "count": 1,
-      "username": "therealvblacklive"
-    },
-    "1344172920796221463": {
-      "total": 636,
-      "count": 1,
-      "username": "stk4355"
-    },
     "1134874074552729601": {
-      "total": 1465.08,
+      "total": 3777.24,
       "count": 1,
       "username": "getrichwithrich"
     },
-    "321165687152443392": {
-      "total": 533.76,
+    "1342657107819757698": {
+      "total": 1164.72,
+      "count": 2,
+      "username": "therealvblacklive"
+    },
+    "1347906039785197652": {
+      "total": 1694.52,
       "count": 1,
-      "username": "fadednoodler"
+      "username": "audieosho"
     }
   },
   "weeklySnapshot": {
@@ -931,7 +910,7 @@
     }
   },
   "lastReset": {
-    "daily": "Thu Dec 04 2025",
+    "daily": "Fri Dec 05 2025",
     "weekly": 49,
     "weeklyTag": "2025-W49",
     "monthly": 11,
