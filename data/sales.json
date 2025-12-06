@@ -1,11 +1,5 @@
 {
-  "daily": {
-    "780617237877882892": {
-      "total": 438.96,
-      "count": 1,
-      "username": "keith.williams_04"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1264830499130441813": {
       "total": 2020.1999999999998,
@@ -343,20 +337,10 @@
     }
   },
   "dailySnapshot": {
-    "1134874074552729601": {
-      "total": 3777.24,
+    "780617237877882892": {
+      "total": 438.96,
       "count": 1,
-      "username": "getrichwithrich"
-    },
-    "1342657107819757698": {
-      "total": 1164.72,
-      "count": 2,
-      "username": "therealvblacklive"
-    },
-    "1347906039785197652": {
-      "total": 1694.52,
-      "count": 1,
-      "username": "audieosho"
+      "username": "keith.williams_04"
     }
   },
   "weeklySnapshot": {
@@ -916,7 +900,7 @@
     }
   },
   "lastReset": {
-    "daily": "Fri Dec 05 2025",
+    "daily": "Sat Dec 06 2025",
     "weekly": 49,
     "weeklyTag": "2025-W49",
     "monthly": 11,
