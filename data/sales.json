@@ -1,6 +1,18 @@
 {
-  "daily": {},
-  "weekly": {},
+  "daily": {
+    "321165687152443392": {
+      "total": 475,
+      "count": 1,
+      "username": "fadednoodler"
+    }
+  },
+  "weekly": {
+    "321165687152443392": {
+      "total": 475,
+      "count": 1,
+      "username": "fadednoodler"
+    }
+  },
   "monthly": {
     "1264830499130441813": {
       "total": 2020.1999999999998,
@@ -48,8 +60,8 @@
       "username": "stk4355"
     },
     "321165687152443392": {
-      "total": 533.76,
-      "count": 1,
+      "total": 1008.76,
+      "count": 2,
       "username": "fadednoodler"
     },
     "1347906039785197652": {
@@ -230,8 +242,8 @@
       "username": "therealvblacklive"
     },
     "321165687152443392": {
-      "total": 2586.76,
-      "count": 2,
+      "total": 3061.76,
+      "count": 3,
       "username": "fadednoodler"
     },
     "836024312711610448": {
