@@ -1,16 +1,37 @@
 {
-  "daily": {},
+  "daily": {
+    "1264830499130441813": {
+      "total": 1213.15,
+      "count": 1,
+      "username": "daddychill09627"
+    },
+    "1134874074552729601": {
+      "total": 725.64,
+      "count": 1,
+      "username": "getrichwithrich"
+    }
+  },
   "weekly": {
     "321165687152443392": {
       "total": 475,
       "count": 1,
       "username": "fadednoodler"
+    },
+    "1264830499130441813": {
+      "total": 1213.15,
+      "count": 1,
+      "username": "daddychill09627"
+    },
+    "1134874074552729601": {
+      "total": 725.64,
+      "count": 1,
+      "username": "getrichwithrich"
     }
   },
   "monthly": {
     "1264830499130441813": {
-      "total": 2020.1999999999998,
-      "count": 3,
+      "total": 3233.35,
+      "count": 4,
       "username": "daddychill09627"
     },
     "566734854008602624": {
@@ -29,8 +50,8 @@
       "username": "richvigga"
     },
     "1134874074552729601": {
-      "total": 10342.2,
-      "count": 4,
+      "total": 11067.84,
+      "count": 5,
       "username": "getrichwithrich"
     },
     "466076938012983297": {
@@ -246,13 +267,13 @@
       "username": "roanhickey"
     },
     "1264830499130441813": {
-      "total": 7837.08,
-      "count": 8,
+      "total": 9050.23,
+      "count": 9,
       "username": "daddychill09627"
     },
     "1134874074552729601": {
-      "total": 32311.000000000004,
-      "count": 12,
+      "total": 33036.64000000001,
+      "count": 13,
       "username": "getrichwithrich"
     },
     "566734854008602624": {
