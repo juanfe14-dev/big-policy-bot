@@ -1,36 +1,5 @@
 {
-  "daily": {
-    "1134874074552729601": {
-      "total": 4552.88,
-      "count": 3,
-      "username": "getrichwithrich"
-    },
-    "907419205727584286": {
-      "total": 1155.84,
-      "count": 1,
-      "username": "the_top_one_percentile"
-    },
-    "1356772443997605978": {
-      "total": 1152.36,
-      "count": 1,
-      "username": "hadyn_waldie"
-    },
-    "1353468463980740688": {
-      "total": 1073.28,
-      "count": 2,
-      "username": "mosiahm"
-    },
-    "1427283748789026957": {
-      "total": 1758.37,
-      "count": 3,
-      "username": "haiola_kai"
-    },
-    "194646983200342016": {
-      "total": 1492,
-      "count": 1,
-      "username": "op3372"
-    }
-  },
+  "daily": {},
   "weekly": {
     "321165687152443392": {
       "total": 475,
@@ -403,10 +372,35 @@
     }
   },
   "dailySnapshot": {
-    "1264830499130441813": {
-      "total": 2531,
+    "1134874074552729601": {
+      "total": 4552.88,
+      "count": 3,
+      "username": "getrichwithrich"
+    },
+    "907419205727584286": {
+      "total": 1155.84,
       "count": 1,
-      "username": "daddychill09627"
+      "username": "the_top_one_percentile"
+    },
+    "1356772443997605978": {
+      "total": 1152.36,
+      "count": 1,
+      "username": "hadyn_waldie"
+    },
+    "1353468463980740688": {
+      "total": 1073.28,
+      "count": 2,
+      "username": "mosiahm"
+    },
+    "1427283748789026957": {
+      "total": 1758.37,
+      "count": 3,
+      "username": "haiola_kai"
+    },
+    "194646983200342016": {
+      "total": 1492,
+      "count": 1,
+      "username": "op3372"
     }
   },
   "weeklySnapshot": {
@@ -986,7 +980,7 @@
     }
   },
   "lastReset": {
-    "daily": "Thu Dec 11 2025",
+    "daily": "Fri Dec 12 2025",
     "weekly": 50,
     "weeklyTag": "2025-W50",
     "monthly": 11,
