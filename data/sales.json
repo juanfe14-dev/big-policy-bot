@@ -1,5 +1,11 @@
 {
-  "daily": {},
+  "daily": {
+    "477900273612750858": {
+      "total": 700.2,
+      "count": 1,
+      "username": "kayden.green"
+    }
+  },
   "weekly": {
     "321165687152443392": {
       "total": 475,
@@ -55,6 +61,11 @@
       "total": 1492,
       "count": 1,
       "username": "op3372"
+    },
+    "477900273612750858": {
+      "total": 700.2,
+      "count": 1,
+      "username": "kayden.green"
     }
   },
   "monthly": {
@@ -132,6 +143,11 @@
       "total": 1492,
       "count": 1,
       "username": "op3372"
+    },
+    "477900273612750858": {
+      "total": 700.2,
+      "count": 1,
+      "username": "kayden.green"
     }
   },
   "allTime": {
@@ -336,8 +352,8 @@
       "username": "sellwithjoey"
     },
     "477900273612750858": {
-      "total": 4031.879999999999,
-      "count": 5,
+      "total": 4732.079999999999,
+      "count": 6,
       "username": "kayden.green"
     },
     "466076938012983297": {
