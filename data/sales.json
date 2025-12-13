@@ -1,21 +1,5 @@
 {
-  "daily": {
-    "477900273612750858": {
-      "total": 700.2,
-      "count": 1,
-      "username": "kayden.green"
-    },
-    "907419205727584286": {
-      "total": 1319.52,
-      "count": 1,
-      "username": "the_top_one_percentile"
-    },
-    "1353468463980740688": {
-      "total": 571.43,
-      "count": 1,
-      "username": "mosiahm"
-    }
-  },
+  "daily": {},
   "weekly": {
     "321165687152443392": {
       "total": 475,
@@ -398,35 +382,20 @@
     }
   },
   "dailySnapshot": {
-    "1134874074552729601": {
-      "total": 4552.88,
-      "count": 3,
-      "username": "getrichwithrich"
+    "477900273612750858": {
+      "total": 700.2,
+      "count": 1,
+      "username": "kayden.green"
     },
     "907419205727584286": {
-      "total": 1155.84,
+      "total": 1319.52,
       "count": 1,
       "username": "the_top_one_percentile"
     },
-    "1356772443997605978": {
-      "total": 1152.36,
-      "count": 1,
-      "username": "hadyn_waldie"
-    },
     "1353468463980740688": {
-      "total": 1073.28,
-      "count": 2,
-      "username": "mosiahm"
-    },
-    "1427283748789026957": {
-      "total": 1758.37,
-      "count": 3,
-      "username": "haiola_kai"
-    },
-    "194646983200342016": {
-      "total": 1492,
+      "total": 571.43,
       "count": 1,
-      "username": "op3372"
+      "username": "mosiahm"
     }
   },
   "weeklySnapshot": {
@@ -1006,7 +975,7 @@
     }
   },
   "lastReset": {
-    "daily": "Fri Dec 12 2025",
+    "daily": "Sat Dec 13 2025",
     "weekly": 50,
     "weeklyTag": "2025-W50",
     "monthly": 11,
