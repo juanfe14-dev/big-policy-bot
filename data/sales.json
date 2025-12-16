@@ -320,13 +320,7 @@
       "username": "op3372"
     }
   },
-  "dailySnapshot": {
-    "466076938012983297": {
-      "total": 682.56,
-      "count": 1,
-      "username": "squizard33"
-    }
-  },
+  "dailySnapshot": {},
   "weeklySnapshot": {
     "321165687152443392": {
       "total": 475,
@@ -919,7 +913,7 @@
     }
   },
   "lastReset": {
-    "daily": "Mon Dec 15 2025",
+    "daily": "Tue Dec 16 2025",
     "weekly": 51,
     "weeklyTag": "2025-W51",
     "monthly": 11,
