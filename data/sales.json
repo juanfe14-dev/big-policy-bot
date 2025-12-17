@@ -1,6 +1,28 @@
 {
-  "daily": {},
-  "weekly": {},
+  "daily": {
+    "1032557343172468788": {
+      "total": 889,
+      "count": 1,
+      "username": "richvigga"
+    },
+    "1353468463980740688": {
+      "total": 2268.6,
+      "count": 2,
+      "username": "mosiahm"
+    }
+  },
+  "weekly": {
+    "1032557343172468788": {
+      "total": 889,
+      "count": 1,
+      "username": "richvigga"
+    },
+    "1353468463980740688": {
+      "total": 2268.6,
+      "count": 2,
+      "username": "mosiahm"
+    }
+  },
   "monthly": {
     "1264830499130441813": {
       "total": 7384.35,
@@ -18,8 +40,8 @@
       "username": "keith.williams_04"
     },
     "1032557343172468788": {
-      "total": 1353.24,
-      "count": 2,
+      "total": 2242.24,
+      "count": 3,
       "username": "richvigga"
     },
     "1134874074552729601": {
@@ -63,8 +85,8 @@
       "username": "the_top_one_percentile"
     },
     "1353468463980740688": {
-      "total": 1644.71,
-      "count": 3,
+      "total": 3913.3100000000004,
+      "count": 5,
       "username": "mosiahm"
     },
     "1427283748789026957": {
@@ -245,8 +267,8 @@
       "username": "selfmedicate111"
     },
     "1032557343172468788": {
-      "total": 8119.08,
-      "count": 7,
+      "total": 9008.08,
+      "count": 8,
       "username": "richvigga"
     },
     "1342657107819757698": {
@@ -305,8 +327,8 @@
       "username": "stk4355"
     },
     "1353468463980740688": {
-      "total": 1644.71,
-      "count": 3,
+      "total": 3913.3100000000004,
+      "count": 5,
       "username": "mosiahm"
     },
     "1427283748789026957": {
