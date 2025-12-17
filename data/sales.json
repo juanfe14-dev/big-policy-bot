@@ -1,5 +1,11 @@
 {
-  "daily": {},
+  "daily": {
+    "194646983200342016": {
+      "total": 1710,
+      "count": 1,
+      "username": "op3372"
+    }
+  },
   "weekly": {
     "1032557343172468788": {
       "total": 889,
@@ -10,6 +16,11 @@
       "total": 2268.6,
       "count": 2,
       "username": "mosiahm"
+    },
+    "194646983200342016": {
+      "total": 1710,
+      "count": 1,
+      "username": "op3372"
     }
   },
   "monthly": {
@@ -84,8 +95,8 @@
       "username": "haiola_kai"
     },
     "194646983200342016": {
-      "total": 1492,
-      "count": 1,
+      "total": 3202,
+      "count": 2,
       "username": "op3372"
     },
     "477900273612750858": {
@@ -326,8 +337,8 @@
       "username": "haiola_kai"
     },
     "194646983200342016": {
-      "total": 1492,
-      "count": 1,
+      "total": 3202,
+      "count": 2,
       "username": "op3372"
     }
   },
