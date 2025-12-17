@@ -1,16 +1,5 @@
 {
-  "daily": {
-    "1032557343172468788": {
-      "total": 889,
-      "count": 1,
-      "username": "richvigga"
-    },
-    "1353468463980740688": {
-      "total": 2268.6,
-      "count": 2,
-      "username": "mosiahm"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1032557343172468788": {
       "total": 889,
@@ -342,7 +331,18 @@
       "username": "op3372"
     }
   },
-  "dailySnapshot": {},
+  "dailySnapshot": {
+    "1032557343172468788": {
+      "total": 889,
+      "count": 1,
+      "username": "richvigga"
+    },
+    "1353468463980740688": {
+      "total": 2268.6,
+      "count": 2,
+      "username": "mosiahm"
+    }
+  },
   "weeklySnapshot": {
     "321165687152443392": {
       "total": 475,
@@ -935,7 +935,7 @@
     }
   },
   "lastReset": {
-    "daily": "Tue Dec 16 2025",
+    "daily": "Wed Dec 17 2025",
     "weekly": 51,
     "weeklyTag": "2025-W51",
     "monthly": 11,
