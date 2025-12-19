@@ -1,5 +1,11 @@
 {
-  "daily": {},
+  "daily": {
+    "770443985768284190": {
+      "total": 1784,
+      "count": 1,
+      "username": "tkleib24"
+    }
+  },
   "weekly": {
     "1032557343172468788": {
       "total": 889,
@@ -30,6 +36,11 @@
       "total": 222.72,
       "count": 1,
       "username": "hadyn_waldie"
+    },
+    "770443985768284190": {
+      "total": 1784,
+      "count": 1,
+      "username": "tkleib24"
     }
   },
   "monthly": {
@@ -112,6 +123,11 @@
       "total": 700.2,
       "count": 1,
       "username": "kayden.green"
+    },
+    "770443985768284190": {
+      "total": 1784,
+      "count": 1,
+      "username": "tkleib24"
     }
   },
   "allTime": {
@@ -349,6 +365,11 @@
       "total": 3202,
       "count": 2,
       "username": "op3372"
+    },
+    "770443985768284190": {
+      "total": 1784,
+      "count": 1,
+      "username": "tkleib24"
     }
   },
   "dailySnapshot": {
