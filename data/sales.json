@@ -1,16 +1,5 @@
 {
-  "daily": {
-    "770443985768284190": {
-      "total": 1784,
-      "count": 1,
-      "username": "tkleib24"
-    },
-    "1134874074552729601": {
-      "total": 2180.4,
-      "count": 1,
-      "username": "getrichwithrich"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1032557343172468788": {
       "total": 889,
@@ -383,15 +372,15 @@
     }
   },
   "dailySnapshot": {
-    "1427283748789026957": {
-      "total": 1372.56,
+    "770443985768284190": {
+      "total": 1784,
       "count": 1,
-      "username": "haiola_kai"
+      "username": "tkleib24"
     },
-    "1356772443997605978": {
-      "total": 222.72,
+    "1134874074552729601": {
+      "total": 2180.4,
       "count": 1,
-      "username": "hadyn_waldie"
+      "username": "getrichwithrich"
     }
   },
   "weeklySnapshot": {
@@ -986,7 +975,7 @@
     }
   },
   "lastReset": {
-    "daily": "Fri Dec 19 2025",
+    "daily": "Sat Dec 20 2025",
     "weekly": 51,
     "weeklyTag": "2025-W51",
     "monthly": 11,
