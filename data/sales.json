@@ -1,6 +1,18 @@
 {
-  "daily": {},
-  "weekly": {},
+  "daily": {
+    "466076938012983297": {
+      "total": 1066.92,
+      "count": 2,
+      "username": "squizard33"
+    }
+  },
+  "weekly": {
+    "466076938012983297": {
+      "total": 1066.92,
+      "count": 2,
+      "username": "squizard33"
+    }
+  },
   "monthly": {
     "1264830499130441813": {
       "total": 7384.35,
@@ -28,8 +40,8 @@
       "username": "getrichwithrich"
     },
     "466076938012983297": {
-      "total": 4851.820000000001,
-      "count": 6,
+      "total": 5918.740000000001,
+      "count": 8,
       "username": "squizard33"
     },
     "1356772443997605978": {
@@ -295,8 +307,8 @@
       "username": "kayden.green"
     },
     "466076938012983297": {
-      "total": 8335.300000000003,
-      "count": 10,
+      "total": 9402.220000000003,
+      "count": 12,
       "username": "squizard33"
     },
     "765370554512572458": {
