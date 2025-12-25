@@ -361,13 +361,7 @@
       "username": "tkleib24"
     }
   },
-  "dailySnapshot": {
-    "1134874074552729601": {
-      "total": 1140.6,
-      "count": 1,
-      "username": "getrichwithrich"
-    }
-  },
+  "dailySnapshot": {},
   "weeklySnapshot": {
     "1032557343172468788": {
       "total": 1712.44,
@@ -930,7 +924,7 @@
     }
   },
   "lastReset": {
-    "daily": "Wed Dec 24 2025",
+    "daily": "Thu Dec 25 2025",
     "weekly": 52,
     "weeklyTag": "2025-W52",
     "monthly": 11,
