@@ -1,5 +1,11 @@
 {
-  "daily": {},
+  "daily": {
+    "1353468463980740688": {
+      "total": 1792.2,
+      "count": 2,
+      "username": "mosiahm"
+    }
+  },
   "weekly": {
     "466076938012983297": {
       "total": 1066.92,
@@ -25,6 +31,11 @@
       "total": 1199.4,
       "count": 1,
       "username": "sellwithjoey"
+    },
+    "1353468463980740688": {
+      "total": 1792.2,
+      "count": 2,
+      "username": "mosiahm"
     }
   },
   "monthly": {
@@ -89,8 +100,8 @@
       "username": "the_top_one_percentile"
     },
     "1353468463980740688": {
-      "total": 3913.3100000000004,
-      "count": 5,
+      "total": 5705.51,
+      "count": 7,
       "username": "mosiahm"
     },
     "1427283748789026957": {
@@ -341,8 +352,8 @@
       "username": "stk4355"
     },
     "1353468463980740688": {
-      "total": 3913.3100000000004,
-      "count": 5,
+      "total": 5705.51,
+      "count": 7,
       "username": "mosiahm"
     },
     "1427283748789026957": {
