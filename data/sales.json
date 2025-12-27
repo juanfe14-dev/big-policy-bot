@@ -1,11 +1,5 @@
 {
-  "daily": {
-    "1353468463980740688": {
-      "total": 1792.2,
-      "count": 2,
-      "username": "mosiahm"
-    }
-  },
+  "daily": {},
   "weekly": {
     "466076938012983297": {
       "total": 1066.92,
@@ -372,7 +366,13 @@
       "username": "tkleib24"
     }
   },
-  "dailySnapshot": {},
+  "dailySnapshot": {
+    "1353468463980740688": {
+      "total": 1792.2,
+      "count": 2,
+      "username": "mosiahm"
+    }
+  },
   "weeklySnapshot": {
     "1032557343172468788": {
       "total": 1712.44,
@@ -935,7 +935,7 @@
     }
   },
   "lastReset": {
-    "daily": "Fri Dec 26 2025",
+    "daily": "Sat Dec 27 2025",
     "weekly": 52,
     "weeklyTag": "2025-W52",
     "monthly": 11,
