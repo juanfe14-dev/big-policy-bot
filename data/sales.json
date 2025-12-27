@@ -1,5 +1,16 @@
 {
-  "daily": {},
+  "daily": {
+    "1134874074552729601": {
+      "total": 607.32,
+      "count": 1,
+      "username": "getrichwithrich"
+    },
+    "907419205727584286": {
+      "total": 418.56,
+      "count": 1,
+      "username": "the_top_one_percentile"
+    }
+  },
   "weekly": {
     "466076938012983297": {
       "total": 1066.92,
@@ -17,8 +28,8 @@
       "username": "richvigga"
     },
     "1134874074552729601": {
-      "total": 2436.6,
-      "count": 2,
+      "total": 3043.92,
+      "count": 3,
       "username": "getrichwithrich"
     },
     "1415746228137889924": {
@@ -30,6 +41,11 @@
       "total": 1792.2,
       "count": 2,
       "username": "mosiahm"
+    },
+    "907419205727584286": {
+      "total": 418.56,
+      "count": 1,
+      "username": "the_top_one_percentile"
     }
   },
   "monthly": {
@@ -54,8 +70,8 @@
       "username": "richvigga"
     },
     "1134874074552729601": {
-      "total": 29131.16,
-      "count": 15,
+      "total": 29738.48,
+      "count": 16,
       "username": "getrichwithrich"
     },
     "466076938012983297": {
@@ -89,8 +105,8 @@
       "username": "audieosho"
     },
     "907419205727584286": {
-      "total": 2475.3599999999997,
-      "count": 2,
+      "total": 2893.9199999999996,
+      "count": 3,
       "username": "the_top_one_percentile"
     },
     "1353468463980740688": {
@@ -256,8 +272,8 @@
       "username": "harrisonvandermey"
     },
     "907419205727584286": {
-      "total": 3685.08,
-      "count": 3,
+      "total": 4103.64,
+      "count": 4,
       "username": "the_top_one_percentile"
     },
     "1356772443997605978": {
@@ -311,8 +327,8 @@
       "username": "daddychill09627"
     },
     "1134874074552729601": {
-      "total": 51099.96,
-      "count": 23,
+      "total": 51707.28,
+      "count": 24,
       "username": "getrichwithrich"
     },
     "566734854008602624": {
