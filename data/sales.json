@@ -1,6 +1,28 @@
 {
-  "daily": {},
-  "weekly": {},
+  "daily": {
+    "770443985768284190": {
+      "total": 1150,
+      "count": 1,
+      "username": "tkleib24"
+    },
+    "1134874074552729601": {
+      "total": 584.4,
+      "count": 1,
+      "username": "getrichwithrich"
+    }
+  },
+  "weekly": {
+    "770443985768284190": {
+      "total": 1150,
+      "count": 1,
+      "username": "tkleib24"
+    },
+    "1134874074552729601": {
+      "total": 584.4,
+      "count": 1,
+      "username": "getrichwithrich"
+    }
+  },
   "monthly": {
     "1264830499130441813": {
       "total": 7384.35,
@@ -23,8 +45,8 @@
       "username": "richvigga"
     },
     "1134874074552729601": {
-      "total": 30816.8,
-      "count": 17,
+      "total": 31401.2,
+      "count": 18,
       "username": "getrichwithrich"
     },
     "466076938012983297": {
@@ -83,8 +105,8 @@
       "username": "kayden.green"
     },
     "770443985768284190": {
-      "total": 1784,
-      "count": 1,
+      "total": 2934,
+      "count": 2,
       "username": "tkleib24"
     },
     "1415746228137889924": {
@@ -280,8 +302,8 @@
       "username": "daddychill09627"
     },
     "1134874074552729601": {
-      "total": 52785.6,
-      "count": 25,
+      "total": 53370,
+      "count": 26,
       "username": "getrichwithrich"
     },
     "566734854008602624": {
@@ -330,8 +352,8 @@
       "username": "op3372"
     },
     "770443985768284190": {
-      "total": 1784,
-      "count": 1,
+      "total": 2934,
+      "count": 2,
       "username": "tkleib24"
     }
   },
