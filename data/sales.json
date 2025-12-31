@@ -356,28 +356,7 @@
       "username": "tkleib24"
     }
   },
-  "dailySnapshot": {
-    "770443985768284190": {
-      "total": 1150,
-      "count": 1,
-      "username": "tkleib24"
-    },
-    "1134874074552729601": {
-      "total": 584.4,
-      "count": 1,
-      "username": "getrichwithrich"
-    },
-    "1353468463980740688": {
-      "total": 1389.6,
-      "count": 2,
-      "username": "mosiahm"
-    },
-    "1415746228137889924": {
-      "total": 1020,
-      "count": 1,
-      "username": "sellwithjoey"
-    }
-  },
+  "dailySnapshot": {},
   "weeklySnapshot": {
     "466076938012983297": {
       "total": 1066.92,
@@ -935,7 +914,7 @@
     }
   },
   "lastReset": {
-    "daily": "Tue Dec 30 2025",
+    "daily": "Wed Dec 31 2025",
     "weekly": 53,
     "weeklyTag": "2025-W53",
     "monthly": 11,
