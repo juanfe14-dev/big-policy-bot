@@ -1,11 +1,5 @@
 {
-  "daily": {
-    "566734854008602624": {
-      "total": 952.44,
-      "count": 1,
-      "username": "loganobrienhere"
-    }
-  },
+  "daily": {},
   "weekly": {
     "770443985768284190": {
       "total": 1150,
@@ -282,7 +276,13 @@
       "username": "tkleib24"
     }
   },
-  "dailySnapshot": {},
+  "dailySnapshot": {
+    "566734854008602624": {
+      "total": 952.44,
+      "count": 1,
+      "username": "loganobrienhere"
+    }
+  },
   "weeklySnapshot": {
     "466076938012983297": {
       "total": 1066.92,
@@ -413,7 +413,7 @@
     }
   },
   "lastReset": {
-    "daily": "Thu Jan 01 2026",
+    "daily": "Fri Jan 02 2026",
     "weekly": 53,
     "weeklyTag": "2025-W53",
     "monthly": 0,
