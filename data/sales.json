@@ -1,5 +1,11 @@
 {
-  "daily": {},
+  "daily": {
+    "566734854008602624": {
+      "total": 952.44,
+      "count": 1,
+      "username": "loganobrienhere"
+    }
+  },
   "weekly": {
     "770443985768284190": {
       "total": 1150,
@@ -20,9 +26,20 @@
       "total": 1020,
       "count": 1,
       "username": "sellwithjoey"
+    },
+    "566734854008602624": {
+      "total": 952.44,
+      "count": 1,
+      "username": "loganobrienhere"
     }
   },
-  "monthly": {},
+  "monthly": {
+    "566734854008602624": {
+      "total": 952.44,
+      "count": 1,
+      "username": "loganobrienhere"
+    }
+  },
   "allTime": {
     "user_keith_williams_04": {
       "username": "keith.williams_04",
@@ -215,8 +232,8 @@
       "username": "getrichwithrich"
     },
     "566734854008602624": {
-      "total": 22872.040000000005,
-      "count": 9,
+      "total": 23824.480000000003,
+      "count": 10,
       "username": "loganobrienhere"
     },
     "1415746228137889924": {
