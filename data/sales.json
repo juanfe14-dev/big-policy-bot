@@ -1,16 +1,5 @@
 {
-  "daily": {
-    "1134874074552729601": {
-      "total": 5512.56,
-      "count": 3,
-      "username": "getrichwithrich"
-    },
-    "477900273612750858": {
-      "total": 1095.72,
-      "count": 1,
-      "username": "kayden.green"
-    }
-  },
+  "daily": {},
   "weekly": {
     "770443985768284190": {
       "total": 1150,
@@ -303,10 +292,15 @@
     }
   },
   "dailySnapshot": {
-    "566734854008602624": {
-      "total": 952.44,
+    "1134874074552729601": {
+      "total": 5512.56,
+      "count": 3,
+      "username": "getrichwithrich"
+    },
+    "477900273612750858": {
+      "total": 1095.72,
       "count": 1,
-      "username": "loganobrienhere"
+      "username": "kayden.green"
     }
   },
   "weeklySnapshot": {
@@ -439,7 +433,7 @@
     }
   },
   "lastReset": {
-    "daily": "Fri Jan 02 2026",
+    "daily": "Sat Jan 03 2026",
     "weekly": 53,
     "weeklyTag": "2025-W53",
     "monthly": 0,
