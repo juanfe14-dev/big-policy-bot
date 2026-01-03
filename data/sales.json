@@ -1,5 +1,16 @@
 {
-  "daily": {},
+  "daily": {
+    "466076938012983297": {
+      "total": 1612.2,
+      "count": 1,
+      "username": "squizard33"
+    },
+    "1134874074552729601": {
+      "total": 1495.08,
+      "count": 1,
+      "username": "getrichwithrich"
+    }
+  },
   "weekly": {
     "770443985768284190": {
       "total": 1150,
@@ -7,8 +18,8 @@
       "username": "tkleib24"
     },
     "1134874074552729601": {
-      "total": 6096.96,
-      "count": 4,
+      "total": 7592.04,
+      "count": 5,
       "username": "getrichwithrich"
     },
     "1353468463980740688": {
@@ -30,6 +41,11 @@
       "total": 1095.72,
       "count": 1,
       "username": "kayden.green"
+    },
+    "466076938012983297": {
+      "total": 1612.2,
+      "count": 1,
+      "username": "squizard33"
     }
   },
   "monthly": {
@@ -39,14 +55,19 @@
       "username": "loganobrienhere"
     },
     "1134874074552729601": {
-      "total": 5512.56,
-      "count": 3,
+      "total": 7007.64,
+      "count": 4,
       "username": "getrichwithrich"
     },
     "477900273612750858": {
       "total": 1095.72,
       "count": 1,
       "username": "kayden.green"
+    },
+    "466076938012983297": {
+      "total": 1612.2,
+      "count": 1,
+      "username": "squizard33"
     }
   },
   "allTime": {
@@ -236,8 +257,8 @@
       "username": "daddychill09627"
     },
     "1134874074552729601": {
-      "total": 58882.56,
-      "count": 29,
+      "total": 60377.64,
+      "count": 30,
       "username": "getrichwithrich"
     },
     "566734854008602624": {
@@ -256,8 +277,8 @@
       "username": "kayden.green"
     },
     "466076938012983297": {
-      "total": 9402.220000000003,
-      "count": 12,
+      "total": 11014.420000000004,
+      "count": 13,
       "username": "squizard33"
     },
     "765370554512572458": {
