@@ -1,6 +1,18 @@
 {
-  "daily": {},
-  "weekly": {},
+  "daily": {
+    "1134874074552729601": {
+      "total": 861.84,
+      "count": 1,
+      "username": "getrichwithrich"
+    }
+  },
+  "weekly": {
+    "1134874074552729601": {
+      "total": 861.84,
+      "count": 1,
+      "username": "getrichwithrich"
+    }
+  },
   "monthly": {
     "566734854008602624": {
       "total": 7842.76,
@@ -8,8 +20,8 @@
       "username": "loganobrienhere"
     },
     "1134874074552729601": {
-      "total": 13036.44,
-      "count": 7,
+      "total": 13898.28,
+      "count": 8,
       "username": "getrichwithrich"
     },
     "477900273612750858": {
@@ -215,8 +227,8 @@
       "username": "daddychill09627"
     },
     "1134874074552729601": {
-      "total": 66406.44,
-      "count": 33,
+      "total": 67268.28,
+      "count": 34,
       "username": "getrichwithrich"
     },
     "566734854008602624": {
