@@ -1,5 +1,11 @@
 {
-  "daily": {},
+  "daily": {
+    "1323395554419539978": {
+      "total": 1056,
+      "count": 1,
+      "username": "ramseytraboulsi"
+    }
+  },
   "weekly": {
     "1134874074552729601": {
       "total": 3205.08,
@@ -10,6 +16,11 @@
       "total": 1164.9,
       "count": 1,
       "username": "squizard33"
+    },
+    "1323395554419539978": {
+      "total": 1056,
+      "count": 1,
+      "username": "ramseytraboulsi"
     }
   },
   "monthly": {
@@ -37,6 +48,11 @@
       "total": 1392.5900000000001,
       "count": 2,
       "username": "mosiahm"
+    },
+    "1323395554419539978": {
+      "total": 1056,
+      "count": 1,
+      "username": "ramseytraboulsi"
     }
   },
   "allTime": {
@@ -279,6 +295,11 @@
       "total": 2934,
       "count": 2,
       "username": "tkleib24"
+    },
+    "1323395554419539978": {
+      "total": 1056,
+      "count": 1,
+      "username": "ramseytraboulsi"
     }
   },
   "dailySnapshot": {
