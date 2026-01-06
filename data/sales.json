@@ -1,16 +1,5 @@
 {
-  "daily": {
-    "1134874074552729601": {
-      "total": 3205.08,
-      "count": 3,
-      "username": "getrichwithrich"
-    },
-    "466076938012983297": {
-      "total": 1164.9,
-      "count": 1,
-      "username": "squizard33"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1134874074552729601": {
       "total": 3205.08,
@@ -294,9 +283,14 @@
   },
   "dailySnapshot": {
     "1134874074552729601": {
-      "total": 5649.84,
-      "count": 2,
+      "total": 3205.08,
+      "count": 3,
       "username": "getrichwithrich"
+    },
+    "466076938012983297": {
+      "total": 1164.9,
+      "count": 1,
+      "username": "squizard33"
     }
   },
   "weeklySnapshot": {
@@ -429,7 +423,7 @@
     }
   },
   "lastReset": {
-    "daily": "Mon Jan 05 2026",
+    "daily": "Tue Jan 06 2026",
     "weekly": 2,
     "weeklyTag": "2026-W2",
     "monthly": 0,
