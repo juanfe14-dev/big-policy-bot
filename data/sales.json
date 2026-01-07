@@ -1,26 +1,5 @@
 {
-  "daily": {
-    "1323395554419539978": {
-      "total": 1056,
-      "count": 1,
-      "username": "ramseytraboulsi"
-    },
-    "566734854008602624": {
-      "total": 2692.16,
-      "count": 2,
-      "username": "loganobrienhere"
-    },
-    "1134874074552729601": {
-      "total": 1621.08,
-      "count": 1,
-      "username": "getrichwithrich"
-    },
-    "477900273612750858": {
-      "total": 303.12,
-      "count": 1,
-      "username": "kayden.green"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1134874074552729601": {
       "total": 4826.16,
@@ -328,15 +307,25 @@
     }
   },
   "dailySnapshot": {
+    "1323395554419539978": {
+      "total": 1056,
+      "count": 1,
+      "username": "ramseytraboulsi"
+    },
+    "566734854008602624": {
+      "total": 2692.16,
+      "count": 2,
+      "username": "loganobrienhere"
+    },
     "1134874074552729601": {
-      "total": 3205.08,
-      "count": 3,
+      "total": 1621.08,
+      "count": 1,
       "username": "getrichwithrich"
     },
-    "466076938012983297": {
-      "total": 1164.9,
+    "477900273612750858": {
+      "total": 303.12,
       "count": 1,
-      "username": "squizard33"
+      "username": "kayden.green"
     }
   },
   "weeklySnapshot": {
@@ -469,7 +458,7 @@
     }
   },
   "lastReset": {
-    "daily": "Tue Jan 06 2026",
+    "daily": "Wed Jan 07 2026",
     "weekly": 2,
     "weeklyTag": "2026-W2",
     "monthly": 0,
