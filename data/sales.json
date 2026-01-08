@@ -1,9 +1,25 @@
 {
-  "daily": {},
+  "daily": {
+    "1134874074552729601": {
+      "total": 5317.08,
+      "count": 2,
+      "username": "getrichwithrich"
+    },
+    "1330602059136765963": {
+      "total": 2195,
+      "count": 3,
+      "username": "jesusvigil__43683"
+    },
+    "1323395554419539978": {
+      "total": 876,
+      "count": 1,
+      "username": "ramseytraboulsi"
+    }
+  },
   "weekly": {
     "1134874074552729601": {
-      "total": 7050.96,
-      "count": 5,
+      "total": 12368.039999999999,
+      "count": 7,
       "username": "getrichwithrich"
     },
     "466076938012983297": {
@@ -12,8 +28,8 @@
       "username": "squizard33"
     },
     "1323395554419539978": {
-      "total": 3744,
-      "count": 4,
+      "total": 4620,
+      "count": 5,
       "username": "ramseytraboulsi"
     },
     "566734854008602624": {
@@ -40,6 +56,11 @@
       "total": 3430,
       "count": 1,
       "username": "tkleib24"
+    },
+    "1330602059136765963": {
+      "total": 2195,
+      "count": 3,
+      "username": "jesusvigil__43683"
     }
   },
   "monthly": {
@@ -49,8 +70,8 @@
       "username": "loganobrienhere"
     },
     "1134874074552729601": {
-      "total": 20087.399999999998,
-      "count": 12,
+      "total": 25404.479999999996,
+      "count": 14,
       "username": "getrichwithrich"
     },
     "477900273612750858": {
@@ -69,8 +90,8 @@
       "username": "mosiahm"
     },
     "1323395554419539978": {
-      "total": 3744,
-      "count": 4,
+      "total": 4620,
+      "count": 5,
       "username": "ramseytraboulsi"
     },
     "780617237877882892": {
@@ -87,6 +108,11 @@
       "total": 3430,
       "count": 1,
       "username": "tkleib24"
+    },
+    "1330602059136765963": {
+      "total": 2195,
+      "count": 3,
+      "username": "jesusvigil__43683"
     }
   },
   "allTime": {
@@ -276,8 +302,8 @@
       "username": "daddychill09627"
     },
     "1134874074552729601": {
-      "total": 73457.4,
-      "count": 38,
+      "total": 78774.48,
+      "count": 40,
       "username": "getrichwithrich"
     },
     "566734854008602624": {
@@ -331,9 +357,14 @@
       "username": "tkleib24"
     },
     "1323395554419539978": {
-      "total": 3744,
-      "count": 4,
+      "total": 4620,
+      "count": 5,
       "username": "ramseytraboulsi"
+    },
+    "1330602059136765963": {
+      "total": 2195,
+      "count": 3,
+      "username": "jesusvigil__43683"
     }
   },
   "dailySnapshot": {
