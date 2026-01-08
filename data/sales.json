@@ -1,36 +1,5 @@
 {
-  "daily": {
-    "477900273612750858": {
-      "total": 688.68,
-      "count": 1,
-      "username": "kayden.green"
-    },
-    "1323395554419539978": {
-      "total": 2688,
-      "count": 3,
-      "username": "ramseytraboulsi"
-    },
-    "1134874074552729601": {
-      "total": 2224.8,
-      "count": 1,
-      "username": "getrichwithrich"
-    },
-    "780617237877882892": {
-      "total": 1487.46,
-      "count": 1,
-      "username": "keith.williams_04"
-    },
-    "321165687152443392": {
-      "total": 695.92,
-      "count": 1,
-      "username": "fadednoodler"
-    },
-    "770443985768284190": {
-      "total": 3430,
-      "count": 1,
-      "username": "tkleib24"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1134874074552729601": {
       "total": 7050.96,
@@ -368,25 +337,35 @@
     }
   },
   "dailySnapshot": {
-    "1323395554419539978": {
-      "total": 1056,
+    "477900273612750858": {
+      "total": 688.68,
       "count": 1,
+      "username": "kayden.green"
+    },
+    "1323395554419539978": {
+      "total": 2688,
+      "count": 3,
       "username": "ramseytraboulsi"
     },
-    "566734854008602624": {
-      "total": 2692.16,
-      "count": 2,
-      "username": "loganobrienhere"
-    },
     "1134874074552729601": {
-      "total": 1621.08,
+      "total": 2224.8,
       "count": 1,
       "username": "getrichwithrich"
     },
-    "477900273612750858": {
-      "total": 303.12,
+    "780617237877882892": {
+      "total": 1487.46,
       "count": 1,
-      "username": "kayden.green"
+      "username": "keith.williams_04"
+    },
+    "321165687152443392": {
+      "total": 695.92,
+      "count": 1,
+      "username": "fadednoodler"
+    },
+    "770443985768284190": {
+      "total": 3430,
+      "count": 1,
+      "username": "tkleib24"
     }
   },
   "weeklySnapshot": {
@@ -519,7 +498,7 @@
     }
   },
   "lastReset": {
-    "daily": "Wed Jan 07 2026",
+    "daily": "Thu Jan 08 2026",
     "weekly": 2,
     "weeklyTag": "2026-W2",
     "monthly": 0,
