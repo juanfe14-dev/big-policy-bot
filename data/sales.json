@@ -1,5 +1,21 @@
 {
-  "daily": {},
+  "daily": {
+    "466076938012983297": {
+      "total": 1093.44,
+      "count": 1,
+      "username": "squizard33"
+    },
+    "1342657107819757698": {
+      "total": 907.8,
+      "count": 2,
+      "username": "therealvblacklive"
+    },
+    "1353468463980740688": {
+      "total": 569.04,
+      "count": 1,
+      "username": "mosiahm"
+    }
+  },
   "weekly": {
     "1134874074552729601": {
       "total": 13047,
@@ -7,8 +23,8 @@
       "username": "getrichwithrich"
     },
     "466076938012983297": {
-      "total": 1494.66,
-      "count": 2,
+      "total": 2588.1000000000004,
+      "count": 3,
       "username": "squizard33"
     },
     "1323395554419539978": {
@@ -47,9 +63,14 @@
       "username": "jesusvigil__43683"
     },
     "1342657107819757698": {
-      "total": 1053,
-      "count": 1,
+      "total": 1960.8,
+      "count": 3,
       "username": "therealvblacklive"
+    },
+    "1353468463980740688": {
+      "total": 569.04,
+      "count": 1,
+      "username": "mosiahm"
     }
   },
   "monthly": {
@@ -69,13 +90,13 @@
       "username": "kayden.green"
     },
     "466076938012983297": {
-      "total": 3106.8600000000006,
-      "count": 3,
+      "total": 4200.300000000001,
+      "count": 4,
       "username": "squizard33"
     },
     "1353468463980740688": {
-      "total": 1392.5900000000001,
-      "count": 2,
+      "total": 1961.63,
+      "count": 3,
       "username": "mosiahm"
     },
     "1323395554419539978": {
@@ -104,8 +125,8 @@
       "username": "jesusvigil__43683"
     },
     "1342657107819757698": {
-      "total": 1053,
-      "count": 1,
+      "total": 1960.8,
+      "count": 3,
       "username": "therealvblacklive"
     }
   },
@@ -276,8 +297,8 @@
       "username": "richvigga"
     },
     "1342657107819757698": {
-      "total": 10467.479999999998,
-      "count": 9,
+      "total": 11375.279999999997,
+      "count": 11,
       "username": "therealvblacklive"
     },
     "321165687152443392": {
@@ -316,8 +337,8 @@
       "username": "kayden.green"
     },
     "466076938012983297": {
-      "total": 12509.080000000004,
-      "count": 15,
+      "total": 13602.520000000004,
+      "count": 16,
       "username": "squizard33"
     },
     "765370554512572458": {
@@ -331,8 +352,8 @@
       "username": "stk4355"
     },
     "1353468463980740688": {
-      "total": 8487.699999999999,
-      "count": 11,
+      "total": 9056.739999999998,
+      "count": 12,
       "username": "mosiahm"
     },
     "1427283748789026957": {
