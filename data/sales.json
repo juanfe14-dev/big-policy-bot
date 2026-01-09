@@ -1,36 +1,5 @@
 {
-  "daily": {
-    "1134874074552729601": {
-      "total": 5996.04,
-      "count": 3,
-      "username": "getrichwithrich"
-    },
-    "1330602059136765963": {
-      "total": 2195,
-      "count": 3,
-      "username": "jesusvigil__43683"
-    },
-    "1323395554419539978": {
-      "total": 876,
-      "count": 1,
-      "username": "ramseytraboulsi"
-    },
-    "1342657107819757698": {
-      "total": 1053,
-      "count": 1,
-      "username": "therealvblacklive"
-    },
-    "466076938012983297": {
-      "total": 329.76,
-      "count": 1,
-      "username": "squizard33"
-    },
-    "780617237877882892": {
-      "total": 4848,
-      "count": 2,
-      "username": "keith.williams_04"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1134874074552729601": {
       "total": 13047,
@@ -393,35 +362,35 @@
     }
   },
   "dailySnapshot": {
-    "477900273612750858": {
-      "total": 688.68,
-      "count": 1,
-      "username": "kayden.green"
-    },
-    "1323395554419539978": {
-      "total": 2688,
-      "count": 3,
-      "username": "ramseytraboulsi"
-    },
     "1134874074552729601": {
-      "total": 2224.8,
-      "count": 1,
+      "total": 5996.04,
+      "count": 3,
       "username": "getrichwithrich"
     },
+    "1330602059136765963": {
+      "total": 2195,
+      "count": 3,
+      "username": "jesusvigil__43683"
+    },
+    "1323395554419539978": {
+      "total": 876,
+      "count": 1,
+      "username": "ramseytraboulsi"
+    },
+    "1342657107819757698": {
+      "total": 1053,
+      "count": 1,
+      "username": "therealvblacklive"
+    },
+    "466076938012983297": {
+      "total": 329.76,
+      "count": 1,
+      "username": "squizard33"
+    },
     "780617237877882892": {
-      "total": 1487.46,
-      "count": 1,
+      "total": 4848,
+      "count": 2,
       "username": "keith.williams_04"
-    },
-    "321165687152443392": {
-      "total": 695.92,
-      "count": 1,
-      "username": "fadednoodler"
-    },
-    "770443985768284190": {
-      "total": 3430,
-      "count": 1,
-      "username": "tkleib24"
     }
   },
   "weeklySnapshot": {
@@ -554,7 +523,7 @@
     }
   },
   "lastReset": {
-    "daily": "Thu Jan 08 2026",
+    "daily": "Fri Jan 09 2026",
     "weekly": 2,
     "weeklyTag": "2026-W2",
     "monthly": 0,
