@@ -1,46 +1,5 @@
 {
-  "daily": {
-    "1330602059136765963": {
-      "total": 409,
-      "count": 1,
-      "username": "jesusvigil__43683"
-    },
-    "1342657107819757698": {
-      "total": 1712.04,
-      "count": 2,
-      "username": "therealvblacklive"
-    },
-    "1323395554419539978": {
-      "total": 600,
-      "count": 1,
-      "username": "ramseytraboulsi"
-    },
-    "566734854008602624": {
-      "total": 366.12,
-      "count": 1,
-      "username": "loganobrienhere"
-    },
-    "929606171634065468": {
-      "total": 1197.24,
-      "count": 1,
-      "username": "terrenceslings"
-    },
-    "321165687152443392": {
-      "total": 1684.92,
-      "count": 1,
-      "username": "fadednoodler"
-    },
-    "1134874074552729601": {
-      "total": 1471.32,
-      "count": 1,
-      "username": "getrichwithrich"
-    },
-    "1415746228137889924": {
-      "total": 1523.28,
-      "count": 3,
-      "username": "sellwithjoey"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1134874074552729601": {
       "total": 17880.12,
@@ -453,60 +412,45 @@
     }
   },
   "dailySnapshot": {
-    "466076938012983297": {
-      "total": 1093.44,
-      "count": 1,
-      "username": "squizard33"
-    },
-    "1342657107819757698": {
-      "total": 907.8,
-      "count": 2,
-      "username": "therealvblacklive"
-    },
-    "1353468463980740688": {
-      "total": 569.04,
-      "count": 1,
-      "username": "mosiahm"
-    },
     "1330602059136765963": {
-      "total": 1174,
+      "total": 409,
       "count": 1,
       "username": "jesusvigil__43683"
     },
+    "1342657107819757698": {
+      "total": 1712.04,
+      "count": 2,
+      "username": "therealvblacklive"
+    },
+    "1323395554419539978": {
+      "total": 600,
+      "count": 1,
+      "username": "ramseytraboulsi"
+    },
     "566734854008602624": {
-      "total": 1228.68,
+      "total": 366.12,
       "count": 1,
       "username": "loganobrienhere"
     },
-    "1264830499130441813": {
-      "total": 3131,
-      "count": 2,
-      "username": "daddychill09627"
-    },
-    "780617237877882892": {
-      "total": 1102.68,
+    "929606171634065468": {
+      "total": 1197.24,
       "count": 1,
-      "username": "keith.williams_04"
-    },
-    "1134874074552729601": {
-      "total": 3361.7999999999997,
-      "count": 3,
-      "username": "getrichwithrich"
+      "username": "terrenceslings"
     },
     "321165687152443392": {
-      "total": 531.48,
+      "total": 1684.92,
       "count": 1,
       "username": "fadednoodler"
     },
-    "1356772443997605978": {
-      "total": 512,
+    "1134874074552729601": {
+      "total": 1471.32,
       "count": 1,
-      "username": "hadyn_waldie"
+      "username": "getrichwithrich"
     },
-    "929606171634065468": {
-      "total": 438.96,
-      "count": 1,
-      "username": "terrenceslings"
+    "1415746228137889924": {
+      "total": 1523.28,
+      "count": 3,
+      "username": "sellwithjoey"
     }
   },
   "weeklySnapshot": {
@@ -639,7 +583,7 @@
     }
   },
   "lastReset": {
-    "daily": "Sat Jan 10 2026",
+    "daily": "Sun Jan 11 2026",
     "weekly": 2,
     "weeklyTag": "2026-W2",
     "monthly": 0,
