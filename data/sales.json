@@ -1,41 +1,5 @@
 {
-  "daily": {
-    "1134874074552729601": {
-      "total": 1437.84,
-      "count": 1,
-      "username": "getrichwithrich"
-    },
-    "1342657107819757698": {
-      "total": 3583.08,
-      "count": 2,
-      "username": "therealvblacklive"
-    },
-    "466076938012983297": {
-      "total": 708.48,
-      "count": 1,
-      "username": "squizard33"
-    },
-    "1330602059136765963": {
-      "total": 1125,
-      "count": 1,
-      "username": "jesusvigil__43683"
-    },
-    "1277032802453295156": {
-      "total": 432,
-      "count": 1,
-      "username": "leoneldelgado0812"
-    },
-    "566734854008602624": {
-      "total": 775.08,
-      "count": 1,
-      "username": "loganobrienhere"
-    },
-    "780617237877882892": {
-      "total": 571.93,
-      "count": 1,
-      "username": "keith.williams_04"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1134874074552729601": {
       "total": 1437.84,
@@ -419,19 +383,39 @@
   },
   "dailySnapshot": {
     "1134874074552729601": {
-      "total": 6188.16,
-      "count": 2,
+      "total": 1437.84,
+      "count": 1,
       "username": "getrichwithrich"
     },
-    "1264830499130441813": {
-      "total": 833.64,
-      "count": 1,
-      "username": "daddychill09627"
+    "1342657107819757698": {
+      "total": 3583.08,
+      "count": 2,
+      "username": "therealvblacklive"
     },
-    "929606171634065468": {
-      "total": 1847.28,
+    "466076938012983297": {
+      "total": 708.48,
       "count": 1,
-      "username": "terrenceslings"
+      "username": "squizard33"
+    },
+    "1330602059136765963": {
+      "total": 1125,
+      "count": 1,
+      "username": "jesusvigil__43683"
+    },
+    "1277032802453295156": {
+      "total": 432,
+      "count": 1,
+      "username": "leoneldelgado0812"
+    },
+    "566734854008602624": {
+      "total": 775.08,
+      "count": 1,
+      "username": "loganobrienhere"
+    },
+    "780617237877882892": {
+      "total": 571.93,
+      "count": 1,
+      "username": "keith.williams_04"
     }
   },
   "weeklySnapshot": {
@@ -604,7 +588,7 @@
     }
   },
   "lastReset": {
-    "daily": "Mon Jan 12 2026",
+    "daily": "Tue Jan 13 2026",
     "weekly": 3,
     "weeklyTag": "2026-W3",
     "monthly": 0,
