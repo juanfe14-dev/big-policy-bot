@@ -1,5 +1,21 @@
 {
-  "daily": {},
+  "daily": {
+    "1264830499130441813": {
+      "total": 504.96,
+      "count": 1,
+      "username": "daddychill09627"
+    },
+    "1323395554419539978": {
+      "total": 1200,
+      "count": 1,
+      "username": "ramseytraboulsi"
+    },
+    "936340623517163620": {
+      "total": 1369.56,
+      "count": 1,
+      "username": "shanegolden"
+    }
+  },
   "weekly": {
     "1134874074552729601": {
       "total": 2089.92,
@@ -45,6 +61,21 @@
       "total": 2195.04,
       "count": 3,
       "username": "zacharyvalas"
+    },
+    "1264830499130441813": {
+      "total": 504.96,
+      "count": 1,
+      "username": "daddychill09627"
+    },
+    "1323395554419539978": {
+      "total": 1200,
+      "count": 1,
+      "username": "ramseytraboulsi"
+    },
+    "936340623517163620": {
+      "total": 1369.56,
+      "count": 1,
+      "username": "shanegolden"
     }
   },
   "monthly": {
@@ -74,8 +105,8 @@
       "username": "mosiahm"
     },
     "1323395554419539978": {
-      "total": 5220,
-      "count": 6,
+      "total": 6420,
+      "count": 7,
       "username": "ramseytraboulsi"
     },
     "780617237877882892": {
@@ -104,8 +135,8 @@
       "username": "therealvblacklive"
     },
     "1264830499130441813": {
-      "total": 3964.64,
-      "count": 3,
+      "total": 4469.599999999999,
+      "count": 4,
       "username": "daddychill09627"
     },
     "1356772443997605978": {
@@ -132,6 +163,11 @@
       "total": 2195.04,
       "count": 3,
       "username": "zacharyvalas"
+    },
+    "936340623517163620": {
+      "total": 1369.56,
+      "count": 1,
+      "username": "shanegolden"
     }
   },
   "allTime": {
@@ -316,8 +352,8 @@
       "username": "roanhickey"
     },
     "1264830499130441813": {
-      "total": 17165.87,
-      "count": 14,
+      "total": 17670.829999999998,
+      "count": 15,
       "username": "daddychill09627"
     },
     "1134874074552729601": {
@@ -376,8 +412,8 @@
       "username": "tkleib24"
     },
     "1323395554419539978": {
-      "total": 5220,
-      "count": 6,
+      "total": 6420,
+      "count": 7,
       "username": "ramseytraboulsi"
     },
     "1330602059136765963": {
@@ -399,6 +435,11 @@
       "total": 2195.04,
       "count": 3,
       "username": "zacharyvalas"
+    },
+    "936340623517163620": {
+      "total": 1369.56,
+      "count": 1,
+      "username": "shanegolden"
     }
   },
   "dailySnapshot": {
