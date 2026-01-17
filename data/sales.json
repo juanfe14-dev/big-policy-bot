@@ -1,5 +1,11 @@
 {
-  "daily": {},
+  "daily": {
+    "1322689393689104396": {
+      "total": 576,
+      "count": 1,
+      "username": "josephcarrell"
+    }
+  },
   "weekly": {
     "1134874074552729601": {
       "total": 11090.44,
@@ -62,8 +68,8 @@
       "username": "shanegolden"
     },
     "1322689393689104396": {
-      "total": 5871.2699999999995,
-      "count": 4,
+      "total": 6447.2699999999995,
+      "count": 5,
       "username": "josephcarrell"
     },
     "929606171634065468": {
@@ -184,8 +190,8 @@
       "username": "shanegolden"
     },
     "1322689393689104396": {
-      "total": 5871.2699999999995,
-      "count": 4,
+      "total": 6447.2699999999995,
+      "count": 5,
       "username": "josephcarrell"
     },
     "1427283748789026957": {
@@ -471,8 +477,8 @@
       "username": "shanegolden"
     },
     "1322689393689104396": {
-      "total": 5871.2699999999995,
-      "count": 4,
+      "total": 6447.2699999999995,
+      "count": 5,
       "username": "josephcarrell"
     }
   },
