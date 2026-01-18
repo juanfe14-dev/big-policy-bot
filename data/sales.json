@@ -1,36 +1,5 @@
 {
-  "daily": {
-    "1322689393689104396": {
-      "total": 576,
-      "count": 1,
-      "username": "josephcarrell"
-    },
-    "1342657107819757698": {
-      "total": 286.2,
-      "count": 1,
-      "username": "therealvblacklive"
-    },
-    "1032557343172468788": {
-      "total": 1209,
-      "count": 1,
-      "username": "richvigga"
-    },
-    "929606171634065468": {
-      "total": 2333.88,
-      "count": 3,
-      "username": "terrenceslings"
-    },
-    "1330602059136765963": {
-      "total": 937,
-      "count": 1,
-      "username": "jesusvigil__43683"
-    },
-    "1323395554419539978": {
-      "total": 2224,
-      "count": 1,
-      "username": "ramseytraboulsi"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1134874074552729601": {
       "total": 11090.44,
@@ -518,40 +487,35 @@
     }
   },
   "dailySnapshot": {
-    "1427283748789026957": {
-      "total": 3731.33,
-      "count": 1,
-      "username": "haiola_kai"
-    },
     "1322689393689104396": {
-      "total": 1481.04,
-      "count": 2,
+      "total": 576,
+      "count": 1,
       "username": "josephcarrell"
     },
     "1342657107819757698": {
-      "total": 955.2,
+      "total": 286.2,
       "count": 1,
       "username": "therealvblacklive"
     },
-    "1347906039785197652": {
-      "total": 975.6,
+    "1032557343172468788": {
+      "total": 1209,
       "count": 1,
-      "username": "audieosho"
+      "username": "richvigga"
+    },
+    "929606171634065468": {
+      "total": 2333.88,
+      "count": 3,
+      "username": "terrenceslings"
+    },
+    "1330602059136765963": {
+      "total": 937,
+      "count": 1,
+      "username": "jesusvigil__43683"
     },
     "1323395554419539978": {
-      "total": 1116,
+      "total": 2224,
       "count": 1,
       "username": "ramseytraboulsi"
-    },
-    "1264830499130441813": {
-      "total": 379.56,
-      "count": 1,
-      "username": "daddychill09627"
-    },
-    "477900273612750858": {
-      "total": 588.12,
-      "count": 2,
-      "username": "kayden.green"
     }
   },
   "weeklySnapshot": {
@@ -724,7 +688,7 @@
     }
   },
   "lastReset": {
-    "daily": "Sat Jan 17 2026",
+    "daily": "Sun Jan 18 2026",
     "weekly": 3,
     "weeklyTag": "2026-W3",
     "monthly": 0,
