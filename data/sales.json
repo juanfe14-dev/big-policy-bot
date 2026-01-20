@@ -1,5 +1,21 @@
 {
-  "daily": {},
+  "daily": {
+    "477900273612750858": {
+      "total": 1162.44,
+      "count": 2,
+      "username": "kayden.green"
+    },
+    "780617237877882892": {
+      "total": 3027.48,
+      "count": 1,
+      "username": "keith.williams_04"
+    },
+    "1032557343172468788": {
+      "total": 1353.96,
+      "count": 1,
+      "username": "richvigga"
+    }
+  },
   "weekly": {
     "194646983200342016": {
       "total": 2091,
@@ -27,8 +43,8 @@
       "username": "tkleib24"
     },
     "780617237877882892": {
-      "total": 904.32,
-      "count": 1,
+      "total": 3931.8,
+      "count": 2,
       "username": "keith.williams_04"
     },
     "1322366656630095913": {
@@ -45,6 +61,16 @@
       "total": 952.56,
       "count": 1,
       "username": "loganobrienhere"
+    },
+    "477900273612750858": {
+      "total": 1162.44,
+      "count": 2,
+      "username": "kayden.green"
+    },
+    "1032557343172468788": {
+      "total": 1353.96,
+      "count": 1,
+      "username": "richvigga"
     }
   },
   "monthly": {
@@ -59,8 +85,8 @@
       "username": "getrichwithrich"
     },
     "477900273612750858": {
-      "total": 2675.64,
-      "count": 5,
+      "total": 3838.0799999999995,
+      "count": 7,
       "username": "kayden.green"
     },
     "466076938012983297": {
@@ -79,8 +105,8 @@
       "username": "ramseytraboulsi"
     },
     "780617237877882892": {
-      "total": 14065.91,
-      "count": 12,
+      "total": 17093.39,
+      "count": 13,
       "username": "keith.williams_04"
     },
     "321165687152443392": {
@@ -154,8 +180,8 @@
       "username": "audieosho"
     },
     "1032557343172468788": {
-      "total": 1209,
-      "count": 1,
+      "total": 2562.96,
+      "count": 2,
       "username": "richvigga"
     },
     "194646983200342016": {
@@ -311,8 +337,8 @@
       "username": "gymboi2016"
     },
     "780617237877882892": {
-      "total": 32128.999999999993,
-      "count": 31,
+      "total": 35156.479999999996,
+      "count": 32,
       "username": "keith.williams_04"
     },
     "1347906039785197652": {
@@ -326,8 +352,8 @@
       "username": "selfmedicate111"
     },
     "1032557343172468788": {
-      "total": 11925.52,
-      "count": 11,
+      "total": 13279.48,
+      "count": 12,
       "username": "richvigga"
     },
     "1342657107819757698": {
@@ -366,8 +392,8 @@
       "username": "sellwithjoey"
     },
     "477900273612750858": {
-      "total": 7407.72,
-      "count": 11,
+      "total": 8570.16,
+      "count": 13,
       "username": "kayden.green"
     },
     "466076938012983297": {
