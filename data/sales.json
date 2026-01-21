@@ -1,46 +1,5 @@
 {
-  "daily": {
-    "477900273612750858": {
-      "total": 1162.44,
-      "count": 2,
-      "username": "kayden.green"
-    },
-    "780617237877882892": {
-      "total": 4197.24,
-      "count": 2,
-      "username": "keith.williams_04"
-    },
-    "1032557343172468788": {
-      "total": 1353.96,
-      "count": 1,
-      "username": "richvigga"
-    },
-    "1323395554419539978": {
-      "total": 2616,
-      "count": 2,
-      "username": "ramseytraboulsi"
-    },
-    "1134874074552729601": {
-      "total": 7324.48,
-      "count": 3,
-      "username": "getrichwithrich"
-    },
-    "1322366656630095913": {
-      "total": 5831.88,
-      "count": 4,
-      "username": "zacharyvalas"
-    },
-    "1264830499130441813": {
-      "total": 962.64,
-      "count": 1,
-      "username": "daddychill09627"
-    },
-    "1342657107819757698": {
-      "total": 4703.04,
-      "count": 2,
-      "username": "therealvblacklive"
-    }
-  },
+  "daily": {},
   "weekly": {
     "194646983200342016": {
       "total": 2091,
@@ -503,50 +462,45 @@
     }
   },
   "dailySnapshot": {
-    "194646983200342016": {
-      "total": 2091,
+    "477900273612750858": {
+      "total": 1162.44,
       "count": 2,
-      "username": "op3372"
+      "username": "kayden.green"
+    },
+    "780617237877882892": {
+      "total": 4197.24,
+      "count": 2,
+      "username": "keith.williams_04"
+    },
+    "1032557343172468788": {
+      "total": 1353.96,
+      "count": 1,
+      "username": "richvigga"
     },
     "1323395554419539978": {
-      "total": 1596,
+      "total": 2616,
       "count": 2,
       "username": "ramseytraboulsi"
     },
-    "1322689393689104396": {
-      "total": 4506,
+    "1134874074552729601": {
+      "total": 7324.48,
       "count": 3,
-      "username": "josephcarrell"
-    },
-    "1330602059136765963": {
-      "total": 1056,
-      "count": 1,
-      "username": "jesusvigil__43683"
-    },
-    "770443985768284190": {
-      "total": 1620,
-      "count": 1,
-      "username": "tkleib24"
-    },
-    "780617237877882892": {
-      "total": 904.32,
-      "count": 1,
-      "username": "keith.williams_04"
+      "username": "getrichwithrich"
     },
     "1322366656630095913": {
-      "total": 2400,
-      "count": 2,
+      "total": 5831.88,
+      "count": 4,
       "username": "zacharyvalas"
     },
     "1264830499130441813": {
-      "total": 462.84,
+      "total": 962.64,
       "count": 1,
       "username": "daddychill09627"
     },
-    "566734854008602624": {
-      "total": 952.56,
-      "count": 1,
-      "username": "loganobrienhere"
+    "1342657107819757698": {
+      "total": 4703.04,
+      "count": 2,
+      "username": "therealvblacklive"
     }
   },
   "weeklySnapshot": {
@@ -739,7 +693,7 @@
     }
   },
   "lastReset": {
-    "daily": "Tue Jan 20 2026",
+    "daily": "Wed Jan 21 2026",
     "weekly": 4,
     "weeklyTag": "2026-W4",
     "monthly": 0,
