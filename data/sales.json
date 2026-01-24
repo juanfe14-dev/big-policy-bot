@@ -49,6 +49,16 @@
       "total": 139.32,
       "count": 1,
       "username": "richvigga"
+    },
+    "1407458221743935570": {
+      "total": 1792.68,
+      "count": 2,
+      "username": "linkin04"
+    },
+    "1345849938239684608": {
+      "total": 1851.24,
+      "count": 2,
+      "username": "imani.k_"
     }
   },
   "weekly": {
@@ -123,8 +133,8 @@
       "username": "fadednoodler"
     },
     "1407458221743935570": {
-      "total": 1061.64,
-      "count": 1,
+      "total": 2854.32,
+      "count": 3,
       "username": "linkin04"
     },
     "1322686046739365961": {
@@ -136,6 +146,11 @@
       "total": 1993.2,
       "count": 1,
       "username": "hadyn_waldie"
+    },
+    "1345849938239684608": {
+      "total": 1851.24,
+      "count": 2,
+      "username": "imani.k_"
     }
   },
   "monthly": {
@@ -255,14 +270,19 @@
       "username": "op3372"
     },
     "1407458221743935570": {
-      "total": 1061.64,
-      "count": 1,
+      "total": 2854.32,
+      "count": 3,
       "username": "linkin04"
     },
     "1322686046739365961": {
       "total": 535.2,
       "count": 1,
       "username": "nate_dawg707"
+    },
+    "1345849938239684608": {
+      "total": 1851.24,
+      "count": 2,
+      "username": "imani.k_"
     }
   },
   "allTime": {
@@ -542,14 +562,19 @@
       "username": "josephcarrell"
     },
     "1407458221743935570": {
-      "total": 1061.64,
-      "count": 1,
+      "total": 2854.32,
+      "count": 3,
       "username": "linkin04"
     },
     "1322686046739365961": {
       "total": 535.2,
       "count": 1,
       "username": "nate_dawg707"
+    },
+    "1345849938239684608": {
+      "total": 1851.24,
+      "count": 2,
+      "username": "imani.k_"
     }
   },
   "dailySnapshot": {
