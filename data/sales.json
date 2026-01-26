@@ -1,108 +1,6 @@
 {
-  "daily": {
-    "1134874074552729601": {
-      "total": 1435.92,
-      "count": 1,
-      "username": "getrichwithrich"
-    }
-  },
-  "weekly": {
-    "194646983200342016": {
-      "total": 9613.68,
-      "count": 8,
-      "username": "op3372"
-    },
-    "1323395554419539978": {
-      "total": 6132,
-      "count": 6,
-      "username": "ramseytraboulsi"
-    },
-    "1322689393689104396": {
-      "total": 9894.48,
-      "count": 8,
-      "username": "josephcarrell"
-    },
-    "1330602059136765963": {
-      "total": 4579.7300000000005,
-      "count": 5,
-      "username": "jesusvigil__43683"
-    },
-    "770443985768284190": {
-      "total": 7204,
-      "count": 4,
-      "username": "tkleib24"
-    },
-    "780617237877882892": {
-      "total": 5438.1900000000005,
-      "count": 4,
-      "username": "keith.williams_04"
-    },
-    "1322366656630095913": {
-      "total": 17782.039999999997,
-      "count": 12,
-      "username": "zacharyvalas"
-    },
-    "1264830499130441813": {
-      "total": 3316.56,
-      "count": 3,
-      "username": "daddychill09627"
-    },
-    "566734854008602624": {
-      "total": 952.56,
-      "count": 1,
-      "username": "loganobrienhere"
-    },
-    "477900273612750858": {
-      "total": 1162.44,
-      "count": 2,
-      "username": "kayden.green"
-    },
-    "1032557343172468788": {
-      "total": 3074.3999999999996,
-      "count": 3,
-      "username": "richvigga"
-    },
-    "1134874074552729601": {
-      "total": 27012.399999999994,
-      "count": 16,
-      "username": "getrichwithrich"
-    },
-    "1342657107819757698": {
-      "total": 7516.799999999999,
-      "count": 5,
-      "username": "therealvblacklive"
-    },
-    "321165687152443392": {
-      "total": 5113.68,
-      "count": 3,
-      "username": "fadednoodler"
-    },
-    "1407458221743935570": {
-      "total": 3261.84,
-      "count": 4,
-      "username": "linkin04"
-    },
-    "1322686046739365961": {
-      "total": 535.2,
-      "count": 1,
-      "username": "nate_dawg707"
-    },
-    "1356772443997605978": {
-      "total": 1993.2,
-      "count": 1,
-      "username": "hadyn_waldie"
-    },
-    "1345849938239684608": {
-      "total": 1851.24,
-      "count": 2,
-      "username": "imani.k_"
-    },
-    "836024312711610448": {
-      "total": 622.44,
-      "count": 1,
-      "username": "roanhickey"
-    }
-  },
+  "daily": {},
+  "weekly": {},
   "monthly": {
     "566734854008602624": {
       "total": 13857.36,
@@ -534,141 +432,106 @@
   },
   "dailySnapshot": {
     "1134874074552729601": {
-      "total": 7060.08,
-      "count": 4,
+      "total": 1435.92,
+      "count": 1,
       "username": "getrichwithrich"
+    }
+  },
+  "weeklySnapshot": {
+    "194646983200342016": {
+      "total": 9613.68,
+      "count": 8,
+      "username": "op3372"
+    },
+    "1323395554419539978": {
+      "total": 6132,
+      "count": 6,
+      "username": "ramseytraboulsi"
+    },
+    "1322689393689104396": {
+      "total": 9894.48,
+      "count": 8,
+      "username": "josephcarrell"
+    },
+    "1330602059136765963": {
+      "total": 4579.7300000000005,
+      "count": 5,
+      "username": "jesusvigil__43683"
+    },
+    "770443985768284190": {
+      "total": 7204,
+      "count": 4,
+      "username": "tkleib24"
+    },
+    "780617237877882892": {
+      "total": 5438.1900000000005,
+      "count": 4,
+      "username": "keith.williams_04"
+    },
+    "1322366656630095913": {
+      "total": 17782.039999999997,
+      "count": 12,
+      "username": "zacharyvalas"
+    },
+    "1264830499130441813": {
+      "total": 3316.56,
+      "count": 3,
+      "username": "daddychill09627"
+    },
+    "566734854008602624": {
+      "total": 952.56,
+      "count": 1,
+      "username": "loganobrienhere"
+    },
+    "477900273612750858": {
+      "total": 1162.44,
+      "count": 2,
+      "username": "kayden.green"
+    },
+    "1032557343172468788": {
+      "total": 3074.3999999999996,
+      "count": 3,
+      "username": "richvigga"
+    },
+    "1134874074552729601": {
+      "total": 27012.399999999994,
+      "count": 16,
+      "username": "getrichwithrich"
+    },
+    "1342657107819757698": {
+      "total": 7516.799999999999,
+      "count": 5,
+      "username": "therealvblacklive"
+    },
+    "321165687152443392": {
+      "total": 5113.68,
+      "count": 3,
+      "username": "fadednoodler"
+    },
+    "1407458221743935570": {
+      "total": 3261.84,
+      "count": 4,
+      "username": "linkin04"
+    },
+    "1322686046739365961": {
+      "total": 535.2,
+      "count": 1,
+      "username": "nate_dawg707"
+    },
+    "1356772443997605978": {
+      "total": 1993.2,
+      "count": 1,
+      "username": "hadyn_waldie"
+    },
+    "1345849938239684608": {
+      "total": 1851.24,
+      "count": 2,
+      "username": "imani.k_"
     },
     "836024312711610448": {
       "total": 622.44,
       "count": 1,
       "username": "roanhickey"
-    },
-    "1330602059136765963": {
-      "total": 963.6,
-      "count": 1,
-      "username": "jesusvigil__43683"
-    },
-    "1322689393689104396": {
-      "total": 1746.48,
-      "count": 1,
-      "username": "josephcarrell"
-    },
-    "1032557343172468788": {
-      "total": 1581.12,
-      "count": 1,
-      "username": "richvigga"
-    },
-    "1342657107819757698": {
-      "total": 371.28,
-      "count": 1,
-      "username": "therealvblacklive"
-    },
-    "1407458221743935570": {
-      "total": 407.52,
-      "count": 1,
-      "username": "linkin04"
-    },
-    "194646983200342016": {
-      "total": 1741.92,
-      "count": 1,
-      "username": "op3372"
-    }
-  },
-  "weeklySnapshot": {
-    "1134874074552729601": {
-      "total": 14490.400000000001,
-      "count": 9,
-      "username": "getrichwithrich"
-    },
-    "1342657107819757698": {
-      "total": 15962.720000000001,
-      "count": 10,
-      "username": "therealvblacklive"
-    },
-    "466076938012983297": {
-      "total": 708.48,
-      "count": 1,
-      "username": "squizard33"
-    },
-    "1330602059136765963": {
-      "total": 9625,
-      "count": 8,
-      "username": "jesusvigil__43683"
-    },
-    "1277032802453295156": {
-      "total": 1725,
-      "count": 2,
-      "username": "leoneldelgado0812"
-    },
-    "566734854008602624": {
-      "total": 775.08,
-      "count": 1,
-      "username": "loganobrienhere"
-    },
-    "780617237877882892": {
-      "total": 5723.45,
-      "count": 7,
-      "username": "keith.williams_04"
-    },
-    "1353468463980740688": {
-      "total": 8610.75,
-      "count": 4,
-      "username": "mosiahm"
-    },
-    "1322366656630095913": {
-      "total": 3996,
-      "count": 5,
-      "username": "zacharyvalas"
-    },
-    "1264830499130441813": {
-      "total": 884.52,
-      "count": 2,
-      "username": "daddychill09627"
-    },
-    "1323395554419539978": {
-      "total": 7888,
-      "count": 5,
-      "username": "ramseytraboulsi"
-    },
-    "936340623517163620": {
-      "total": 1369.56,
-      "count": 1,
-      "username": "shanegolden"
-    },
-    "1322689393689104396": {
-      "total": 6447.2699999999995,
-      "count": 5,
-      "username": "josephcarrell"
-    },
-    "929606171634065468": {
-      "total": 6157.200000000001,
-      "count": 6,
-      "username": "terrenceslings"
-    },
-    "770443985768284190": {
-      "total": 18704,
-      "count": 6,
-      "username": "tkleib24"
-    },
-    "1427283748789026957": {
-      "total": 3731.33,
-      "count": 1,
-      "username": "haiola_kai"
-    },
-    "1347906039785197652": {
-      "total": 975.6,
-      "count": 1,
-      "username": "audieosho"
-    },
-    "477900273612750858": {
-      "total": 588.12,
-      "count": 2,
-      "username": "kayden.green"
-    },
-    "1032557343172468788": {
-      "total": 1209,
-      "count": 1,
-      "username": "richvigga"
     }
   },
   "monthlySnapshot": {
@@ -764,9 +627,9 @@
     }
   },
   "lastReset": {
-    "daily": "Sun Jan 25 2026",
-    "weekly": 4,
-    "weeklyTag": "2026-W4",
+    "daily": "Mon Jan 26 2026",
+    "weekly": 5,
+    "weeklyTag": "2026-W5",
     "monthly": 0,
     "monthlyTag": "2026-00"
   }
