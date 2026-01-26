@@ -1,6 +1,58 @@
 {
-  "daily": {},
-  "weekly": {},
+  "daily": {
+    "1323395554419539978": {
+      "total": 400,
+      "count": 1,
+      "username": "ramseytraboulsi"
+    },
+    "1322689393689104396": {
+      "total": 4190.639999999999,
+      "count": 2,
+      "username": "josephcarrell"
+    },
+    "1330602059136765963": {
+      "total": 699.6,
+      "count": 1,
+      "username": "jesusvigil__43683"
+    },
+    "1342657107819757698": {
+      "total": 2236.08,
+      "count": 2,
+      "username": "therealvblacklive"
+    },
+    "321165687152443392": {
+      "total": 1240,
+      "count": 1,
+      "username": "fadednoodler"
+    }
+  },
+  "weekly": {
+    "1323395554419539978": {
+      "total": 400,
+      "count": 1,
+      "username": "ramseytraboulsi"
+    },
+    "1322689393689104396": {
+      "total": 4190.639999999999,
+      "count": 2,
+      "username": "josephcarrell"
+    },
+    "1330602059136765963": {
+      "total": 699.6,
+      "count": 1,
+      "username": "jesusvigil__43683"
+    },
+    "1342657107819757698": {
+      "total": 2236.08,
+      "count": 2,
+      "username": "therealvblacklive"
+    },
+    "321165687152443392": {
+      "total": 1240,
+      "count": 1,
+      "username": "fadednoodler"
+    }
+  },
   "monthly": {
     "566734854008602624": {
       "total": 13857.36,
@@ -28,8 +80,8 @@
       "username": "mosiahm"
     },
     "1323395554419539978": {
-      "total": 19240,
-      "count": 17,
+      "total": 19640,
+      "count": 18,
       "username": "ramseytraboulsi"
     },
     "780617237877882892": {
@@ -38,8 +90,8 @@
       "username": "keith.williams_04"
     },
     "321165687152443392": {
-      "total": 8026,
-      "count": 6,
+      "total": 9266,
+      "count": 7,
       "username": "fadednoodler"
     },
     "770443985768284190": {
@@ -48,13 +100,13 @@
       "username": "tkleib24"
     },
     "1330602059136765963": {
-      "total": 17982.73,
-      "count": 18,
+      "total": 18682.329999999998,
+      "count": 19,
       "username": "jesusvigil__43683"
     },
     "1342657107819757698": {
-      "total": 27152.359999999997,
-      "count": 20,
+      "total": 29388.439999999995,
+      "count": 22,
       "username": "therealvblacklive"
     },
     "1264830499130441813": {
@@ -93,8 +145,8 @@
       "username": "shanegolden"
     },
     "1322689393689104396": {
-      "total": 16341.75,
-      "count": 13,
+      "total": 20532.39,
+      "count": 15,
       "username": "josephcarrell"
     },
     "1427283748789026957": {
@@ -305,13 +357,13 @@
       "username": "richvigga"
     },
     "1342657107819757698": {
-      "total": 36566.83999999999,
-      "count": 28,
+      "total": 38802.91999999999,
+      "count": 30,
       "username": "therealvblacklive"
     },
     "321165687152443392": {
-      "total": 12203.640000000001,
-      "count": 10,
+      "total": 13443.640000000001,
+      "count": 11,
       "username": "fadednoodler"
     },
     "836024312711610448": {
@@ -380,13 +432,13 @@
       "username": "tkleib24"
     },
     "1323395554419539978": {
-      "total": 19240,
-      "count": 17,
+      "total": 19640,
+      "count": 18,
       "username": "ramseytraboulsi"
     },
     "1330602059136765963": {
-      "total": 17982.73,
-      "count": 18,
+      "total": 18682.329999999998,
+      "count": 19,
       "username": "jesusvigil__43683"
     },
     "929606171634065468": {
@@ -410,8 +462,8 @@
       "username": "shanegolden"
     },
     "1322689393689104396": {
-      "total": 16341.75,
-      "count": 13,
+      "total": 20532.39,
+      "count": 15,
       "username": "josephcarrell"
     },
     "1407458221743935570": {
