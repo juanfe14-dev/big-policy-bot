@@ -1,213 +1,172 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
-const cron = require('node-cron');
+
+const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const express = require('express');
+const cron = require('node-cron');
 
-// =======================
-// EXPRESS (RENDER)
-// =======================
+const {
+  Client,
+  GatewayIntentBits,
+  Partials
+} = require('discord.js');
+
+/* =========================
+   EXPRESS (RENDER KEEP ALIVE)
+========================= */
+
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-app.get('/', (_, res) => res.send('BIG Policy Bot is running'));
-app.get('/health', (_, res) => res.json({ status: 'ok', uptime: process.uptime() }));
+app.get('/', (req, res) => {
+  res.send('BIG Policy Bot is running');
+});
 
-app.listen(PORT, '0.0.0.0', () => {
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    uptime: process.uptime()
+  });
+});
+
+app.listen(PORT, () => {
   console.log(`🌐 Server running on port ${PORT}`);
 });
 
-// =======================
-// DISCORD CLIENT
-// =======================
+/* =========================
+   DISCORD CLIENT (CRÍTICO)
+========================= */
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent
-  ]
+  ],
+  partials: [Partials.Channel]
 });
 
-// =======================
-// DATA
-// =======================
-const DATA_DIR = process.env.RENDER
-  ? '/opt/render/project/src/data'
-  : path.join(__dirname, 'data');
+/* =========================
+   DATA
+========================= */
 
+const DATA_DIR = path.join(__dirname, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'sales.json');
 
-let salesData = {
-  daily: {},
-  weekly: {},
-  monthly: {},
-  lastReset: {
-    day: '',
-    week: '',
-    month: ''
-  }
-};
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR);
+if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, JSON.stringify([]));
 
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-if (fs.existsSync(DATA_FILE)) {
-  salesData = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+function loadSales() {
+  return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
 }
 
-function saveData() {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(salesData, null, 2));
+function saveSales(data) {
+  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
-// =======================
-// TIME / RESETS
-// =======================
-function pacificNow() {
-  return new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
-}
+/* =========================
+   SALES PARSER
+========================= */
 
-function getWeekTag(d) {
-  const first = new Date(d.getFullYear(), 0, 1);
-  const week = Math.ceil((((d - first) / 86400000) + first.getDay() + 1) / 7);
-  return `${d.getFullYear()}-W${week}`;
-}
-
-function checkResets() {
-  const now = pacificNow();
-
-  const dayTag = now.toDateString();
-  const weekTag = getWeekTag(now);
-  const monthTag = `${now.getFullYear()}-${now.getMonth()}`;
-
-  if (salesData.lastReset.day !== dayTag) {
-    salesData.daily = {};
-    salesData.lastReset.day = dayTag;
-    console.log('🔄 Daily reset');
-  }
-
-  if (salesData.lastReset.week !== weekTag) {
-    salesData.weekly = {};
-    salesData.lastReset.week = weekTag;
-    console.log('🔄 Weekly reset');
-  }
-
-  if (salesData.lastReset.month !== monthTag) {
-    salesData.monthly = {};
-    salesData.lastReset.month = monthTag;
-    console.log('🔄 Monthly reset');
-  }
-
-  saveData();
-}
-
-// =======================
-// SALES
-// =======================
-function addSale(user, amount) {
-  checkResets();
-
-  for (const period of ['daily', 'weekly', 'monthly']) {
-    if (!salesData[period][user.id]) {
-      salesData[period][user.id] = {
-        username: user.username,
-        total: 0,
-        count: 0
-      };
-    }
-    salesData[period][user.id].total += amount;
-    salesData[period][user.id].count += 1;
-  }
-
-  saveData();
-}
-
-function parseSale(text) {
-  const match = text.match(/\$([\d,]+(\.\d{2})?)/);
+function parseSale(message) {
+  const match = message.match(/\$([\d,]+(\.\d+)?)/);
   if (!match) return null;
   return parseFloat(match[1].replace(/,/g, ''));
 }
 
-// =======================
-// LEADERBOARD
-// =======================
-function buildLeaderboard(period) {
-  checkResets();
+/* =========================
+   LEADERBOARD
+========================= */
 
-  const data = Object.values(salesData[period])
-    .sort((a, b) => b.total - a.total)
+function generateLeaderboard() {
+  const sales = loadSales();
+  const totals = {};
+
+  for (const s of sales) {
+    totals[s.user] = (totals[s.user] || 0) + s.amount;
+  }
+
+  const sorted = Object.entries(totals)
+    .sort((a, b) => b[1] - a[1])
     .slice(0, 10);
 
-  const embed = new EmbedBuilder()
-    .setColor(0x00ff00)
-    .setTitle(`💵 ${period.toUpperCase()} LEADERBOARD`)
-    .setTimestamp();
+  if (!sorted.length) return 'No sales yet.';
 
-  if (data.length === 0) {
-    embed.setDescription('No sales recorded.');
-    return embed;
-  }
+  return sorted
+    .map(([user, amt], i) => `**${i + 1}. ${user}** — $${amt.toFixed(2)}`)
+    .join('\n');
+}
 
-  embed.setDescription(
-    data.map((u, i) =>
-      `**${i + 1}. ${u.username}** — $${u.total.toLocaleString()} (${u.count})`
-    ).join('\n')
+/* =========================
+   DISCORD EVENTS
+========================= */
+
+client.once('ready', () => {
+  console.log(`✅ Bot connected as ${client.user.tag}`);
+
+  /* ===== CRON JOB ===== */
+  cron.schedule(
+    '0 12 * * *',
+    async () => {
+      try {
+        const channel = await client.channels.fetch(
+          process.env.LEADERBOARD_CHANNEL_ID
+        );
+        if (!channel) return;
+
+        const board = generateLeaderboard();
+        await channel.send(`📊 **Daily Leaderboard**\n\n${board}`);
+        console.log('📊 Leaderboard sent');
+      } catch (err) {
+        console.error('❌ Leaderboard error:', err);
+      }
+    },
+    { timezone: 'America/Los_Angeles' }
   );
 
-  return embed;
-}
-
-// =======================
-// CRON (CRÍTICO)
-// =======================
-let cronsStarted = false;
-
-function startCrons() {
-  // Every 3 hours
-  cron.schedule('0 */3 * * *', async () => {
-    const hour = pacificNow().getHours();
-    if (![9, 12, 15, 18, 21].includes(hour)) return;
-
-    const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
-    if (!channel) return;
-
-    await channel.send({ embeds: [buildLeaderboard('daily')] });
-    console.log('📊 Leaderboard sent');
-  });
-
   console.log('⏰ Cron jobs registered');
-}
-
-// =======================
-// EVENTS
-// =======================
-client.on('ready', () => {
-  console.log(`✅ Logged in as ${client.user.tag}`);
-
-  if (!cronsStarted) {
-    startCrons();
-    cronsStarted = true;
-  }
 });
+
+/* ===== MESSAGE LISTENER (CRÍTICO) ===== */
 
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return;
-  checkResets();
 
-  if (message.channel.id === process.env.SALES_CHANNEL_ID) {
-    const amount = parseSale(message.content);
-    if (!amount) return;
+  console.log('📥 Message received:', message.content);
 
-    addSale(message.author, amount);
-    await message.react('✅');
-    await message.react('💰');
-    console.log(`💰 Sale: ${message.author.username} $${amount}`);
+  // Leaderboard command
+  if (message.content.toLowerCase() === '!leaderboard') {
+    const board = generateLeaderboard();
+    await message.channel.send(`📊 **Leaderboard**\n\n${board}`);
+    return;
   }
 
-  if (message.content === '!leaderboard') {
-    await message.channel.send({ embeds: [buildLeaderboard('daily')] });
-  }
+  // Sale detection
+  const amount = parseSale(message.content);
+  if (!amount) return;
+
+  const sales = loadSales();
+  sales.push({
+    user: message.author.username,
+    amount,
+    timestamp: new Date().toISOString()
+  });
+  saveSales(sales);
+
+  console.log(`💰 Sale recorded: ${message.author.username} - $${amount}`);
+  await message.react('💰');
 });
 
-// =======================
-// START
-// =======================
+/* =========================
+   KEEP ALIVE (RENDER FIX)
+========================= */
+
+setInterval(() => {
+  console.log('🔄 Keep alive ping', new Date().toISOString());
+}, 5 * 60 * 1000);
+
+/* =========================
+   LOGIN
+========================= */
+
 client.login(process.env.DISCORD_TOKEN);
