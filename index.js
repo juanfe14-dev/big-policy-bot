@@ -242,7 +242,12 @@ async function start() {
         console.error('❌ DISCORD_TOKEN missing');
         process.exit(1);
     }
-
+console.log(
+  '🔑 DISCORD_TOKEN exists:',
+  !!process.env.DISCORD_TOKEN,
+  'length:',
+  process.env.DISCORD_TOKEN?.length
+);
     await client.login(process.env.DISCORD_TOKEN);
 }
 
