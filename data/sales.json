@@ -103,33 +103,7 @@
       "username": "squizard33"
     }
   },
-  "monthly": {
-    "1323395554419539978": {
-      "total": 4036,
-      "count": 4,
-      "username": "ramseytraboulsi"
-    },
-    "1134874074552729601": {
-      "total": 9459.16,
-      "count": 3,
-      "username": "getrichwithrich"
-    },
-    "1330602059136765963": {
-      "total": 3986.92,
-      "count": 4,
-      "username": "jesusvigil__43683"
-    },
-    "566734854008602624": {
-      "total": 2776.2,
-      "count": 2,
-      "username": "loganobrienhere"
-    },
-    "1322366656630095913": {
-      "total": 3431.64,
-      "count": 3,
-      "username": "zacharyvalas"
-    }
-  },
+  "monthly": {},
   "allTime": {
     "1323395554419539978": {
       "total": 21548,
@@ -187,7 +161,7 @@
     "weekly": 5,
     "weeklyTag": "2026-W5",
     "monthly": "2026-0",
-    "monthlyTag": "2026-00"
+    "monthlyTag": "2026-0"
   },
   "total": {}
 }
