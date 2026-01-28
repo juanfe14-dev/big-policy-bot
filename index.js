@@ -142,3 +142,10 @@ app.listen(PORT, () => {
 // ===============================
 console.log('🚀 Attempting Discord login...');
 client.login(DISCORD_TOKEN);
+client.on('error', err => {
+  console.error('❌ Discord client error:', err);
+});
+
+client.on('shardError', err => {
+  console.error('❌ Discord shard error:', err);
+});
