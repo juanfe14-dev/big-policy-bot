@@ -35,7 +35,7 @@ let salesData = {
 };
 
 // ========================================
-// SERVIDOR EXPRESS (HEALTH CHECK)
+// SERVIDOR EXPRESS (HEALTH CHECK PARA RENDER)
 // ========================================
 const app = express();
 const PORT = process.env.PORT || 10000;
@@ -49,11 +49,11 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 
 // ========================================
-// UTILIDADES DE GITHUB API
+// UTILIDADES DE GITHUB API (Sincronización)
 // ========================================
 function githubApiRequest(path, method, body) {
     const token = process.env.GITHUB_TOKEN;
-    if (!token) return Promise.reject(new Error('GITHUB_TOKEN not set'));
+    if (!token) return Promise.reject(new Error('GITHUB_TOKEN no configurado en Render'));
 
     const options = {
         hostname: 'api.github.com',
@@ -87,23 +87,21 @@ function githubApiRequest(path, method, body) {
 async function downloadFromGitHub() {
     try {
         console.log('📥 Intentando recuperar datos desde GitHub (data/sales.json)...');
-        // Ruta exacta en tu repo
-        const fileData = await githubApiRequest(
-            '/repos/juanfe14-dev/big-policy-bot/contents/data/sales.json?ref=main',
-            'GET'
-        );
+        const repoPath = `/repos/juanfe14-dev/big-policy-bot/contents/data/sales.json?ref=main`;
+        const fileData = await githubApiRequest(repoPath, 'GET');
+        
         if (fileData && fileData.content) {
             const content = Buffer.from(fileData.content, 'base64').toString('utf8');
             return JSON.parse(content);
         }
     } catch (error) {
-        console.log('ℹ️ No se encontraron datos previos en GitHub o error en descarga:', error.message);
+        console.log('ℹ️ Nota: No se pudo bajar de GitHub (puede ser el primer inicio):', error.message);
     }
     return null;
 }
 
 // ========================================
-// GESTIÓN DE DATOS (LOCAL Y REMOTO)
+// GESTIÓN DE DATOS LOCALES
 // ========================================
 async function loadData() {
     try {
@@ -112,17 +110,17 @@ async function loadData() {
 
         let loaded = false;
 
-        // 1. Intentar cargar localmente primero
+        // 1. Intentar local
         try {
             const data = await fs.readFile(DATA_FILE, 'utf8');
             salesData = JSON.parse(data);
             console.log('📂 Datos cargados desde disco local.');
             loaded = true;
         } catch (e) {
-            console.log('❓ No hay archivo local (esto es normal en el primer despliegue de Render).');
+            console.log('❓ No hay archivo local.');
         }
 
-        // 2. Si no cargó local o está vacío, intentar de GitHub
+        // 2. Intentar GitHub si el local falló o está vacío
         if (!loaded || Object.keys(salesData.total || {}).length === 0) {
             const remoteData = await downloadFromGitHub();
             if (remoteData) {
@@ -130,21 +128,19 @@ async function loadData() {
                 console.log('✅ Datos recuperados exitosamente desde GitHub.');
                 await fs.writeFile(DATA_FILE, JSON.stringify(salesData, null, 2));
             } else {
-                console.log('📝 No hay datos locales ni remotos. Iniciando base de datos nueva.');
+                console.log('📝 Iniciando con base de datos nueva.');
             }
         }
 
-        // Asegurar que existan los objetos básicos
-        if (!salesData.lastReset) salesData.lastReset = {};
-        if (!salesData.daily) salesData.daily = {};
-        if (!salesData.weekly) salesData.weekly = {};
-        if (!salesData.monthly) salesData.monthly = {};
-        if (!salesData.total) salesData.total = {};
-
-        console.log(`📊 Datos actuales: ${Object.keys(salesData.daily).length} daily, ${Object.keys(salesData.weekly).length} weekly, ${Object.keys(salesData.monthly).length} monthly agents`);
+        // Asegurar estructura
+        salesData.lastReset = salesData.lastReset || {};
+        salesData.daily = salesData.daily || {};
+        salesData.weekly = salesData.weekly || {};
+        salesData.monthly = salesData.monthly || {};
+        salesData.total = salesData.total || {};
 
     } catch (error) {
-        console.error('❌ Error crítico en loadData:', error);
+        console.error('❌ Error en loadData:', error);
     }
 }
 
@@ -152,44 +148,42 @@ async function saveData() {
     try {
         const dataStr = JSON.stringify(salesData, null, 2);
         await fs.writeFile(DATA_FILE, dataStr);
-
-        // Backup diario local
+        
+        // Backup histórico
         const date = new Date().toISOString().split('T')[0];
         await fs.writeFile(path.join(BACKUP_DIR, `sales-${date}.json`), dataStr);
         
-        // Sincronizar a GitHub
         await syncToGitHub();
     } catch (error) {
-        console.error('❌ Error saving data:', error);
+        console.error('❌ Error al guardar:', error);
     }
 }
 
 async function syncToGitHub() {
     try {
-        console.log('🔄 Sincronizando con GitHub...');
         const repoPath = '/repos/juanfe14-dev/big-policy-bot/contents/data/sales.json';
         let sha = null;
 
         try {
             const currentFile = await githubApiRequest(`${repoPath}?ref=main`, 'GET');
             sha = currentFile.sha;
-        } catch (e) { /* Archivo nuevo */ }
+        } catch (e) {}
 
         const content = Buffer.from(JSON.stringify(salesData, null, 2)).toString('base64');
         await githubApiRequest(repoPath, 'PUT', {
-            message: `Update sales data - ${new Date().toISOString()}`,
+            message: `Bot Auto-Sync: ${new Date().toISOString()}`,
             content,
             sha,
             branch: 'main'
         });
-        console.log('✅ Sincronización exitosa.');
+        console.log('🔄 Sincronizado con GitHub ✅');
     } catch (error) {
-        console.error('❌ Error sincronizando GitHub:', error.message);
+        console.error('❌ Error sincronización GitHub:', error.message);
     }
 }
 
 // ========================================
-// LÓGICA DE RESETS (MEJORADA)
+// LÓGICA DE RESETS
 // ========================================
 function getWeekNumber(d) {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -200,41 +194,36 @@ function getWeekNumber(d) {
 
 function checkResets() {
     const now = new Date();
-    // Ajuste a tu zona horaria (TZ en Render)
-    const pacificTime = new Date(now.toLocaleString("en-US", {timeZone: process.env.TZ || "America/New_York"}));
+    const tz = process.env.TZ || "America/New_York";
+    const localTime = new Date(now.toLocaleString("en-US", {timeZone: tz}));
     
-    const currentDay = pacificTime.toDateString();
-    const currentWeek = getWeekNumber(pacificTime);
-    const currentMonth = pacificTime.getMonth();
-    const currentYear = pacificTime.getFullYear();
-    const currentWeekTag = `${currentYear}-W${currentWeek}`;
+    const dayTag = localTime.toDateString();
+    const weekNum = getWeekNumber(localTime);
+    const year = localTime.getFullYear();
+    const weekTag = `${year}-W${weekNum}`;
+    const monthTag = `${year}-${localTime.getMonth()}`;
 
     let changed = false;
 
-    // Reset Diario
-    if (salesData.lastReset.daily !== currentDay) {
-        console.log('🌅 Ejecutando Reset Diario...');
-        salesData.dailySnapshot = JSON.parse(JSON.stringify(salesData.daily || {}));
+    if (salesData.lastReset.daily !== dayTag) {
+        console.log('🌅 Reset Diario...');
+        salesData.dailySnapshot = JSON.parse(JSON.stringify(salesData.daily));
         salesData.daily = {};
-        salesData.lastReset.daily = currentDay;
+        salesData.lastReset.daily = dayTag;
         changed = true;
     }
 
-    // Reset Semanal (Basado en número de semana, no solo en lunes)
-    if (salesData.lastReset.weeklyTag !== currentWeekTag) {
-        console.log('📅 Ejecutando Reset Semanal...');
-        salesData.weeklySnapshot = JSON.parse(JSON.stringify(salesData.weekly || {}));
+    if (salesData.lastReset.weeklyTag !== weekTag) {
+        console.log('📅 Reset Semanal...');
+        salesData.weeklySnapshot = JSON.parse(JSON.stringify(salesData.weekly));
         salesData.weekly = {};
-        salesData.lastReset.weeklyTag = currentWeekTag;
-        salesData.lastReset.weekly = currentWeek;
+        salesData.lastReset.weeklyTag = weekTag;
         changed = true;
     }
 
-    // Reset Mensual
-    const monthTag = `${currentYear}-${currentMonth}`;
     if (salesData.lastReset.monthly !== monthTag) {
-        console.log('🗓️ Ejecutando Reset Mensual...');
-        salesData.monthlySnapshot = JSON.parse(JSON.stringify(salesData.monthly || {}));
+        console.log('🗓️ Reset Mensual...');
+        salesData.monthlySnapshot = JSON.parse(JSON.stringify(salesData.monthly));
         salesData.monthly = {};
         salesData.lastReset.monthly = monthTag;
         changed = true;
@@ -244,14 +233,12 @@ function checkResets() {
 }
 
 // ========================================
-// EVENTOS DE DISCORD
+// EVENTOS DISCORD
 // ========================================
 client.on('messageCreate', async (message) => {
-    // Ignorar bots y mensajes fuera del canal de ventas
     if (message.author.bot) return;
     if (message.channel.id !== process.env.SALES_CHANNEL_ID) return;
 
-    // Regex para detectar ventas (AP o TOTAL)
     const apMatch = message.content.match(/(?:AP|Total):\s*\$?([\d,.]+)/i);
     if (!apMatch) return;
 
@@ -261,38 +248,27 @@ client.on('messageCreate', async (message) => {
     const userId = message.author.id;
     const username = message.author.username;
 
-    // Inicializar usuario si no existe
-    const initUser = (target) => {
-        if (!target[userId]) target[userId] = { total: 0, count: 0, username };
-    };
-
-    [salesData.daily, salesData.weekly, salesData.monthly, salesData.total].forEach(initUser);
-
-    // Sumar venta
+    const init = (obj) => { if (!obj[userId]) obj[userId] = { total: 0, count: 0, username }; };
+    
     [salesData.daily, salesData.weekly, salesData.monthly, salesData.total].forEach(target => {
+        init(target);
         target[userId].total += amount;
         target[userId].count += 1;
         target[userId].username = username;
     });
 
-    console.log(`💰 Venta registrada: ${username} - $${amount}`);
-    
-    // Reaccionar para confirmar
-    try { await message.react('✅'); } catch (e) {}
-    
-    // Guardar (esto también sube a GitHub)
+    console.log(`💰 Venta: ${username} $${amount}`);
+    try { await message.react('✅'); } catch(e) {}
     saveData();
 });
 
 // ========================================
-// CRON JOBS (REPORTES)
+// REPORTES AUTOMÁTICOS (CRON)
 // ========================================
-// Informe diario a las 11:59 PM
 cron.schedule('59 23 * * *', () => {
     sendLeaderboard('DAILY REPORT', salesData.daily, process.env.SALES_CHANNEL_ID);
 }, { timezone: process.env.TZ || "America/New_York" });
 
-// Informe semanal los domingos a las 11:58 PM
 cron.schedule('58 23 * * 0', () => {
     sendLeaderboard('WEEKLY LEADERBOARD', salesData.weekly, process.env.LEADERBOARD_CHANNEL_ID);
 }, { timezone: process.env.TZ || "America/New_York" });
@@ -310,66 +286,55 @@ async function sendLeaderboard(title, data, channelId) {
 
         const embed = new EmbedBuilder()
             .setTitle(`🏆 ${title}`)
-            .setColor('#FFD700')
+            .setColor('#00ff00')
             .setTimestamp();
 
-        let description = "";
-        sorted.forEach(([id, stats], index) => {
-            description += `**${index + 1}. ${stats.username}**: $${stats.total.toLocaleString()} (${stats.count} sales)\n`;
-        });
-        
-        embed.setDescription(description);
+        let desc = sorted.map(([id, s], i) => `**${i+1}. ${s.username}**: $${s.total.toLocaleString()} (${s.count} sales)`).join('\n');
+        embed.setDescription(desc);
         await channel.send({ embeds: [embed] });
-    } catch (error) {
-        console.error('❌ Error enviando leaderboard:', error);
-    }
+    } catch (e) { console.error('Error leaderboard:', e); }
 }
 
 // ========================================
-// INICIO DEL BOT
+// ARRANQUE DEL SISTEMA
 // ========================================
 async function start() {
     console.log('╔════════════════════════════════════════╗');
-    console.log('║     🚀 BIG POLICY PULSE v5.2 🚀       ║');
-    console.log('║     Recuperación GitHub Activa        ║');
+    console.log('║     🚀 BIG POLICY PULSE v5.3 🚀       ║');
+    console.log('║     Debug & GitHub Recovery Active    ║');
     console.log('╚════════════════════════════════════════╝');
 
     try {
-        // 1. Cargar Datos
         await loadData();
-        
-        // 2. Ejecutar chequeo de resets antes de arrancar
         checkResets();
 
-        // 3. Login con Discord
-        console.log('⏳ Intentando conectar con Discord...');
-        
+        // VALIDACIÓN DE TOKEN (DEBUG)
+        const token = process.env.DISCORD_TOKEN;
+        if (!token || token.length < 20) {
+            console.error('❌ ERROR: DISCORD_TOKEN no detectado o inválido en Render.');
+            return;
+        }
+        console.log(`🔑 Token detectado (ID): ${token.substring(0, 10)}...`);
+        console.log('⏳ Intentando conectar con Discord Gateway...');
+
         const loginTimeout = setTimeout(() => {
-            console.error('⚠️ El login está tardando más de lo normal. Revisa el Token o posible baneo de IP en Render.');
+            console.error('⚠️ El login está tardando demasiado. Discord podría estar bloqueando la IP de Render.');
         }, 15000);
 
-        await client.login(process.env.DISCORD_TOKEN);
+        await client.login(token);
         clearTimeout(loginTimeout);
 
     } catch (error) {
-        console.error('❌ ERROR CRÍTICO AL INICIAR:', error);
-        process.exit(1); // Forzar reinicio de Render
+        console.error('❌ ERROR CRÍTICO EN START:', error.message);
+        process.exit(1);
     }
 }
 
 client.once('ready', () => {
-    console.log(`✅ Logged in as ${client.user.tag}`);
-    console.log(`📡 Bot listo para procesar ventas en el canal: ${process.env.SALES_CHANNEL_ID}`);
-    
-    // Sincronización cada 3 horas por seguridad
-    cron.schedule('0 */3 * * *', () => {
-        console.log('⏰ Sincronización periódica de respaldo...');
-        saveData();
-    });
+    console.log(`✅ ¡CONECTADO! Logueado como: ${client.user.tag}`);
+    console.log(`📊 Datos cargados: ${Object.keys(salesData.total).length} agentes en total.`);
 });
 
-// Manejo de errores globales
 client.on('error', e => console.error('Discord Client Error:', e));
-process.on('unhandledRejection', e => console.error('Unhandled Promise:', e));
 
 start();
