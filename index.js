@@ -1,172 +1,249 @@
 require('dotenv').config();
-
-const express = require('express');
-const fs = require('fs');
+const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const fs = require('fs').promises;
 const path = require('path');
 const cron = require('node-cron');
+const express = require('express');
+const https = require('https');
 
-const {
-  Client,
-  GatewayIntentBits,
-  Partials
-} = require('discord.js');
+console.log('🔥 INDEX.JS LOADED - BIG POLICY BOT 🔥');
 
-/* =========================
-   EXPRESS (RENDER KEEP ALIVE)
-========================= */
+/* =====================================================
+   DISCORD CLIENT (⚠️ DEBE IR ANTES DE EXPRESS)
+   ===================================================== */
+const client = new Client({ 
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent
+    ] 
+});
 
+/* =====================================================
+   GITHUB API HELPER
+   ===================================================== */
+function githubApiRequest(path, method, body) {
+    const token = process.env.GITHUB_TOKEN;
+    if (!token) {
+        return Promise.reject(new Error('GITHUB_TOKEN not set'));
+    }
+
+    const options = {
+        hostname: 'api.github.com',
+        path,
+        method,
+        headers: {
+            'User-Agent': 'big-policy-bot',
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+        },
+    };
+
+    return new Promise((resolve, reject) => {
+        const req = https.request(options, (res) => {
+            let data = '';
+            res.on('data', (chunk) => data += chunk);
+            res.on('end', () => {
+                if (res.statusCode >= 200 && res.statusCode < 300) {
+                    resolve(data ? JSON.parse(data) : {});
+                } else {
+                    reject(new Error(`GitHub API ${res.statusCode}: ${data}`));
+                }
+            });
+        });
+
+        req.on('error', reject);
+        if (body) req.write(JSON.stringify(body));
+        req.end();
+    });
+}
+
+/* =====================================================
+   EXPRESS SERVER (RENDER)
+   ===================================================== */
 const app = express();
 const PORT = process.env.PORT || 10000;
 
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🌐 Server running on port ${PORT}`);
+    console.log(`📡 Health check available at http://0.0.0.0:${PORT}/health`);
+});
+
 app.get('/', (req, res) => {
-  res.send('BIG Policy Bot is running');
+    res.send(`
+        <h1>🤖 BIG Policy Bot is running</h1>
+        <p>Status: ${client.user ? 'Connected to Discord' : 'Connecting...'}</p>
+    `);
 });
 
 app.get('/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    uptime: process.uptime()
-  });
+    res.json({
+        status: 'healthy',
+        bot_connected: !!client.user,
+        bot_tag: client.user?.tag || null,
+        uptime: Math.floor(process.uptime()),
+        timestamp: new Date().toISOString()
+    });
 });
 
-app.listen(PORT, () => {
-  console.log(`🌐 Server running on port ${PORT}`);
-});
+/* =====================================================
+   DATA STORAGE
+   ===================================================== */
+const DATA_DIR = process.env.RENDER
+    ? '/opt/render/project/src/data'
+    : path.join(__dirname, 'data');
 
-/* =========================
-   DISCORD CLIENT (CRÍTICO)
-========================= */
-
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent
-  ],
-  partials: [Partials.Channel]
-});
-
-/* =========================
-   DATA
-========================= */
-
-const DATA_DIR = path.join(__dirname, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'sales.json');
 
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR);
-if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, JSON.stringify([]));
+console.log(`📁 Data directory: ${DATA_DIR}`);
 
-function loadSales() {
-  return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+let salesData = {
+    daily: {},
+    weekly: {},
+    monthly: {},
+    allTime: {},
+    dailySnapshot: {},
+    weeklySnapshot: {},
+    monthlySnapshot: {},
+    lastReset: {
+        daily: new Date().toDateString(),
+        weekly: '',
+        weeklyTag: '',
+        monthly: new Date().getMonth(),
+        monthlyTag: ''
+    }
+};
+
+async function loadData() {
+    await fs.mkdir(DATA_DIR, { recursive: true });
+    try {
+        const raw = await fs.readFile(DATA_FILE, 'utf8');
+        salesData = JSON.parse(raw);
+        console.log('📂 Data loaded successfully');
+    } catch {
+        await saveData();
+    }
 }
 
-function saveSales(data) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+async function saveData() {
+    await fs.mkdir(DATA_DIR, { recursive: true });
+    await fs.writeFile(DATA_FILE, JSON.stringify(salesData, null, 2));
+    console.log(`💾 Data saved`);
 }
 
-/* =========================
+/* =====================================================
+   UTILITIES
+   ===================================================== */
+function getWeekNumber(date) {
+    const first = new Date(date.getFullYear(), 0, 1);
+    return Math.ceil((((date - first) / 86400000) + first.getDay() + 1) / 7);
+}
+
+function checkResets() {
+    const now = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
+    const day = now.toDateString();
+    const week = getWeekNumber(now);
+    const monthTag = `${now.getFullYear()}-${now.getMonth()}`;
+
+    if (salesData.lastReset.daily !== day) {
+        salesData.daily = {};
+        salesData.lastReset.daily = day;
+    }
+
+    if (salesData.lastReset.weeklyTag !== `${now.getFullYear()}-W${week}`) {
+        if (now.getDay() === 1) {
+            salesData.weekly = {};
+            salesData.lastReset.weeklyTag = `${now.getFullYear()}-W${week}`;
+        }
+    }
+
+    if (salesData.lastReset.monthlyTag !== monthTag) {
+        salesData.monthly = {};
+        salesData.lastReset.monthlyTag = monthTag;
+    }
+}
+
+/* =====================================================
    SALES PARSER
-========================= */
-
-function parseSale(message) {
-  const match = message.match(/\$([\d,]+(\.\d+)?)/);
-  if (!match) return null;
-  return parseFloat(match[1].replace(/,/g, ''));
+   ===================================================== */
+function parseMultipleSales(text) {
+    const matches = [...text.matchAll(/\$([\d,]+(\.\d{2})?)/g)];
+    return matches.map(m => ({
+        amount: parseFloat(m[1].replace(/,/g, '')),
+        policyType: 'General Policy'
+    }));
 }
 
-/* =========================
-   LEADERBOARD
-========================= */
-
-function generateLeaderboard() {
-  const sales = loadSales();
-  const totals = {};
-
-  for (const s of sales) {
-    totals[s.user] = (totals[s.user] || 0) + s.amount;
-  }
-
-  const sorted = Object.entries(totals)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10);
-
-  if (!sorted.length) return 'No sales yet.';
-
-  return sorted
-    .map(([user, amt], i) => `**${i + 1}. ${user}** — $${amt.toFixed(2)}`)
-    .join('\n');
+function addSale(id, username, amount) {
+    ['daily','weekly','monthly','allTime'].forEach(p => {
+        if (!salesData[p][id]) {
+            salesData[p][id] = { total: 0, count: 0, username };
+        }
+        salesData[p][id].total += amount;
+        salesData[p][id].count += 1;
+    });
+    saveData();
 }
 
-/* =========================
+/* =====================================================
    DISCORD EVENTS
-========================= */
+   ===================================================== */
+client.once('ready', async () => {
+    console.log('✅ Bot connected successfully!');
+    console.log(`🤖 Bot Tag: ${client.user.tag}`);
+    console.log(`🆔 Bot ID: ${client.user.id}`);
+    await loadData();
+    checkResets();
 
-client.once('ready', () => {
-  console.log(`✅ Bot connected as ${client.user.tag}`);
-
-  /* ===== CRON JOB ===== */
-  cron.schedule(
-    '0 12 * * *',
-    async () => {
-      try {
-        const channel = await client.channels.fetch(
-          process.env.LEADERBOARD_CHANNEL_ID
-        );
+    cron.schedule('0 */3 * * *', async () => {
+        const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (!channel) return;
-
-        const board = generateLeaderboard();
-        await channel.send(`📊 **Daily Leaderboard**\n\n${board}`);
+        await channel.send('📊 **AP Leaderboard running**');
         console.log('📊 Leaderboard sent');
-      } catch (err) {
-        console.error('❌ Leaderboard error:', err);
-      }
-    },
-    { timezone: 'America/Los_Angeles' }
-  );
-
-  console.log('⏰ Cron jobs registered');
+    });
 });
 
-/* ===== MESSAGE LISTENER (CRÍTICO) ===== */
+client.on('messageCreate', async message => {
+    console.log('📩 Message received:', message.content);
 
-client.on('messageCreate', async (message) => {
-  if (message.author.bot) return;
+    if (message.author.bot) return;
 
-  console.log('📥 Message received:', message.content);
+    if (message.channel.id === process.env.SALES_CHANNEL_ID) {
+        const sales = parseMultipleSales(message.content);
+        for (const s of sales) {
+            addSale(message.author.id, message.author.username, s.amount);
+            console.log(`💰 Sale recorded: $${s.amount}`);
+        }
+        if (sales.length) {
+            await message.react('✅');
+            await message.react('💰');
+        }
+    }
 
-  // Leaderboard command
-  if (message.content.toLowerCase() === '!leaderboard') {
-    const board = generateLeaderboard();
-    await message.channel.send(`📊 **Leaderboard**\n\n${board}`);
-    return;
-  }
-
-  // Sale detection
-  const amount = parseSale(message.content);
-  if (!amount) return;
-
-  const sales = loadSales();
-  sales.push({
-    user: message.author.username,
-    amount,
-    timestamp: new Date().toISOString()
-  });
-  saveSales(sales);
-
-  console.log(`💰 Sale recorded: ${message.author.username} - $${amount}`);
-  await message.react('💰');
+    if (message.content === '!leaderboard') {
+        await message.channel.send('📊 Leaderboard command received');
+    }
 });
 
-/* =========================
-   KEEP ALIVE (RENDER FIX)
-========================= */
+/* =====================================================
+   ERROR HANDLING
+   ===================================================== */
+client.on('error', err => console.error('❌ Discord error:', err));
+process.on('unhandledRejection', err => console.error('❌ Unhandled:', err));
 
-setInterval(() => {
-  console.log('🔄 Keep alive ping', new Date().toISOString());
-}, 5 * 60 * 1000);
+/* =====================================================
+   START BOT
+   ===================================================== */
+async function start() {
+    console.log('⏳ Starting AP tracking system...');
+    console.log(`🌐 Server port: ${PORT}`);
 
-/* =========================
-   LOGIN
-========================= */
+    if (!process.env.DISCORD_TOKEN) {
+        console.error('❌ DISCORD_TOKEN missing');
+        process.exit(1);
+    }
 
-client.login(process.env.DISCORD_TOKEN);
+    await client.login(process.env.DISCORD_TOKEN);
+}
+
+start();
