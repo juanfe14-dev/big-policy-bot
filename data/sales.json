@@ -174,7 +174,10 @@
   },
   "lastReset": {
     "daily": "Wed Jan 28 2026",
+    "weekly": 5,
     "weeklyTag": "2026-W5",
-    "monthly": "2026-0"
-  }
+    "monthly": "2026-0",
+    "monthlyTag": "2026-00"
+  },
+  "total": {}
 }
