@@ -1,300 +1,213 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
-const fs = require('fs').promises;
-const path = require('path');
 const cron = require('node-cron');
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
-const https = require('https');
 
-/* ===========================
-   GITHUB API
-=========================== */
-function githubApiRequest(path, method, body) {
-    const token = process.env.GITHUB_TOKEN;
-    if (!token) {
-        return Promise.reject(new Error('GITHUB_TOKEN not set'));
-    }
-
-    const options = {
-        hostname: 'api.github.com',
-        path,
-        method,
-        headers: {
-            'User-Agent': 'big-policy-bot',
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/vnd.github+json',
-        },
-    };
-
-    return new Promise((resolve, reject) => {
-        const req = https.request(options, (res) => {
-            let data = '';
-            res.on('data', chunk => data += chunk);
-            res.on('end', () => {
-                if (res.statusCode >= 200 && res.statusCode < 300) {
-                    resolve(data ? JSON.parse(data) : {});
-                } else {
-                    reject(new Error(`GitHub API ${res.statusCode}: ${data}`));
-                }
-            });
-        });
-
-        req.on('error', reject);
-
-        if (body) {
-            req.write(JSON.stringify(body));
-        }
-
-        req.end();
-    });
-}
-
-/* ===========================
-   DISCORD CLIENT
-=========================== */
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
-    ]
-});
-
-/* ===========================
-   EXPRESS SERVER (RENDER)
-=========================== */
+// =======================
+// EXPRESS (RENDER)
+// =======================
 const app = express();
 const PORT = process.env.PORT || 10000;
 
+app.get('/', (_, res) => res.send('BIG Policy Bot is running'));
+app.get('/health', (_, res) => res.json({ status: 'ok', uptime: process.uptime() }));
+
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🌐 Server running on port ${PORT}`);
-    console.log(`📡 Health check available at http://0.0.0.0:${PORT}/health`);
+  console.log(`🌐 Server running on port ${PORT}`);
 });
 
-app.get('/', (req, res) => {
-    res.send(`
-        <h1>🤖 BIG Policy Bot</h1>
-        <p>Status: Online</p>
-        <p>Uptime: ${Math.floor(process.uptime())}s</p>
-        <p>Time: ${new Date().toISOString()}</p>
-    `);
+// =======================
+// DISCORD CLIENT
+// =======================
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent
+  ]
 });
 
-app.get('/health', (req, res) => {
-    res.json({
-        status: 'healthy',
-        bot_connected: !!client.user,
-        uptime: process.uptime(),
-        timestamp: new Date().toISOString()
-    });
-});
-
-/* ===========================
-   DATA CONFIG
-=========================== */
+// =======================
+// DATA
+// =======================
 const DATA_DIR = process.env.RENDER
-    ? '/opt/render/project/src/data'
-    : path.join(__dirname, 'data');
+  ? '/opt/render/project/src/data'
+  : path.join(__dirname, 'data');
 
 const DATA_FILE = path.join(DATA_DIR, 'sales.json');
 
-console.log(`📁 Data directory: ${DATA_DIR}`);
-
 let salesData = {
-    daily: {},
-    weekly: {},
-    monthly: {},
-    allTime: {},
-    lastReset: {
-        daily: null,
-        weekly: null,
-        monthly: null
-    }
+  daily: {},
+  weekly: {},
+  monthly: {},
+  lastReset: {
+    day: '',
+    week: '',
+    month: ''
+  }
 };
 
-/* ===========================
-   DATA HELPERS
-=========================== */
-async function loadData() {
-    try {
-        const data = await fs.readFile(DATA_FILE, 'utf8');
-        salesData = JSON.parse(data);
-        console.log(`📂 Data loaded successfully from: ${DATA_FILE}`);
-        console.log(`📊 Current data: ${Object.keys(salesData.daily).length} daily, ${Object.keys(salesData.weekly).length} weekly, ${Object.keys(salesData.monthly).length} monthly agents`);
-    } catch (err) {
-        console.log('⚠️ No existing data found, starting fresh');
-    }
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+if (fs.existsSync(DATA_FILE)) {
+  salesData = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
 }
 
-async function saveData() {
-    await fs.mkdir(DATA_DIR, { recursive: true });
-    await fs.writeFile(DATA_FILE, JSON.stringify(salesData, null, 2));
-    console.log(`💾 Data saved to: ${DATA_FILE}`);
+function saveData() {
+  fs.writeFileSync(DATA_FILE, JSON.stringify(salesData, null, 2));
 }
 
-/* ===========================
-   SALES LOGIC
-=========================== */
-function addSale(userId, username, amount, policyType) {
-    const keys = ['daily', 'weekly', 'monthly', 'allTime'];
-
-    keys.forEach(key => {
-        if (!salesData[key][userId]) {
-            salesData[key][userId] = {
-                username,
-                total: 0,
-                count: 0
-            };
-        }
-
-        salesData[key][userId].total += amount;
-        salesData[key][userId].count += 1;
-    });
-
-    console.log(`💰 Sale recorded: ${username} - $${amount} AP - ${policyType}`);
-    saveData();
+// =======================
+// TIME / RESETS
+// =======================
+function pacificNow() {
+  return new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
 }
 
-function parseMultipleSales(content) {
-    const regex = /\$([\d,]+(?:\.\d{1,2})?)\s*-\s*(.+)/gi;
-    const sales = [];
-    let match;
-
-    while ((match = regex.exec(content)) !== null) {
-        const amount = parseFloat(match[1].replace(/,/g, ''));
-        const policyType = match[2].trim();
-        sales.push({ amount, policyType });
-    }
-
-    if (sales.length) {
-        console.log(`💬 Parsed ${sales.length} sale(s) from message:`);
-        sales.forEach((s, i) =>
-            console.log(`   Sale ${i + 1}: $${s.amount} - "${s.policyType}"`)
-        );
-    }
-
-    return sales;
+function getWeekTag(d) {
+  const first = new Date(d.getFullYear(), 0, 1);
+  const week = Math.ceil((((d - first) / 86400000) + first.getDay() + 1) / 7);
+  return `${d.getFullYear()}-W${week}`;
 }
 
-/* ===========================
-   LEADERBOARD
-=========================== */
-function buildLeaderboardEmbed(title, data) {
-    const embed = new EmbedBuilder()
-        .setTitle(title)
-        .setColor('#00ff99')
-        .setTimestamp();
-
-    const sorted = Object.values(data)
-        .sort((a, b) => b.total - a.total)
-        .slice(0, 10);
-
-    if (!sorted.length) {
-        embed.setDescription('No sales recorded.');
-        return embed;
-    }
-
-    embed.setDescription(
-        sorted.map((u, i) =>
-            `**${i + 1}. ${u.username}** — $${u.total.toFixed(2)} (${u.count})`
-        ).join('\n')
-    );
-
-    return embed;
-}
-
-/* ===========================
-   RESET LOGIC
-=========================== */
 function checkResets() {
-    const now = new Date();
+  const now = pacificNow();
 
-    const today = now.toDateString();
-    if (salesData.lastReset.daily !== today) {
-        salesData.daily = {};
-        salesData.lastReset.daily = today;
-        console.log('🔄 Daily reset');
-    }
+  const dayTag = now.toDateString();
+  const weekTag = getWeekTag(now);
+  const monthTag = `${now.getFullYear()}-${now.getMonth()}`;
 
-    const week = `${now.getFullYear()}-W${Math.ceil(now.getDate() / 7)}`;
-    if (salesData.lastReset.weekly !== week) {
-        salesData.weekly = {};
-        salesData.lastReset.weekly = week;
-        console.log('🔄 Weekly reset');
-    }
+  if (salesData.lastReset.day !== dayTag) {
+    salesData.daily = {};
+    salesData.lastReset.day = dayTag;
+    console.log('🔄 Daily reset');
+  }
 
-    const month = `${now.getFullYear()}-${now.getMonth()}`;
-    if (salesData.lastReset.monthly !== month) {
-        salesData.monthly = {};
-        salesData.lastReset.monthly = month;
-        console.log('🔄 Monthly reset');
-    }
+  if (salesData.lastReset.week !== weekTag) {
+    salesData.weekly = {};
+    salesData.lastReset.week = weekTag;
+    console.log('🔄 Weekly reset');
+  }
 
-    saveData();
+  if (salesData.lastReset.month !== monthTag) {
+    salesData.monthly = {};
+    salesData.lastReset.month = monthTag;
+    console.log('🔄 Monthly reset');
+  }
+
+  saveData();
 }
 
-/* ===========================
-   BOT READY
-=========================== */
-client.once('ready', async () => {
-    console.log('\n✅ Bot connected successfully!');
-    console.log(`🤖 Bot Tag: ${client.user.tag}`);
-    console.log(`🆔 Bot ID: ${client.user.id}`);
-    console.log(`📅 Connected at: ${new Date().toLocaleString()}`);
+// =======================
+// SALES
+// =======================
+function addSale(user, amount) {
+  checkResets();
 
-    checkResets();
+  for (const period of ['daily', 'weekly', 'monthly']) {
+    if (!salesData[period][user.id]) {
+      salesData[period][user.id] = {
+        username: user.username,
+        total: 0,
+        count: 0
+      };
+    }
+    salesData[period][user.id].total += amount;
+    salesData[period][user.id].count += 1;
+  }
 
-    cron.schedule('0 12 * * *', async () => {
-        const channel = await client.channels.fetch(process.env.LEADERBOARD_CHANNEL_ID);
-        await channel.send({ embeds: [buildLeaderboardEmbed('📊 Daily Leaderboard', salesData.daily)] });
-        console.log('📊 AP leaderboard posted - 12:00 Pacific');
-    }, { timezone: 'America/Los_Angeles' });
+  saveData();
+}
 
-    /* ======== 🔧 FIX CRÍTICO ======== */
-    setInterval(() => {
-        console.log(`💓 Heartbeat OK - ${new Date().toISOString()}`);
-    }, 300000);
+function parseSale(text) {
+  const match = text.match(/\$([\d,]+(\.\d{2})?)/);
+  if (!match) return null;
+  return parseFloat(match[1].replace(/,/g, ''));
+}
+
+// =======================
+// LEADERBOARD
+// =======================
+function buildLeaderboard(period) {
+  checkResets();
+
+  const data = Object.values(salesData[period])
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 10);
+
+  const embed = new EmbedBuilder()
+    .setColor(0x00ff00)
+    .setTitle(`💵 ${period.toUpperCase()} LEADERBOARD`)
+    .setTimestamp();
+
+  if (data.length === 0) {
+    embed.setDescription('No sales recorded.');
+    return embed;
+  }
+
+  embed.setDescription(
+    data.map((u, i) =>
+      `**${i + 1}. ${u.username}** — $${u.total.toLocaleString()} (${u.count})`
+    ).join('\n')
+  );
+
+  return embed;
+}
+
+// =======================
+// CRON (CRÍTICO)
+// =======================
+let cronsStarted = false;
+
+function startCrons() {
+  // Every 3 hours
+  cron.schedule('0 */3 * * *', async () => {
+    const hour = pacificNow().getHours();
+    if (![9, 12, 15, 18, 21].includes(hour)) return;
+
+    const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
+    if (!channel) return;
+
+    await channel.send({ embeds: [buildLeaderboard('daily')] });
+    console.log('📊 Leaderboard sent');
+  });
+
+  console.log('⏰ Cron jobs registered');
+}
+
+// =======================
+// EVENTS
+// =======================
+client.on('ready', () => {
+  console.log(`✅ Logged in as ${client.user.tag}`);
+
+  if (!cronsStarted) {
+    startCrons();
+    cronsStarted = true;
+  }
 });
 
-/* ===========================
-   MESSAGE LISTENER
-=========================== */
-client.on('messageCreate', async message => {
-    if (message.author.bot) return;
+client.on('messageCreate', async (message) => {
+  if (message.author.bot) return;
+  checkResets();
 
-    if (message.channel.id === process.env.SALES_CHANNEL_ID) {
-        const sales = parseMultipleSales(message.content);
-        if (sales.length) {
-            let total = 0;
-            for (const sale of sales) {
-                addSale(message.author.id, message.author.username, sale.amount, sale.policyType);
-                total += sale.amount;
-            }
-            if (total > 0) {
-                await message.react('✅');
-                await message.react('💰');
-            }
-        }
-    }
+  if (message.channel.id === process.env.SALES_CHANNEL_ID) {
+    const amount = parseSale(message.content);
+    if (!amount) return;
 
-    if (message.content === '!ping') {
-        await message.reply('🏓 Pong!');
-    }
+    addSale(message.author, amount);
+    await message.react('✅');
+    await message.react('💰');
+    console.log(`💰 Sale: ${message.author.username} $${amount}`);
+  }
+
+  if (message.content === '!leaderboard') {
+    await message.channel.send({ embeds: [buildLeaderboard('daily')] });
+  }
 });
 
-/* ======== 🔧 FIX CRÍTICO ======== */
-console.log('👂 Sale message listener attached');
-
-/* ===========================
-   ERROR HANDLING
-=========================== */
-client.on('error', console.error);
-process.on('unhandledRejection', console.error);
-
-/* ===========================
-   START
-=========================== */
-(async () => {
-    await loadData();
-    await client.login(process.env.DISCORD_TOKEN);
-})();
+// =======================
+// START
+// =======================
+client.login(process.env.DISCORD_TOKEN);
