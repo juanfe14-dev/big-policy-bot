@@ -13,7 +13,7 @@
       "username": "ramseytraboulsi"
     },
     "1134874074552729601": {
-      "total": 15462.40,
+      "total": 15462.4,
       "count": 7,
       "username": "getrichwithrich"
     },
@@ -98,24 +98,30 @@
       "username": "squizard33"
     }
   },
-  "monthly": {
-    "1323395554419539978": { "total": 6886, "count": 5, "username": "ramseytraboulsi" },
-    "1134874074552729601": { "total": 15462.40, "count": 7, "username": "getrichwithrich" },
-    "1322366656630095913": { "total": 5846.16, "count": 4, "username": "zacharyvalas" },
-    "1330602059136765963": { "total": 4316.92, "count": 5, "username": "jesusvigil__43683" },
-    "mosiahm_id": { "total": 2371.56, "count": 1, "username": "mosiahm" }
-  },
+  "monthly": {},
   "allTime": {
-    "1134874074552729601": { "total": 147439.92, "count": 80, "username": "getrichwithrich" },
-    "1323395554419539978": { "total": 24398, "count": 22, "username": "ramseytraboulsi" },
-    "1322366656630095913": { "total": 27624.20, "count": 21, "username": "zacharyvalas" }
+    "1134874074552729601": {
+      "total": 147439.92,
+      "count": 80,
+      "username": "getrichwithrich"
+    },
+    "1323395554419539978": {
+      "total": 24398,
+      "count": 22,
+      "username": "ramseytraboulsi"
+    },
+    "1322366656630095913": {
+      "total": 27624.2,
+      "count": 21,
+      "username": "zacharyvalas"
+    }
   },
   "lastReset": {
     "daily": "Thu Jan 29 2026",
     "weekly": 5,
     "weeklyTag": "2026-W5",
     "monthly": "2026-0",
-    "monthlyTag": "2026-00"
+    "monthlyTag": "2026-0"
   },
   "total": {}
 }
