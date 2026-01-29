@@ -4,6 +4,11 @@
       "total": 3777.24,
       "count": 2,
       "username": "getrichwithrich"
+    },
+    "321165687152443392": {
+      "total": 700.56,
+      "count": 1,
+      "username": "fadednoodler"
     }
   },
   "weekly": {
@@ -48,8 +53,8 @@
       "username": "therealvblacklive"
     },
     "321165687152443392": {
-      "total": 1240,
-      "count": 1,
+      "total": 1940.56,
+      "count": 2,
       "username": "fadednoodler"
     },
     "836024312711610448": {
@@ -98,7 +103,13 @@
       "username": "squizard33"
     }
   },
-  "monthly": {},
+  "monthly": {
+    "321165687152443392": {
+      "total": 700.56,
+      "count": 1,
+      "username": "fadednoodler"
+    }
+  },
   "allTime": {
     "1134874074552729601": {
       "total": 147439.92,
@@ -114,6 +125,11 @@
       "total": 27624.2,
       "count": 21,
       "username": "zacharyvalas"
+    },
+    "321165687152443392": {
+      "total": 700.56,
+      "count": 1,
+      "username": "fadednoodler"
     }
   },
   "lastReset": {
