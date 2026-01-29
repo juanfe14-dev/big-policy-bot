@@ -7,15 +7,16 @@ const express = require('express');
 const https = require('https');
 
 // ========================================
-// 1. SERVIDOR WEB (Keep-Alive para Render)
+// 1. WEB SERVER (For Render Keep-Alive)
 // ========================================
 const app = express();
+const PORT = process.env.PORT || 10000;
 app.get('/', (req, res) => res.send('🤖 BIG Pulse Pro v6.0 Online'));
 app.get('/health', (req, res) => res.status(200).send('OK'));
-app.listen(process.env.PORT || 10000, '0.0.0.0');
+app.listen(PORT, '0.0.0.0', () => console.log(`🌐 Web Server active on port ${PORT}`));
 
 // ========================================
-// 2. CONFIGURACIÓN DEL CLIENTE
+// 2. BOT CONFIGURATION
 // ========================================
 const client = new Client({
     intents: [
@@ -32,7 +33,7 @@ const DATA_FILE = path.join(DATA_DIR, 'sales.json');
 let salesData = { daily: {}, weekly: {}, monthly: {}, allTime: {}, lastReset: {} };
 
 // ========================================
-// 3. PERSISTENCIA EN GITHUB CLOUD
+// 3. GITHUB CLOUD PERSISTENCE
 // ========================================
 async function githubApiRequest(apiPath, method, body) {
     const token = process.env.GITHUB_TOKEN;
@@ -65,7 +66,7 @@ async function syncWithGitHub(mode = 'download') {
             const file = await githubApiRequest(`${repoPath}?ref=main`, 'GET');
             if (file.content) {
                 salesData = JSON.parse(Buffer.from(file.content, 'base64').toString('utf8'));
-                console.log('✅ Datos cargados desde GitHub.');
+                console.log('✅ Data synced from GitHub.');
             }
         } else {
             let sha = null;
@@ -79,14 +80,13 @@ async function syncWithGitHub(mode = 'download') {
                 content, sha, branch: 'main'
             });
         }
-    } catch (e) { console.error('Error Sync GitHub:', e.message); }
+    } catch (e) { console.error('❌ GitHub Sync Error:', e.message); }
 }
 
 // ========================================
-// 4. MOTOR DE BÚSQUEDA DE VENTAS (V5.1)
+// 4. SALES PARSING ENGINE
 // ========================================
 function parseSales(text) {
-    // Detecta montos con $ y decimales (ej: $2,222.52)
     const moneyRegex = /\$?([\d,]+\.\d{2})/g;
     const matches = [...text.matchAll(moneyRegex)];
     return matches.map(m => parseFloat(m[1].replace(/,/g, '')));
@@ -103,7 +103,7 @@ function generateReport(period, title) {
         .setTimestamp();
 
     if (sorted.length === 0) {
-        embed.addFields({ name: 'Sin registros', value: 'No hay ventas en este periodo.' });
+        embed.addFields({ name: 'No data', value: 'No sales recorded in this period.' });
     } else {
         let list = "";
         sorted.forEach((u, i) => {
@@ -114,23 +114,21 @@ function generateReport(period, title) {
 
         const totalAP = sorted.reduce((acc, curr) => acc + curr.total, 0);
         const totalPols = sorted.reduce((acc, curr) => acc + curr.count, 0);
-        embed.addFields({ name: '📊 TOTALES DEL PERIODO', value: `**AP:** $${totalAP.toLocaleString()}\n**Pólizas:** ${totalPols}` });
+        embed.addFields({ name: '📊 PERIOD SUMMARY', value: `**Total AP:** $${totalAP.toLocaleString()}\n**Total Policies:** ${totalPols}` });
     }
     return embed;
 }
 
 // ========================================
-// 5. ESCUCHA DE VENTAS Y COMANDOS
+// 5. EVENTS AND COMMANDS
 // ========================================
 client.on('messageCreate', async (msg) => {
     if (msg.author.bot) return;
 
-    // Comandos manuales
-    if (msg.content === '!ping') return msg.reply('🚀 Sistema Operativo.');
+    if (msg.content === '!ping') return msg.reply('🚀 System Online and tracking sales.');
     if (msg.content === '!lb') return msg.reply({ embeds: [generateReport('daily', 'DAILY LEADERBOARD')] });
-    if (msg.content === '!weekly') return msg.reply({ embeds: [generateReport('weekly', 'WEEKLY RANKING')] });
+    if (msg.content === '!weekly') return msg.reply({ embeds: [generateReport('weekly', 'WEEKLY RANKINGS')] });
 
-    // Captura en el canal de ventas
     if (msg.channel.id === process.env.SALES_CHANNEL_ID) {
         const amounts = parseSales(msg.content);
         if (amounts.length > 0) {
@@ -153,40 +151,40 @@ client.on('messageCreate', async (msg) => {
                 if (totalInMsg > 2000) await msg.react('🔥');
             } catch (e) {}
 
-            // Guardar local y en la nube
             await fs.mkdir(DATA_DIR, { recursive: true });
             await fs.writeFile(DATA_FILE, JSON.stringify(salesData, null, 2));
             await syncWithGitHub('upload');
+            console.log(`💰 Sale recorded: ${msg.author.username} $${totalInMsg}`);
         }
     }
 });
 
 // ========================================
-// 6. AUTOMATIZACIÓN DE REPORTES (CRON)
+// 6. AUTOMATED REPORTS (CRON)
 // ========================================
 
-// REPORTES DIARIOS (9am, 12pm, 3pm, 6pm, 9pm Pacific Time)
+// DAILY UPDATES (9am, 12pm, 3pm, 6pm, 9pm Pacific Time)
 const dailySchedules = ['0 9 * * *', '0 12 * * *', '0 15 * * *', '0 18 * * *', '0 21 * * *'];
 dailySchedules.forEach(sched => {
     cron.schedule(sched, () => {
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
-        if (channel) channel.send({ embeds: [generateReport('daily', 'DAILY UPDATE')] });
+        if (channel) channel.send({ embeds: [generateReport('daily', 'DAILY PROGRESS UPDATE')] });
     }, { timezone: "America/Los_Angeles" });
 });
 
-// REPORTE SEMANAL (Domingos 11 PM)
+// WEEKLY FINAL (Sundays 11 PM)
 cron.schedule('0 23 * * 0', () => {
     const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
-    if (channel) channel.send({ embeds: [generateReport('weekly', '🏆 FINAL WEEKLY SUMMARY')] });
+    if (channel) channel.send({ embeds: [generateReport('weekly', '🏆 FINAL WEEKLY RANKINGS')] });
 }, { timezone: "America/Los_Angeles" });
 
-// REPORTE MENSUAL (Último día del mes 11:30 PM)
+// MONTHLY FINAL (Last day of month 11:30 PM)
 cron.schedule('30 23 28-31 * *', () => {
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
     
-    if (tomorrow.getDate() === 1) { // Verifica si hoy es el último día
+    if (tomorrow.getDate() === 1) { 
         const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
         if (channel) channel.send({ embeds: [generateReport('monthly', '👑 FINAL MONTHLY CHAMPIONS')] });
     }
@@ -194,7 +192,7 @@ cron.schedule('30 23 28-31 * *', () => {
 
 client.once('ready', async () => {
     await syncWithGitHub('download');
-    console.log(`⭐ Bot iniciado como ${client.user.tag}`);
+    console.log(`⭐ Bot logged in as ${client.user.tag}`);
 });
 
 client.login(process.env.DISCORD_TOKEN);
