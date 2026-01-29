@@ -1,21 +1,5 @@
 {
-  "daily": {
-    "1323395554419539978": {
-      "total": 3636,
-      "count": 3,
-      "username": "ramseytraboulsi"
-    },
-    "466076938012983297": {
-      "total": 627,
-      "count": 1,
-      "username": "squizard33"
-    },
-    "1322366656630095913": {
-      "total": 2084.04,
-      "count": 1,
-      "username": "zacharyvalas"
-    }
-  },
+  "daily": {},
   "weekly": {
     "1323395554419539978": {
       "total": 4036,
@@ -157,7 +141,7 @@
     }
   },
   "lastReset": {
-    "daily": "Wed Jan 28 2026",
+    "daily": "Thu Jan 29 2026",
     "weekly": 5,
     "weeklyTag": "2026-W5",
     "monthly": "2026-0",
