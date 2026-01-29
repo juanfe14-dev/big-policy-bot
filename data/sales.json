@@ -1,20 +1,46 @@
 {
-  "daily": {},
+  "daily": {
+    "1134874074552729601": {
+      "total": 3777.24,
+      "count": 2,
+      "username": "getrichwithrich"
+    }
+  },
   "weekly": {
     "1323395554419539978": {
-      "total": 4036,
-      "count": 4,
+      "total": 6886,
+      "count": 5,
       "username": "ramseytraboulsi"
+    },
+    "1134874074552729601": {
+      "total": 15462.40,
+      "count": 7,
+      "username": "getrichwithrich"
+    },
+    "1322366656630095913": {
+      "total": 5846.16,
+      "count": 4,
+      "username": "zacharyvalas"
+    },
+    "1330602059136765963": {
+      "total": 4316.92,
+      "count": 5,
+      "username": "jesusvigil__43683"
+    },
+    "mosiahm_id": {
+      "total": 2371.56,
+      "count": 1,
+      "username": "mosiahm"
+    },
+    "1285324021201502218": {
+      "total": 1222.08,
+      "count": 2,
+      "username": "linkin04"
     },
     "1322689393689104396": {
       "total": 4190.64,
       "count": 2,
       "username": "josephcarrell"
-    },
-    "1330602059136765963": {
-      "total": 3986.92,
-      "count": 4,
-      "username": "jesusvigil__43683"
     },
     "1342657107819757698": {
       "total": 2236.08,
@@ -25,11 +51,6 @@
       "total": 1240,
       "count": 1,
       "username": "fadednoodler"
-    },
-    "1134874074552729601": {
-      "total": 9459.16,
-      "count": 3,
-      "username": "getrichwithrich"
     },
     "836024312711610448": {
       "total": 1026,
@@ -56,20 +77,10 @@
       "count": 1,
       "username": "sellwithjoey"
     },
-    "beth036736_id": {
-      "total": 481.68,
-      "count": 1,
-      "username": "beth036736"
-    },
     "566734854008602624": {
       "total": 2776.2,
       "count": 2,
       "username": "loganobrienhere"
-    },
-    "1322366656630095913": {
-      "total": 3431.64,
-      "count": 3,
-      "username": "zacharyvalas"
     },
     "770443985768284190": {
       "total": 840,
@@ -87,65 +98,24 @@
       "username": "squizard33"
     }
   },
-  "monthly": {},
+  "monthly": {
+    "1323395554419539978": { "total": 6886, "count": 5, "username": "ramseytraboulsi" },
+    "1134874074552729601": { "total": 15462.40, "count": 7, "username": "getrichwithrich" },
+    "1322366656630095913": { "total": 5846.16, "count": 4, "username": "zacharyvalas" },
+    "1330602059136765963": { "total": 4316.92, "count": 5, "username": "jesusvigil__43683" },
+    "mosiahm_id": { "total": 2371.56, "count": 1, "username": "mosiahm" }
+  },
   "allTime": {
-    "1323395554419539978": {
-      "total": 21548,
-      "count": 21,
-      "username": "ramseytraboulsi"
-    },
-    "1330602059136765963": {
-      "total": 21969.65,
-      "count": 22,
-      "username": "jesusvigil__43683"
-    },
-    "566734854008602624": {
-      "total": 39505.6,
-      "count": 21,
-      "username": "loganobrienhere"
-    },
-    "1322366656630095913": {
-      "total": 25209.68,
-      "count": 20,
-      "username": "zacharyvalas"
-    },
-    "770443985768284190": {
-      "total": 33112,
-      "count": 14,
-      "username": "tkleib24"
-    },
-    "780617237877882892": {
-      "total": 37369.38,
-      "count": 35,
-      "username": "keith.williams_04"
-    },
-    "1134874074552729601": {
-      "total": 141436.68,
-      "count": 76,
-      "username": "getrichwithrich"
-    },
-    "1345849938239684608": {
-      "total": 3612.12,
-      "count": 4,
-      "username": "imani.k_"
-    },
-    "466076938012983297": {
-      "total": 14938,
-      "count": 18,
-      "username": "squizard33"
-    },
-    "beth036736_id": {
-      "total": 481.68,
-      "count": 1,
-      "username": "beth036736"
-    }
+    "1134874074552729601": { "total": 147439.92, "count": 80, "username": "getrichwithrich" },
+    "1323395554419539978": { "total": 24398, "count": 22, "username": "ramseytraboulsi" },
+    "1322366656630095913": { "total": 27624.20, "count": 21, "username": "zacharyvalas" }
   },
   "lastReset": {
     "daily": "Thu Jan 29 2026",
     "weekly": 5,
     "weeklyTag": "2026-W5",
     "monthly": "2026-0",
-    "monthlyTag": "2026-0"
+    "monthlyTag": "2026-00"
   },
   "total": {}
 }
