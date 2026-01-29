@@ -7,13 +7,11 @@ const express = require('express');
 const https = require('https');
 
 // ========================================
-// 1. WEB SERVER (For Render Keep-Alive)
+// 1. WEB SERVER (Render Keep-Alive)
 // ========================================
 const app = express();
-const PORT = process.env.PORT || 10000;
-app.get('/', (req, res) => res.send('🤖 BIG Pulse Pro v6.0 Online'));
-app.get('/health', (req, res) => res.status(200).send('OK'));
-app.listen(PORT, '0.0.0.0', () => console.log(`🌐 Web Server active on port ${PORT}`));
+app.get('/', (req, res) => res.send('🤖 BIG Pulse Pro v7.0 Online'));
+app.listen(process.env.PORT || 10000, '0.0.0.0');
 
 // ========================================
 // 2. BOT CONFIGURATION
@@ -30,7 +28,7 @@ const client = new Client({
 
 const DATA_DIR = path.join(__dirname, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'sales.json');
-let salesData = { daily: {}, weekly: {}, monthly: {}, allTime: {}, lastReset: {} };
+let salesData = { daily: {}, weekly: {}, monthly: {}, allTime: {} };
 
 // ========================================
 // 3. GITHUB CLOUD PERSISTENCE
@@ -92,42 +90,79 @@ function parseSales(text) {
     return matches.map(m => parseFloat(m[1].replace(/,/g, '')));
 }
 
-function generateReport(period, title) {
+// ========================================
+// 5. EMBED GENERATOR (EXACT VISUAL MATCH)
+// ========================================
+function generateEmbed(period) {
     const data = salesData[period] || {};
     const sorted = Object.values(data).sort((a, b) => b.total - a.total);
-    
+    const dateStr = new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+    const timeStr = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+    let title = "";
+    let color = 0x00FF00; // Default Green
+
+    if (period === 'daily') {
+        title = "💵 DAILY LEADERBOARD";
+        color = 0x00FF00;
+    } else if (period === 'weekly') {
+        title = "💵 WEEKLY CHAMPIONS - COMPLETE WEEK";
+        color = 0x0000FF;
+    } else if (period === 'monthly') {
+        title = "💵 MONTHLY CHAMPIONS - COMPLETE MONTH";
+        color = 0xFFA500;
+    }
+
     const embed = new EmbedBuilder()
-        .setColor(period === 'monthly' ? 0xffd700 : 0x2ecc71)
-        .setTitle(`🏆 ${title}`)
-        .setDescription(`Ranked by Annual Premium (AP)\n━━━━━━━━━━━━━━━━━━━━━`)
-        .setTimestamp();
+        .setColor(color)
+        .setAuthor({ name: title, iconURL: 'https://i.imgur.com/8N4N8N8.png' }) // Opcional: icono de dinero
+        .setDescription(`💰 **Ranked by Annual Premium (AP)**\n📍 Date: ${dateStr}, ${timeStr}\n------------------------------------------`)
+        .setFooter({ text: `💼 BIG - Annual Premium Rankings • ${dateStr}, ${timeStr}` });
 
     if (sorted.length === 0) {
-        embed.addFields({ name: 'No data', value: 'No sales recorded in this period.' });
+        embed.addFields({ name: '\u200B', value: '*No data recorded for this period.*' });
     } else {
-        let list = "";
-        sorted.forEach((u, i) => {
-            const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i+1}.`;
-            list += `${medal} **${u.username}**: $${u.total.toLocaleString()} (${u.count} pols)\n`;
+        // Top 3 Producers Section
+        let top3Text = "🌟 **TOP AP PRODUCERS**\n";
+        sorted.slice(0, 3).forEach((u, i) => {
+            const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉';
+            const place = i === 0 ? 'AP LEADER' : i === 1 ? '2nd Place' : '3rd Place';
+            top3Text += `${medal} **${place}**\n👤 **${u.username}**\n💵 **$${u.total.toLocaleString(undefined, {minimumFractionDigits: 2})} AP**\n📊 *${u.count} policies*\n\n`;
         });
-        embed.addFields({ name: 'AGENT RANKINGS', value: list });
+        embed.addFields({ name: '\u200B', value: top3Text });
 
+        // Other Agents List
+        if (sorted.length > 3) {
+            let othersText = "";
+            sorted.slice(3, 10).forEach((u, i) => {
+                othersText += `**${i + 4}.** ${u.username} - **$${u.total.toLocaleString(undefined, {minimumFractionDigits: 2})}** (${u.count})\n`;
+            });
+            embed.addFields({ name: '📈 Other Agents', value: othersText });
+        }
+
+        // Summary Section
         const totalAP = sorted.reduce((acc, curr) => acc + curr.total, 0);
         const totalPols = sorted.reduce((acc, curr) => acc + curr.count, 0);
-        embed.addFields({ name: '📊 PERIOD SUMMARY', value: `**Total AP:** $${totalAP.toLocaleString()}\n**Total Policies:** ${totalPols}` });
+        const avgAP = totalAP / (sorted.length || 1);
+
+        embed.addFields({ 
+            name: '💼 AP SUMMARY', 
+            value: `**Total AP:** $${totalAP.toLocaleString(undefined, {minimumFractionDigits: 2})}\n**Average AP:** $${avgAP.toLocaleString(undefined, {minimumFractionDigits: 3})}\n**Total Policies:** ${totalPols}` 
+        });
     }
+
     return embed;
 }
 
 // ========================================
-// 5. EVENTS AND COMMANDS
+// 6. EVENTS & AUTOMATION
 // ========================================
 client.on('messageCreate', async (msg) => {
     if (msg.author.bot) return;
 
-    if (msg.content === '!ping') return msg.reply('🚀 System Online and tracking sales.');
-    if (msg.content === '!lb') return msg.reply({ embeds: [generateReport('daily', 'DAILY LEADERBOARD')] });
-    if (msg.content === '!weekly') return msg.reply({ embeds: [generateReport('weekly', 'WEEKLY RANKINGS')] });
+    if (msg.content === '!lb') return msg.reply({ embeds: [generateEmbed('daily')] });
+    if (msg.content === '!weekly') return msg.reply({ embeds: [generateEmbed('weekly')] });
+    if (msg.content === '!monthly') return msg.reply({ embeds: [generateEmbed('monthly')] });
 
     if (msg.channel.id === process.env.SALES_CHANNEL_ID) {
         const amounts = parseSales(msg.content);
@@ -145,54 +180,44 @@ client.on('messageCreate', async (msg) => {
                 });
             });
 
-            try {
-                await msg.react('✅');
-                await msg.react('💰');
-                if (totalInMsg > 2000) await msg.react('🔥');
-            } catch (e) {}
+            await msg.react('✅');
+            await msg.react('💰');
+            if (totalInMsg > 2000) await msg.react('🔥');
 
             await fs.mkdir(DATA_DIR, { recursive: true });
             await fs.writeFile(DATA_FILE, JSON.stringify(salesData, null, 2));
             await syncWithGitHub('upload');
-            console.log(`💰 Sale recorded: ${msg.author.username} $${totalInMsg}`);
         }
     }
 });
 
-// ========================================
-// 6. AUTOMATED REPORTS (CRON)
-// ========================================
-
-// DAILY UPDATES (9am, 12pm, 3pm, 6pm, 9pm Pacific Time)
-const dailySchedules = ['0 9 * * *', '0 12 * * *', '0 15 * * *', '0 18 * * *', '0 21 * * *'];
-dailySchedules.forEach(sched => {
-    cron.schedule(sched, () => {
-        const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
-        if (channel) channel.send({ embeds: [generateReport('daily', 'DAILY PROGRESS UPDATE')] });
+// CRON Schedules (Pacific Time)
+const dailyHours = ['0 9 * * *', '0 12 * * *', '0 15 * * *', '0 18 * * *', '0 21 * * *'];
+dailyHours.forEach(h => {
+    cron.schedule(h, () => {
+        const ch = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
+        if (ch) ch.send({ embeds: [generateEmbed('daily')] });
     }, { timezone: "America/Los_Angeles" });
 });
 
-// WEEKLY FINAL (Sundays 11 PM)
-cron.schedule('0 23 * * 0', () => {
-    const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
-    if (channel) channel.send({ embeds: [generateReport('weekly', '🏆 FINAL WEEKLY RANKINGS')] });
+cron.schedule('0 23 * * 0', () => { // Weekly: Sunday 11pm
+    const ch = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
+    if (ch) ch.send({ embeds: [generateEmbed('weekly')] });
 }, { timezone: "America/Los_Angeles" });
 
-// MONTHLY FINAL (Last day of month 11:30 PM)
-cron.schedule('30 23 28-31 * *', () => {
+cron.schedule('30 23 28-31 * *', () => { // Monthly: Last day
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
-    
-    if (tomorrow.getDate() === 1) { 
-        const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
-        if (channel) channel.send({ embeds: [generateReport('monthly', '👑 FINAL MONTHLY CHAMPIONS')] });
+    if (tomorrow.getDate() === 1) {
+        const ch = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
+        if (ch) ch.send({ embeds: [generateEmbed('monthly')] });
     }
 }, { timezone: "America/Los_Angeles" });
 
 client.once('ready', async () => {
     await syncWithGitHub('download');
-    console.log(`⭐ Bot logged in as ${client.user.tag}`);
+    console.log(`⭐ Bot active as ${client.user.tag}`);
 });
 
 client.login(process.env.DISCORD_TOKEN);
