@@ -7,16 +7,15 @@ const express = require('express');
 const https = require('https');
 
 // ========================================
-// 1. SERVIDOR WEB (Para Render)
+// 1. SERVIDOR WEB (Keep-Alive para Render)
 // ========================================
 const app = express();
-const PORT = process.env.PORT || 10000;
-app.get('/', (req, res) => res.send('🤖 BIG Pulse Online'));
+app.get('/', (req, res) => res.send('🤖 BIG Pulse Pro v6.0 Online'));
 app.get('/health', (req, res) => res.status(200).send('OK'));
-app.listen(PORT, '0.0.0.0', () => console.log(`🌐 Servidor activo en puerto ${PORT}`));
+app.listen(process.env.PORT || 10000, '0.0.0.0');
 
 // ========================================
-// 2. CONFIGURACIÓN DEL BOT
+// 2. CONFIGURACIÓN DEL CLIENTE
 // ========================================
 const client = new Client({
     intents: [
@@ -33,7 +32,7 @@ const DATA_FILE = path.join(DATA_DIR, 'sales.json');
 let salesData = { daily: {}, weekly: {}, monthly: {}, allTime: {}, lastReset: {} };
 
 // ========================================
-// 3. PERSISTENCIA GITHUB
+// 3. PERSISTENCIA EN GITHUB CLOUD
 // ========================================
 async function githubApiRequest(apiPath, method, body) {
     const token = process.env.GITHUB_TOKEN;
@@ -66,7 +65,7 @@ async function syncWithGitHub(mode = 'download') {
             const file = await githubApiRequest(`${repoPath}?ref=main`, 'GET');
             if (file.content) {
                 salesData = JSON.parse(Buffer.from(file.content, 'base64').toString('utf8'));
-                console.log('✅ Datos sincronizados desde GitHub.');
+                console.log('✅ Datos cargados desde GitHub.');
             }
         } else {
             let sha = null;
@@ -80,14 +79,14 @@ async function syncWithGitHub(mode = 'download') {
                 content, sha, branch: 'main'
             });
         }
-    } catch (e) { console.error('❌ Error en Sync GitHub:', e.message); }
+    } catch (e) { console.error('Error Sync GitHub:', e.message); }
 }
 
 // ========================================
-// 4. LÓGICA DE PROCESAMIENTO (MOTOR V5.1)
+// 4. MOTOR DE BÚSQUEDA DE VENTAS (V5.1)
 // ========================================
 function parseSales(text) {
-    // Regex avanzada para capturar montos con emojis y símbolos
+    // Detecta montos con $ y decimales (ej: $2,222.52)
     const moneyRegex = /\$?([\d,]+\.\d{2})/g;
     const matches = [...text.matchAll(moneyRegex)];
     return matches.map(m => parseFloat(m[1].replace(/,/g, '')));
@@ -97,55 +96,48 @@ function generateReport(period, title) {
     const data = salesData[period] || {};
     const sorted = Object.values(data).sort((a, b) => b.total - a.total);
     
-    if (sorted.length === 0) return "No hay datos para este periodo.";
+    const embed = new EmbedBuilder()
+        .setColor(period === 'monthly' ? 0xffd700 : 0x2ecc71)
+        .setTitle(`🏆 ${title}`)
+        .setDescription(`Ranked by Annual Premium (AP)\n━━━━━━━━━━━━━━━━━━━━━`)
+        .setTimestamp();
 
-    let totalAP = 0;
-    let totalPols = 0;
-    const dateStr = new Date().toLocaleDateString('en-US');
+    if (sorted.length === 0) {
+        embed.addFields({ name: 'Sin registros', value: 'No hay ventas en este periodo.' });
+    } else {
+        let list = "";
+        sorted.forEach((u, i) => {
+            const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i+1}.`;
+            list += `${medal} **${u.username}**: $${u.total.toLocaleString()} (${u.count} pols)\n`;
+        });
+        embed.addFields({ name: 'AGENT RANKINGS', value: list });
 
-    let report = `🏆 **${title}** 🏆\n`;
-    report += `Ranked by Annual Premium (AP) Date: ${dateStr}\n`;
-    report += `━━━━━━━━━━━━━━━━━━━━━\n`;
-    report += `**TOP AP PRODUCERS**\n\n`;
-
-    sorted.forEach((u, i) => {
-        totalAP += u.total;
-        totalPols += u.count;
-        const medal = i === 0 ? '🥇 **AP LEADER**' : i === 1 ? '🥈 **2nd Place**' : i === 2 ? '🥉 **3rd Place**' : `${i+1}.`;
-        report += `${medal} ${u.username} $${u.total.toLocaleString()} AP (${u.count} policies)\n`;
-    });
-
-    report += `\n**AP SUMMARY**\n`;
-    report += `Total AP: $${totalAP.toLocaleString()}\n`;
-    report += `Average AP: $${(totalAP / (sorted.length || 1)).toLocaleString()}\n`;
-    report += `Total Policies: ${totalPols}\n`;
-    report += `━━━━━━━━━━━━━━━━━━━━━\n`;
-    report += `💼 BIG - Annual Premium Rankings`;
-
-    return report;
+        const totalAP = sorted.reduce((acc, curr) => acc + curr.total, 0);
+        const totalPols = sorted.reduce((acc, curr) => acc + curr.count, 0);
+        embed.addFields({ name: '📊 TOTALES DEL PERIODO', value: `**AP:** $${totalAP.toLocaleString()}\n**Pólizas:** ${totalPols}` });
+    }
+    return embed;
 }
 
 // ========================================
-// 5. EVENTOS Y COMANDOS
+// 5. ESCUCHA DE VENTAS Y COMANDOS
 // ========================================
 client.on('messageCreate', async (msg) => {
     if (msg.author.bot) return;
 
-    // COMANDOS DE CONSULTA
-    if (msg.content.toLowerCase() === '!ping') return msg.reply('🚀 Bot Activo y capturando ventas.');
-    if (msg.content.toLowerCase() === '!leaderboard') return msg.reply(generateReport('daily', 'DAILY LEADERBOARD'));
-    if (msg.content.toLowerCase() === '!weekly') return msg.reply(generateReport('weekly', 'WEEKLY CHAMPIONS'));
+    // Comandos manuales
+    if (msg.content === '!ping') return msg.reply('🚀 Sistema Operativo.');
+    if (msg.content === '!lb') return msg.reply({ embeds: [generateReport('daily', 'DAILY LEADERBOARD')] });
+    if (msg.content === '!weekly') return msg.reply({ embeds: [generateReport('weekly', 'WEEKLY RANKING')] });
 
-    // CAPTURA DE VENTAS EN CANAL ESPECÍFICO
+    // Captura en el canal de ventas
     if (msg.channel.id === process.env.SALES_CHANNEL_ID) {
         const amounts = parseSales(msg.content);
-
         if (amounts.length > 0) {
-            let totalMsg = 0;
+            let totalInMsg = 0;
             amounts.forEach(amt => {
-                totalMsg += amt;
+                totalInMsg += amt;
                 ['daily', 'weekly', 'monthly', 'allTime'].forEach(p => {
-                    if (!salesData[p]) salesData[p] = {};
                     if (!salesData[p][msg.author.id]) {
                         salesData[p][msg.author.id] = { total: 0, count: 0, username: msg.author.username };
                     }
@@ -155,36 +147,54 @@ client.on('messageCreate', async (msg) => {
                 });
             });
 
-            // REACCIONES
             try {
                 await msg.react('✅');
                 await msg.react('💰');
-                if (totalMsg > 2000) await msg.react('🔥');
+                if (totalInMsg > 2000) await msg.react('🔥');
             } catch (e) {}
 
-            // GUARDADO Y SYNC
+            // Guardar local y en la nube
             await fs.mkdir(DATA_DIR, { recursive: true });
             await fs.writeFile(DATA_FILE, JSON.stringify(salesData, null, 2));
             await syncWithGitHub('upload');
-            console.log(`💰 Registrada venta de ${msg.author.username}: $${totalMsg} (${amounts.length} pólizas)`);
         }
     }
 });
 
 // ========================================
-// 6. AUTOMATIZACIÓN (POSTEO DE LEADERBOARDS)
+// 6. AUTOMATIZACIÓN DE REPORTES (CRON)
 // ========================================
-// Publicar en canal de leaderboard a las 9 PM cada noche
-cron.schedule('0 21 * * *', () => {
+
+// REPORTES DIARIOS (9am, 12pm, 3pm, 6pm, 9pm Pacific Time)
+const dailySchedules = ['0 9 * * *', '0 12 * * *', '0 15 * * *', '0 18 * * *', '0 21 * * *'];
+dailySchedules.forEach(sched => {
+    cron.schedule(sched, () => {
+        const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
+        if (channel) channel.send({ embeds: [generateReport('daily', 'DAILY UPDATE')] });
+    }, { timezone: "America/Los_Angeles" });
+});
+
+// REPORTE SEMANAL (Domingos 11 PM)
+cron.schedule('0 23 * * 0', () => {
     const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
-    if (channel) {
-        channel.send(generateReport('daily', 'DAILY FINAL RANKINGS'));
+    if (channel) channel.send({ embeds: [generateReport('weekly', '🏆 FINAL WEEKLY SUMMARY')] });
+}, { timezone: "America/Los_Angeles" });
+
+// REPORTE MENSUAL (Último día del mes 11:30 PM)
+cron.schedule('30 23 28-31 * *', () => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    
+    if (tomorrow.getDate() === 1) { // Verifica si hoy es el último día
+        const channel = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
+        if (channel) channel.send({ embeds: [generateReport('monthly', '👑 FINAL MONTHLY CHAMPIONS')] });
     }
 }, { timezone: "America/Los_Angeles" });
 
 client.once('ready', async () => {
-    console.log(`⭐ Bot Online como ${client.user.tag}`);
     await syncWithGitHub('download');
+    console.log(`⭐ Bot iniciado como ${client.user.tag}`);
 });
 
 client.login(process.env.DISCORD_TOKEN);
