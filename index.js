@@ -7,16 +7,11 @@ const express = require('express');
 const https = require('https');
 
 const app = express();
-app.get('/', (req, res) => res.send('🤖 BIG Pulse Pro v7.6 Online'));
+app.get('/', (req, res) => res.send('🤖 BIG Pulse Pro v7.7 Online'));
 app.listen(process.env.PORT || 10000, '0.0.0.0');
 
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds, 
-        GatewayIntentBits.GuildMessages, 
-        GatewayIntentBits.MessageContent, 
-        GatewayIntentBits.GuildMessageReactions
-    ],
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions],
     partials: [Partials.Message, Partials.Channel, Partials.Reaction]
 });
 
@@ -54,7 +49,7 @@ async function syncWithGitHub(mode = 'download') {
             const file = await githubApiRequest(`${repoPath}?ref=main`, 'GET');
             if (file.content) {
                 salesData = JSON.parse(Buffer.from(file.content, 'base64').toString('utf8'));
-                console.log('✅ Data loaded from GitHub.');
+                console.log('✅ Data sincronizada desde GitHub.');
             }
         } else {
             let sha = null;
@@ -66,7 +61,7 @@ async function syncWithGitHub(mode = 'download') {
 }
 
 // ========================================
-// LOGICA DE RESET
+// LÓGICA DE RESET Y TIEMPO
 // ========================================
 function checkResets() {
     const now = new Date();
@@ -75,22 +70,9 @@ function checkResets() {
     const monthTag = `${now.getFullYear()}-${now.getMonth()}`;
 
     let changed = false;
-
-    if (salesData.lastReset.daily !== todayTag) {
-        salesData.daily = {};
-        salesData.lastReset.daily = todayTag;
-        changed = true;
-    }
-    if (salesData.lastReset.weeklyTag !== weekTag) {
-        salesData.weekly = {};
-        salesData.lastReset.weeklyTag = weekTag;
-        changed = true;
-    }
-    if (salesData.lastReset.monthlyTag !== monthTag) {
-        salesData.monthly = {};
-        salesData.lastReset.monthlyTag = monthTag;
-        changed = true;
-    }
+    if (salesData.lastReset.daily !== todayTag) { salesData.daily = {}; salesData.lastReset.daily = todayTag; changed = true; }
+    if (salesData.lastReset.weeklyTag !== weekTag) { salesData.weekly = {}; salesData.lastReset.weeklyTag = weekTag; changed = true; }
+    if (salesData.lastReset.monthlyTag !== monthTag) { salesData.monthly = {}; salesData.lastReset.monthlyTag = monthTag; changed = true; }
     return changed;
 }
 
@@ -102,7 +84,7 @@ function getWeekNumber(d) {
 }
 
 // ========================================
-// GENERADOR DE REPORTES (EMBEDS)
+// GENERADOR DE REPORTES
 // ========================================
 function generateEmbed(period) {
     checkResets();
@@ -111,84 +93,68 @@ function generateEmbed(period) {
     const dateStr = new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
     const timeStr = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 
-    let title = period === 'daily' ? "💵 DAILY LEADERBOARD" : period === 'weekly' ? "💵 WEEKLY CHAMPIONS - COMPLETE WEEK" : "💵 MONTHLY CHAMPIONS - COMPLETE MONTH";
+    let title = period === 'daily' ? "💵 DAILY LEADERBOARD" : period === 'weekly' ? "💵 WEEKLY CHAMPIONS" : "💵 MONTHLY CHAMPIONS";
     let color = period === 'daily' ? 0x00FF00 : period === 'weekly' ? 0x0000FF : 0xFFA500;
 
     const embed = new EmbedBuilder()
         .setColor(color)
+        .setTitle(title)
         .setDescription(`💰 **Ranked by Annual Premium (AP)**\n📍 Date: ${dateStr}, ${timeStr}\n------------------------------------------`)
-        .setFooter({ text: `💼 BIG - Annual Premium Rankings • ${dateStr}, ${timeStr}` });
+        .setFooter({ text: `💼 BIG - Annual Premium Rankings • ${dateStr}` });
 
     if (sorted.length === 0) {
         embed.addFields({ name: '\u200B', value: '*No sales recorded yet for this period.*' });
     } else {
-        let top3Text = "🌟 **TOP AP PRODUCERS**\n";
+        let top3Text = "";
         sorted.slice(0, 3).forEach((u, i) => {
             const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉';
-            const place = i === 0 ? 'AP LEADER' : i === 1 ? '2nd Place' : '3rd Place';
-            top3Text += `${medal} **${place}**\n👤 **${u.username}**\n💵 **$${u.total.toLocaleString(undefined, {minimumFractionDigits: 2})} AP**\n📊 *${u.count} policies*\n\n`;
+            top3Text += `${medal} **${u.username}**\n💵 **$${u.total.toLocaleString(undefined, {minimumFractionDigits: 2})} AP**\n📊 *${u.count} policies*\n\n`;
         });
-        embed.addFields({ name: '\u200B', value: top3Text });
+        embed.addFields({ name: '🌟 TOP PRODUCERS', value: top3Text });
 
         if (sorted.length > 3) {
             let othersText = "";
             sorted.slice(3, 10).forEach((u, i) => {
-                othersText += `**${i + 4}.** ${u.username} - **$${u.total.toLocaleString(undefined, {minimumFractionDigits: 2})}** (${u.count})\n`;
+                othersText += `**${i + 4}.** ${u.username} - **$${u.total.toLocaleString(undefined, {minimumFractionDigits: 2})}**\n`;
             });
-            embed.addFields({ name: '📈 Other Agents', value: othersText });
+            embed.addFields({ name: '📈 Top 10', value: othersText });
         }
 
         const totalAP = sorted.reduce((acc, curr) => acc + curr.total, 0);
-        const totalPols = sorted.reduce((acc, curr) => acc + curr.count, 0);
-        const avgAP = totalAP / (sorted.length || 1);
-
-        embed.addFields({ 
-            name: '💼 AP SUMMARY', 
-            value: `**Total AP:** $${totalAP.toLocaleString(undefined, {minimumFractionDigits: 2})}\n**Average AP:** $${avgAP.toLocaleString(undefined, {minimumFractionDigits: 3})}\n**Total Policies:** ${totalPols}` 
-        });
+        embed.addFields({ name: '💼 SUMMARY', value: `**Total AP:** $${totalAP.toLocaleString(undefined, {minimumFractionDigits: 2})}\n**Total Policies:** ${sorted.reduce((acc, curr) => acc + curr.count, 0)}` });
     }
     return embed;
 }
 
 // ========================================
-// MANEJO DE MENSAJES
+// MANEJO DE MENSAJES Y COMANDOS
 // ========================================
 client.on('messageCreate', async (msg) => {
     if (msg.author.bot) return;
 
-    // 1. COMANDOS (Funcionan en cualquier canal)
-    if (msg.content === '!ping') return msg.reply('🚀 BIG Pulse Pro is Online.');
+    if (msg.content === '!ping') return msg.reply('🚀 BIG Pulse Pro Online.');
     if (msg.content === '!lb') return msg.reply({ embeds: [generateEmbed('daily')] });
     if (msg.content === '!weekly') return msg.reply({ embeds: [generateEmbed('weekly')] });
     if (msg.content === '!monthly') return msg.reply({ embeds: [generateEmbed('monthly')] });
 
-    // 2. CAPTURA DE VENTAS (Solo en canal específico)
     if (msg.channel.id === process.env.SALES_CHANNEL_ID) {
         const moneyRegex = /\$?([\d,]+\.\d{2})/g;
         const matches = [...msg.content.matchAll(moneyRegex)];
         const amounts = matches.map(m => parseFloat(m[1].replace(/,/g, '')));
 
         if (amounts.length > 0) {
+            await syncWithGitHub('download'); // Asegurar data antes de sumar
             checkResets(); 
-            let totalInMsg = 0;
             amounts.forEach(amt => {
-                totalInMsg += amt;
                 ['daily', 'weekly', 'monthly', 'allTime'].forEach(p => {
                     if (!salesData[p]) salesData[p] = {};
-                    if (!salesData[p][msg.author.id]) {
-                        salesData[p][msg.author.id] = { total: 0, count: 0, username: msg.author.username };
-                    }
+                    if (!salesData[p][msg.author.id]) salesData[p][msg.author.id] = { total: 0, count: 0, username: msg.author.username };
                     salesData[p][msg.author.id].total = parseFloat((salesData[p][msg.author.id].total + amt).toFixed(2));
                     salesData[p][msg.author.id].count += 1;
                     salesData[p][msg.author.id].username = msg.author.username;
                 });
             });
-
             await msg.react('✅');
-            await msg.react('💰');
-            if (totalInMsg > 2000) await msg.react('🔥');
-
-            await fs.mkdir(DATA_DIR, { recursive: true });
             await fs.writeFile(DATA_FILE, JSON.stringify(salesData, null, 2));
             await syncWithGitHub('upload');
         }
@@ -196,26 +162,12 @@ client.on('messageCreate', async (msg) => {
 });
 
 // ========================================
-// CRON JOBS (Pacific Time)
+// CRON JOBS CON RECARGA DE SEGURIDAD
 // ========================================
-cron.schedule('0 9,12,15,18,21 * * *', () => {
+cron.schedule('0 9,12,15,18,21 * * *', async () => {
+    await syncWithGitHub('download');
     const ch = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
     if (ch) ch.send({ embeds: [generateEmbed('daily')] });
-}, { timezone: "America/Los_Angeles" });
-
-cron.schedule('0 23 * * 0', () => {
-    const ch = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
-    if (ch) ch.send({ embeds: [generateEmbed('weekly')] });
-}, { timezone: "America/Los_Angeles" });
-
-cron.schedule('30 23 28-31 * *', () => {
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    if (tomorrow.getDate() === 1) {
-        const ch = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
-        if (ch) ch.send({ embeds: [generateEmbed('monthly')] });
-    }
 }, { timezone: "America/Los_Angeles" });
 
 client.once('ready', async () => {
