@@ -7,11 +7,16 @@ const express = require('express');
 const https = require('https');
 
 const app = express();
-app.get('/', (req, res) => res.send('🤖 BIG Pulse Pro v7.5 Online'));
+app.get('/', (req, res) => res.send('🤖 BIG Pulse Pro v7.6 Online'));
 app.listen(process.env.PORT || 10000, '0.0.0.0');
 
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions],
+    intents: [
+        GatewayIntentBits.Guilds, 
+        GatewayIntentBits.GuildMessages, 
+        GatewayIntentBits.MessageContent, 
+        GatewayIntentBits.GuildMessageReactions
+    ],
     partials: [Partials.Message, Partials.Channel, Partials.Reaction]
 });
 
@@ -20,7 +25,7 @@ const DATA_FILE = path.join(DATA_DIR, 'sales.json');
 let salesData = { daily: {}, weekly: {}, monthly: {}, allTime: {}, lastReset: {} };
 
 // ========================================
-// PERSISTENCIA Y RESET LÓGICO
+// PERSISTENCIA GITHUB
 // ========================================
 async function githubApiRequest(apiPath, method, body) {
     const token = process.env.GITHUB_TOKEN;
@@ -49,7 +54,7 @@ async function syncWithGitHub(mode = 'download') {
             const file = await githubApiRequest(`${repoPath}?ref=main`, 'GET');
             if (file.content) {
                 salesData = JSON.parse(Buffer.from(file.content, 'base64').toString('utf8'));
-                console.log('✅ Data loaded.');
+                console.log('✅ Data loaded from GitHub.');
             }
         } else {
             let sha = null;
@@ -60,9 +65,12 @@ async function syncWithGitHub(mode = 'download') {
     } catch (e) { console.error('Sync Error:', e.message); }
 }
 
+// ========================================
+// LOGICA DE RESET
+// ========================================
 function checkResets() {
     const now = new Date();
-    const todayTag = now.toLocaleDateString('en-US'); // e.g. "02/12/2026"
+    const todayTag = now.toLocaleDateString('en-US'); 
     const weekTag = `${now.getFullYear()}-W${getWeekNumber(now)}`;
     const monthTag = `${now.getFullYear()}-${now.getMonth()}`;
 
@@ -72,7 +80,6 @@ function checkResets() {
         salesData.daily = {};
         salesData.lastReset.daily = todayTag;
         changed = true;
-        console.log("🧹 Daily data reset for new day.");
     }
     if (salesData.lastReset.weeklyTag !== weekTag) {
         salesData.weekly = {};
@@ -95,16 +102,16 @@ function getWeekNumber(d) {
 }
 
 // ========================================
-// VISUALS & SALES
+// GENERADOR DE REPORTES (EMBEDS)
 // ========================================
 function generateEmbed(period) {
-    checkResets(); // Asegurar que mostramos datos frescos
+    checkResets();
     const data = salesData[period] || {};
     const sorted = Object.values(data).sort((a, b) => b.total - a.total);
     const dateStr = new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
     const timeStr = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 
-    let title = period === 'daily' ? "💵 DAILY LEADERBOARD" : period === 'weekly' ? "💵 WEEKLY CHAMPIONS" : "💵 MONTHLY CHAMPIONS";
+    let title = period === 'daily' ? "💵 DAILY LEADERBOARD" : period === 'weekly' ? "💵 WEEKLY CHAMPIONS - COMPLETE WEEK" : "💵 MONTHLY CHAMPIONS - COMPLETE MONTH";
     let color = period === 'daily' ? 0x00FF00 : period === 'weekly' ? 0x0000FF : 0xFFA500;
 
     const embed = new EmbedBuilder()
@@ -143,21 +150,31 @@ function generateEmbed(period) {
     return embed;
 }
 
+// ========================================
+// MANEJO DE MENSAJES
+// ========================================
 client.on('messageCreate', async (msg) => {
     if (msg.author.bot) return;
 
-    // Detectar ventas
+    // 1. COMANDOS (Funcionan en cualquier canal)
+    if (msg.content === '!ping') return msg.reply('🚀 BIG Pulse Pro is Online.');
+    if (msg.content === '!lb') return msg.reply({ embeds: [generateEmbed('daily')] });
+    if (msg.content === '!weekly') return msg.reply({ embeds: [generateEmbed('weekly')] });
+    if (msg.content === '!monthly') return msg.reply({ embeds: [generateEmbed('monthly')] });
+
+    // 2. CAPTURA DE VENTAS (Solo en canal específico)
     if (msg.channel.id === process.env.SALES_CHANNEL_ID) {
         const moneyRegex = /\$?([\d,]+\.\d{2})/g;
         const matches = [...msg.content.matchAll(moneyRegex)];
         const amounts = matches.map(m => parseFloat(m[1].replace(/,/g, '')));
 
         if (amounts.length > 0) {
-            checkResets(); // Limpiar si es un nuevo día antes de guardar
+            checkResets(); 
             let totalInMsg = 0;
             amounts.forEach(amt => {
                 totalInMsg += amt;
                 ['daily', 'weekly', 'monthly', 'allTime'].forEach(p => {
+                    if (!salesData[p]) salesData[p] = {};
                     if (!salesData[p][msg.author.id]) {
                         salesData[p][msg.author.id] = { total: 0, count: 0, username: msg.author.username };
                     }
@@ -176,16 +193,29 @@ client.on('messageCreate', async (msg) => {
             await syncWithGitHub('upload');
         }
     }
-
-    // Comandos
-    if (msg.content === '!lb') msg.reply({ embeds: [generateEmbed('daily')] });
-    if (msg.content === '!weekly') msg.reply({ embeds: [generateEmbed('weekly')] });
 });
 
-// Cron Jobs
+// ========================================
+// CRON JOBS (Pacific Time)
+// ========================================
 cron.schedule('0 9,12,15,18,21 * * *', () => {
     const ch = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
     if (ch) ch.send({ embeds: [generateEmbed('daily')] });
+}, { timezone: "America/Los_Angeles" });
+
+cron.schedule('0 23 * * 0', () => {
+    const ch = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
+    if (ch) ch.send({ embeds: [generateEmbed('weekly')] });
+}, { timezone: "America/Los_Angeles" });
+
+cron.schedule('30 23 28-31 * *', () => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    if (tomorrow.getDate() === 1) {
+        const ch = client.channels.cache.get(process.env.LEADERBOARD_CHANNEL_ID);
+        if (ch) ch.send({ embeds: [generateEmbed('monthly')] });
+    }
 }, { timezone: "America/Los_Angeles" });
 
 client.once('ready', async () => {
