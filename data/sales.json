@@ -1,49 +1,9 @@
 {
   "daily": {
-    "1134874074552729601": {
-      "total": 4707.72,
-      "count": 2,
-      "username": "getrichwithrich"
-    },
-    "1330602059136765963": {
-      "total": 646.8,
+    "1342657107819757698": {
+      "total": 1388.4,
       "count": 1,
-      "username": "jesusvigil__43683"
-    },
-    "780617237877882892": {
-      "total": 1199.16,
-      "count": 1,
-      "username": "keith.williams_04"
-    },
-    "770443985768284190": {
-      "total": 1195,
-      "count": 1,
-      "username": "tkleib24"
-    },
-    "1264830499130441813": {
-      "total": 297.12,
-      "count": 1,
-      "username": "daddychill09627"
-    },
-    "1322689393689104396": {
-      "total": 4093.08,
-      "count": 3,
-      "username": "josephcarrell"
-    },
-    "1322366656630095913": {
-      "total": 5356.68,
-      "count": 2,
-      "username": "zacharyvalas"
-    },
-    "1407458221743935570": {
-      "total": 1226.52,
-      "count": 1,
-      "username": "linkin04"
-    },
-    "1345849938239684608": {
-      "total": 1420.56,
-      "count": 2,
-      "username": "imani.k_"
+      "username": "therealvblacklive"
     }
   },
   "weekly": {
@@ -93,8 +53,8 @@
       "username": "handmade.by.hilllery"
     },
     "1342657107819757698": {
-      "total": 1895.76,
-      "count": 3,
+      "total": 3284.16,
+      "count": 4,
       "username": "therealvblacklive"
     },
     "1347282171466874880": {
@@ -135,8 +95,8 @@
       "username": "beth036736"
     },
     "1342657107819757698": {
-      "total": 8431.44,
-      "count": 8,
+      "total": 9819.84,
+      "count": 9,
       "username": "therealvblacklive"
     },
     "1323395554419539978": {
@@ -285,10 +245,15 @@
       "total": 1420.56,
       "count": 2,
       "username": "imani.k_"
+    },
+    "1342657107819757698": {
+      "total": 1388.4,
+      "count": 1,
+      "username": "therealvblacklive"
     }
   },
   "lastReset": {
-    "daily": "2/12/2026",
+    "daily": "2/13/2026",
     "weeklyTag": "2026-W7",
     "monthlyTag": "2026-1"
   }
