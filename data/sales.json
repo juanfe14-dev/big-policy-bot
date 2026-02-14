@@ -1,29 +1,9 @@
 {
   "daily": {
-    "1342657107819757698": {
-      "total": 1388.4,
+    "1134874074552729601": {
+      "total": 792.84,
       "count": 1,
-      "username": "therealvblacklive"
-    },
-    "1322366656630095913": {
-      "total": 3041.4,
-      "count": 1,
-      "username": "zacharyvalas"
-    },
-    "1407458221743935570": {
-      "total": 1447.44,
-      "count": 1,
-      "username": "linkin04"
-    },
-    "1355974777655005266": {
-      "total": 2199.6,
-      "count": 1,
-      "username": "beth036736"
-    },
-    "1347282171466874880": {
-      "total": 1131.6,
-      "count": 1,
-      "username": "yohanes_akale_09415"
+      "username": "getrichwithrich"
     }
   },
   "weekly": {
@@ -33,8 +13,8 @@
       "username": "jesusvigil__43683"
     },
     "1134874074552729601": {
-      "total": 7194,
-      "count": 3,
+      "total": 7986.84,
+      "count": 4,
       "username": "getrichwithrich"
     },
     "1345849938239684608": {
@@ -145,8 +125,8 @@
       "username": "loganobrienhere"
     },
     "1134874074552729601": {
-      "total": 23168.01,
-      "count": 11,
+      "total": 23960.85,
+      "count": 12,
       "username": "getrichwithrich"
     },
     "1322686046739365961": {
@@ -285,10 +265,15 @@
       "total": 1131.6,
       "count": 1,
       "username": "yohanes_akale_09415"
+    },
+    "1134874074552729601": {
+      "total": 792.84,
+      "count": 1,
+      "username": "getrichwithrich"
     }
   },
   "lastReset": {
-    "daily": "2/13/2026",
+    "daily": "2/14/2026",
     "weeklyTag": "2026-W7",
     "monthlyTag": "2026-1"
   }
