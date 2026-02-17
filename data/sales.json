@@ -1,49 +1,9 @@
 {
   "daily": {
-    "1322689393689104396": {
-      "total": 1039.8,
+    "1134874074552729601": {
+      "total": 1132.56,
       "count": 1,
-      "username": "josephcarrell"
-    },
-    "1322366656630095913": {
-      "total": 2403.36,
-      "count": 1,
-      "username": "zacharyvalas"
-    },
-    "1264830499130441813": {
-      "total": 3023.76,
-      "count": 4,
-      "username": "daddychill09627"
-    },
-    "780617237877882892": {
-      "total": 1449.6,
-      "count": 1,
-      "username": "keith.williams_04"
-    },
-    "1355974777655005266": {
-      "total": 2002.08,
-      "count": 2,
-      "username": "beth036736"
-    },
-    "554540539513405440": {
-      "total": 638.49,
-      "count": 1,
-      "username": "jsmedley13"
-    },
-    "477900273612750858": {
-      "total": 406.92,
-      "count": 1,
-      "username": "kayden.green"
-    },
-    "566734854008602624": {
-      "total": 1690.08,
-      "count": 1,
-      "username": "loganobrienhere"
-    },
-    "1415746228137889924": {
-      "total": 1090.44,
-      "count": 1,
-      "username": "sellwithjoey"
+      "username": "getrichwithrich"
     }
   },
   "weekly": {
@@ -91,6 +51,11 @@
       "total": 1090.44,
       "count": 1,
       "username": "sellwithjoey"
+    },
+    "1134874074552729601": {
+      "total": 1132.56,
+      "count": 1,
+      "username": "getrichwithrich"
     }
   },
   "monthly": {
@@ -125,8 +90,8 @@
       "username": "loganobrienhere"
     },
     "1134874074552729601": {
-      "total": 23960.85,
-      "count": 12,
+      "total": 25093.41,
+      "count": 13,
       "username": "getrichwithrich"
     },
     "1322686046739365961": {
@@ -277,8 +242,8 @@
       "username": "yohanes_akale_09415"
     },
     "1134874074552729601": {
-      "total": 792.84,
-      "count": 1,
+      "total": 1925.4,
+      "count": 2,
       "username": "getrichwithrich"
     },
     "929606171634065468": {
@@ -308,7 +273,7 @@
     }
   },
   "lastReset": {
-    "daily": "2/16/2026",
+    "daily": "2/17/2026",
     "weeklyTag": "2026-W8",
     "monthlyTag": "2026-1"
   }
