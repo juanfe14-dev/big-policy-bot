@@ -1,19 +1,9 @@
 {
   "daily": {
-    "1134874074552729601": {
-      "total": 1132.56,
+    "1330602059136765963": {
+      "total": 490.9,
       "count": 1,
-      "username": "getrichwithrich"
-    },
-    "1345849938239684608": {
-      "total": 956.04,
-      "count": 1,
-      "username": "imani.k_"
-    },
-    "1355974777655005266": {
-      "total": 768,
-      "count": 2,
-      "username": "beth036736"
+      "username": "jesusvigil__43683"
     }
   },
   "weekly": {
@@ -71,6 +61,11 @@
       "total": 956.04,
       "count": 1,
       "username": "imani.k_"
+    },
+    "1330602059136765963": {
+      "total": 490.9,
+      "count": 1,
+      "username": "jesusvigil__43683"
     }
   },
   "monthly": {
@@ -135,8 +130,8 @@
       "username": "audieosho"
     },
     "1330602059136765963": {
-      "total": 14781.56,
-      "count": 13,
+      "total": 15272.46,
+      "count": 14,
       "username": "jesusvigil__43683"
     },
     "1353468463980740688": {
@@ -285,10 +280,15 @@
       "total": 1090.44,
       "count": 1,
       "username": "sellwithjoey"
+    },
+    "1330602059136765963": {
+      "total": 490.9,
+      "count": 1,
+      "username": "jesusvigil__43683"
     }
   },
   "lastReset": {
-    "daily": "2/17/2026",
+    "daily": "2/18/2026",
     "weeklyTag": "2026-W8",
     "monthlyTag": "2026-1"
   }
