@@ -1,29 +1,9 @@
 {
   "daily": {
-    "1330602059136765963": {
-      "total": 490.9,
-      "count": 1,
-      "username": "jesusvigil__43683"
-    },
     "1345849938239684608": {
-      "total": 730.56,
+      "total": 1519.68,
       "count": 1,
       "username": "imani.k_"
-    },
-    "554540539513405440": {
-      "total": 885.12,
-      "count": 1,
-      "username": "jsmedley13"
-    },
-    "566734854008602624": {
-      "total": 446.64,
-      "count": 1,
-      "username": "loganobrienhere"
-    },
-    "780617237877882892": {
-      "total": 2414.76,
-      "count": 2,
-      "username": "keith.williams_04"
     }
   },
   "weekly": {
@@ -78,8 +58,8 @@
       "username": "getrichwithrich"
     },
     "1345849938239684608": {
-      "total": 1686.6,
-      "count": 2,
+      "total": 3206.28,
+      "count": 3,
       "username": "imani.k_"
     },
     "1330602059136765963": {
@@ -170,8 +150,8 @@
       "username": "linkin04"
     },
     "1345849938239684608": {
-      "total": 8854.88,
-      "count": 11,
+      "total": 10374.56,
+      "count": 12,
       "username": "imani.k_"
     },
     "780617237877882892": {
@@ -252,8 +232,8 @@
       "username": "linkin04"
     },
     "1345849938239684608": {
-      "total": 3107.16,
-      "count": 4,
+      "total": 4626.84,
+      "count": 5,
       "username": "imani.k_"
     },
     "1342657107819757698": {
@@ -308,7 +288,7 @@
     }
   },
   "lastReset": {
-    "daily": "2/18/2026",
+    "daily": "2/19/2026",
     "weeklyTag": "2026-W8",
     "monthlyTag": "2026-1"
   }
