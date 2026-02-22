@@ -1,14 +1,9 @@
 {
   "daily": {
-    "1355974777655005266": {
-      "total": 896.5,
-      "count": 1,
-      "username": "beth036736"
-    },
-    "1407458221743935570": {
-      "total": 1591.92,
-      "count": 1,
-      "username": "linkin04"
+    "1264830499130441813": {
+      "total": 1428.72,
+      "count": 2,
+      "username": "daddychill09627"
     }
   },
   "weekly": {
@@ -23,8 +18,8 @@
       "username": "zacharyvalas"
     },
     "1264830499130441813": {
-      "total": 3584.04,
-      "count": 5,
+      "total": 5012.76,
+      "count": 7,
       "username": "daddychill09627"
     },
     "780617237877882892": {
@@ -200,8 +195,8 @@
       "username": "squizard33"
     },
     "1264830499130441813": {
-      "total": 9004.8,
-      "count": 11,
+      "total": 10433.52,
+      "count": 13,
       "username": "daddychill09627"
     },
     "1356772443997605978": {
@@ -237,8 +232,8 @@
       "username": "keith.williams_04"
     },
     "1264830499130441813": {
-      "total": 3881.16,
-      "count": 6,
+      "total": 5309.88,
+      "count": 8,
       "username": "daddychill09627"
     },
     "1322689393689104396": {
@@ -318,7 +313,7 @@
     }
   },
   "lastReset": {
-    "daily": "2/21/2026",
+    "daily": "2/22/2026",
     "weeklyTag": "2026-W8",
     "monthlyTag": "2026-1"
   }
