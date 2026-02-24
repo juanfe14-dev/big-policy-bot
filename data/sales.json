@@ -1,29 +1,9 @@
 {
   "daily": {
-    "1407458221743935570": {
-      "total": 1383.6,
-      "count": 2,
-      "username": "linkin04"
-    },
-    "1342657107819757698": {
-      "total": 2842.2,
-      "count": 2,
-      "username": "therealvblacklive"
-    },
-    "1134874074552729601": {
-      "total": 1003.56,
+    "321165687152443392": {
+      "total": 311.04,
       "count": 1,
-      "username": "getrichwithrich"
-    },
-    "1128910595245232148": {
-      "total": 2672.88,
-      "count": 1,
-      "username": "philliplaw9"
-    },
-    "1415746228137889924": {
-      "total": 5337.6,
-      "count": 3,
-      "username": "sellwithjoey"
+      "username": "fadednoodler"
     }
   },
   "weekly": {
@@ -51,6 +31,11 @@
       "total": 5337.6,
       "count": 3,
       "username": "sellwithjoey"
+    },
+    "321165687152443392": {
+      "total": 311.04,
+      "count": 1,
+      "username": "fadednoodler"
     }
   },
   "monthly": {
@@ -193,6 +178,11 @@
       "total": 3901.92,
       "count": 2,
       "username": "philliplaw9"
+    },
+    "321165687152443392": {
+      "total": 311.04,
+      "count": 1,
+      "username": "fadednoodler"
     }
   },
   "allTime": {
@@ -280,10 +270,15 @@
       "total": 3901.92,
       "count": 2,
       "username": "philliplaw9"
+    },
+    "321165687152443392": {
+      "total": 311.04,
+      "count": 1,
+      "username": "fadednoodler"
     }
   },
   "lastReset": {
-    "daily": "2/23/2026",
+    "daily": "2/24/2026",
     "weeklyTag": "2026-W9",
     "monthlyTag": "2026-1"
   }
