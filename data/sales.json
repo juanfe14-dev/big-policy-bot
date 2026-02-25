@@ -1,44 +1,9 @@
 {
   "daily": {
-    "321165687152443392": {
-      "total": 311.04,
+    "1330602059136765963": {
+      "total": 1108.8,
       "count": 1,
-      "username": "fadednoodler"
-    },
-    "1032557343172468788": {
-      "total": 2719.32,
-      "count": 1,
-      "username": "richvigga"
-    },
-    "1134874074552729601": {
-      "total": 7701.24,
-      "count": 3,
-      "username": "getrichwithrich"
-    },
-    "836024312711610448": {
-      "total": 1121.28,
-      "count": 1,
-      "username": "roanhickey"
-    },
-    "1355974777655005266": {
-      "total": 3888,
-      "count": 1,
-      "username": "beth036736"
-    },
-    "1353468463980740688": {
-      "total": 1531.44,
-      "count": 1,
-      "username": "mosiahm"
-    },
-    "1342657107819757698": {
-      "total": 2348.64,
-      "count": 2,
-      "username": "therealvblacklive"
-    },
-    "1345849938239684608": {
-      "total": 530.76,
-      "count": 1,
-      "username": "imani.k_"
+      "username": "jesusvigil__43683"
     }
   },
   "weekly": {
@@ -96,6 +61,11 @@
       "total": 530.76,
       "count": 1,
       "username": "imani.k_"
+    },
+    "1330602059136765963": {
+      "total": 1108.8,
+      "count": 1,
+      "username": "jesusvigil__43683"
     }
   },
   "monthly": {
@@ -160,8 +130,8 @@
       "username": "audieosho"
     },
     "1330602059136765963": {
-      "total": 15272.46,
-      "count": 14,
+      "total": 16381.26,
+      "count": 15,
       "username": "jesusvigil__43683"
     },
     "1353468463980740688": {
@@ -322,8 +292,8 @@
       "username": "sellwithjoey"
     },
     "1330602059136765963": {
-      "total": 490.9,
-      "count": 1,
+      "total": 1599.7,
+      "count": 2,
       "username": "jesusvigil__43683"
     },
     "1128910595245232148": {
@@ -353,7 +323,7 @@
     }
   },
   "lastReset": {
-    "daily": "2/24/2026",
+    "daily": "2/25/2026",
     "weeklyTag": "2026-W9",
     "monthlyTag": "2026-1"
   }
