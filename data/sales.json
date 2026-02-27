@@ -1,24 +1,9 @@
 {
   "daily": {
-    "554540539513405440": {
-      "total": 433.68,
+    "1356772443997605978": {
+      "total": 576.72,
       "count": 1,
-      "username": "jsmedley13"
-    },
-    "1134874074552729601": {
-      "total": 5372.04,
-      "count": 2,
-      "username": "getrichwithrich"
-    },
-    "1355974777655005266": {
-      "total": 2487.36,
-      "count": 1,
-      "username": "beth036736"
-    },
-    "1345849938239684608": {
-      "total": 365.16,
-      "count": 1,
-      "username": "imani.k_"
+      "username": "hadyn_waldie"
     }
   },
   "weekly": {
@@ -86,6 +71,11 @@
       "total": 433.68,
       "count": 1,
       "username": "jsmedley13"
+    },
+    "1356772443997605978": {
+      "total": 576.72,
+      "count": 1,
+      "username": "hadyn_waldie"
     }
   },
   "monthly": {
@@ -205,8 +195,8 @@
       "username": "daddychill09627"
     },
     "1356772443997605978": {
-      "total": 397.32,
-      "count": 1,
+      "total": 974.04,
+      "count": 2,
       "username": "hadyn_waldie"
     },
     "1347282171466874880": {
@@ -340,10 +330,15 @@
       "total": 1531.44,
       "count": 1,
       "username": "mosiahm"
+    },
+    "1356772443997605978": {
+      "total": 576.72,
+      "count": 1,
+      "username": "hadyn_waldie"
     }
   },
   "lastReset": {
-    "daily": "2/26/2026",
+    "daily": "2/27/2026",
     "weeklyTag": "2026-W9",
     "monthlyTag": "2026-1"
   }
