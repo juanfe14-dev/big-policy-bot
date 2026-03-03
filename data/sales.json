@@ -1,34 +1,9 @@
 {
   "daily": {
-    "929606171634065468": {
-      "total": 1043.52,
-      "count": 1,
-      "username": "terrenceslings"
-    },
-    "1342657107819757698": {
-      "total": 1441.8,
-      "count": 1,
-      "username": "therealvblacklive"
-    },
-    "1345849938239684608": {
-      "total": 3232.08,
-      "count": 3,
-      "username": "imani.k_"
-    },
-    "1355974777655005266": {
-      "total": 4396.44,
-      "count": 2,
-      "username": "beth036736"
-    },
-    "1264830499130441813": {
-      "total": 538.68,
-      "count": 1,
-      "username": "daddychill09627"
-    },
-    "1128910595245232148": {
-      "total": 9129.12,
-      "count": 2,
-      "username": "philliplaw9"
+    "194646983200342016": {
+      "total": 12560.16,
+      "count": 10,
+      "username": "op3372"
     }
   },
   "weekly": {
@@ -61,6 +36,11 @@
       "total": 9129.12,
       "count": 2,
       "username": "philliplaw9"
+    },
+    "194646983200342016": {
+      "total": 12560.16,
+      "count": 10,
+      "username": "op3372"
     }
   },
   "monthly": {
@@ -93,6 +73,11 @@
       "total": 9129.12,
       "count": 2,
       "username": "philliplaw9"
+    },
+    "194646983200342016": {
+      "total": 12560.16,
+      "count": 10,
+      "username": "op3372"
     }
   },
   "allTime": {
@@ -205,10 +190,15 @@
       "total": 576.72,
       "count": 1,
       "username": "hadyn_waldie"
+    },
+    "194646983200342016": {
+      "total": 12560.16,
+      "count": 10,
+      "username": "op3372"
     }
   },
   "lastReset": {
-    "daily": "3/2/2026",
+    "daily": "3/3/2026",
     "weeklyTag": "2026-W10",
     "monthlyTag": "2026-2"
   }
