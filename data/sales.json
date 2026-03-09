@@ -1,76 +1,16 @@
 {
   "daily": {
-    "1322689393689104396": {
-      "total": 1569.12,
+    "1345849938239684608": {
+      "total": 687.24,
       "count": 1,
-      "username": "josephcarrell"
-    },
-    "1088303207341629511": {
-      "total": 534.12,
-      "count": 1,
-      "username": "redrum8862"
+      "username": "imani.k_"
     }
   },
   "weekly": {
-    "929606171634065468": {
-      "total": 1043.52,
-      "count": 1,
-      "username": "terrenceslings"
-    },
-    "1342657107819757698": {
-      "total": 2967.72,
-      "count": 2,
-      "username": "therealvblacklive"
-    },
     "1345849938239684608": {
-      "total": 4055.28,
-      "count": 4,
+      "total": 687.24,
+      "count": 1,
       "username": "imani.k_"
-    },
-    "1355974777655005266": {
-      "total": 4396.44,
-      "count": 2,
-      "username": "beth036736"
-    },
-    "1264830499130441813": {
-      "total": 2247.12,
-      "count": 3,
-      "username": "daddychill09627"
-    },
-    "1128910595245232148": {
-      "total": 9129.12,
-      "count": 2,
-      "username": "philliplaw9"
-    },
-    "194646983200342016": {
-      "total": 37491.6,
-      "count": 31,
-      "username": "op3372"
-    },
-    "566734854008602624": {
-      "total": 3115.56,
-      "count": 3,
-      "username": "loganobrienhere"
-    },
-    "1322689393689104396": {
-      "total": 2707.2,
-      "count": 3,
-      "username": "josephcarrell"
-    },
-    "1330602059136765963": {
-      "total": 831.6,
-      "count": 1,
-      "username": "jesusvigil__43683"
-    },
-    "1032557343172468788": {
-      "total": 1014.48,
-      "count": 1,
-      "username": "richvigga"
-    },
-    "1088303207341629511": {
-      "total": 534.12,
-      "count": 1,
-      "username": "redrum8862"
     }
   },
   "monthly": {
@@ -85,8 +25,8 @@
       "username": "therealvblacklive"
     },
     "1345849938239684608": {
-      "total": 4055.28,
-      "count": 4,
+      "total": 4742.52,
+      "count": 5,
       "username": "imani.k_"
     },
     "1355974777655005266": {
@@ -162,8 +102,8 @@
       "username": "linkin04"
     },
     "1345849938239684608": {
-      "total": 9578.04,
-      "count": 11,
+      "total": 10265.28,
+      "count": 12,
       "username": "imani.k_"
     },
     "1342657107819757698": {
@@ -258,8 +198,8 @@
     }
   },
   "lastReset": {
-    "daily": "3/7/2026",
-    "weeklyTag": "2026-W10",
+    "daily": "3/9/2026",
+    "weeklyTag": "2026-W11",
     "monthlyTag": "2026-2"
   }
 }
