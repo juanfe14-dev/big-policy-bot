@@ -1,76 +1,16 @@
 {
   "daily": {
     "1264830499130441813": {
-      "total": 610.32,
+      "total": 2551.56,
       "count": 1,
       "username": "daddychill09627"
-    },
-    "554540539513405440": {
-      "total": 602.76,
-      "count": 1,
-      "username": "jsmedley13"
     }
   },
   "weekly": {
-    "1345849938239684608": {
-      "total": 2700.96,
-      "count": 3,
-      "username": "imani.k_"
-    },
-    "1470861567305187369": {
-      "total": 803.64,
-      "count": 2,
-      "username": "rex_7.7.7"
-    },
     "1264830499130441813": {
-      "total": 4326.36,
-      "count": 4,
+      "total": 2551.56,
+      "count": 1,
       "username": "daddychill09627"
-    },
-    "1322689393689104396": {
-      "total": 677.76,
-      "count": 1,
-      "username": "josephcarrell"
-    },
-    "1415746228137889924": {
-      "total": 810.36,
-      "count": 1,
-      "username": "sellwithjoey"
-    },
-    "321165687152443392": {
-      "total": 1194.48,
-      "count": 1,
-      "username": "fadednoodler"
-    },
-    "1134874074552729601": {
-      "total": 5856.88,
-      "count": 3,
-      "username": "getrichwithrich"
-    },
-    "1088303207341629511": {
-      "total": 653.88,
-      "count": 1,
-      "username": "redrum8862"
-    },
-    "1347282171466874880": {
-      "total": 1846.56,
-      "count": 2,
-      "username": "yohanes_akale_09415"
-    },
-    "1128910595245232148": {
-      "total": 779.76,
-      "count": 1,
-      "username": "philliplaw9"
-    },
-    "1355974777655005266": {
-      "total": 7542.48,
-      "count": 2,
-      "username": "beth036736"
-    },
-    "554540539513405440": {
-      "total": 602.76,
-      "count": 1,
-      "username": "jsmedley13"
     }
   },
   "monthly": {
@@ -95,8 +35,8 @@
       "username": "beth036736"
     },
     "1264830499130441813": {
-      "total": 6573.48,
-      "count": 7,
+      "total": 9125.04,
+      "count": 8,
       "username": "daddychill09627"
     },
     "1128910595245232148": {
@@ -172,8 +112,8 @@
       "username": "keith.williams_04"
     },
     "1264830499130441813": {
-      "total": 11883.36,
-      "count": 15,
+      "total": 14434.92,
+      "count": 16,
       "username": "daddychill09627"
     },
     "1322689393689104396": {
@@ -293,8 +233,8 @@
     }
   },
   "lastReset": {
-    "daily": "3/14/2026",
-    "weeklyTag": "2026-W11",
+    "daily": "3/16/2026",
+    "weeklyTag": "2026-W12",
     "monthlyTag": "2026-2"
   }
 }
