@@ -1,14 +1,9 @@
 {
   "daily": {
-    "1322689393689104396": {
-      "total": 3005.76,
-      "count": 2,
-      "username": "josephcarrell"
-    },
-    "1134874074552729601": {
-      "total": 2028.84,
+    "1088303207341629511": {
+      "total": 1631.4,
       "count": 1,
-      "username": "getrichwithrich"
+      "username": "redrum8862"
     }
   },
   "weekly": {
@@ -51,6 +46,11 @@
       "total": 1714.44,
       "count": 1,
       "username": "richvigga"
+    },
+    "1088303207341629511": {
+      "total": 1631.4,
+      "count": 1,
+      "username": "redrum8862"
     }
   },
   "monthly": {
@@ -110,8 +110,8 @@
       "username": "richvigga"
     },
     "1088303207341629511": {
-      "total": 1188,
-      "count": 2,
+      "total": 2819.4,
+      "count": 3,
       "username": "redrum8862"
     },
     "1470861567305187369": {
@@ -267,8 +267,8 @@
       "username": "op3372"
     },
     "1088303207341629511": {
-      "total": 1188,
-      "count": 2,
+      "total": 2819.4,
+      "count": 3,
       "username": "redrum8862"
     },
     "1470861567305187369": {
@@ -283,7 +283,7 @@
     }
   },
   "lastReset": {
-    "daily": "3/20/2026",
+    "daily": "3/21/2026",
     "weeklyTag": "2026-W12",
     "monthlyTag": "2026-2"
   }
